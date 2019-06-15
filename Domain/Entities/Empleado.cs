@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
-    public class Empleado : Persona
+    public class Empleado : Entity<int>
     {
         [Column("salario")]
         public double salario { private set; get; }
@@ -19,25 +19,12 @@ namespace Domain.Entities
         public int año { private set; get; }
 
 
-        [Display(Name = "Persona")]
-        public int personaId { get; set; }
-
-        [ForeignKey("Persona")]
-        public virtual Persona persona { get; set; }
 
 
-        public Empleado(Empleado empleado) : base(empleado) {
+        public Empleado(Empleado empleado) : base() {
             this.salario = empleado.salario;
             this.dias = empleado.dias;
             this.año = empleado.año;
-        }
-
-
-        public Empleado(double salario, int dias, int año, Persona persona) : base(persona)
-        {
-            this.salario = salario;
-            this.dias = dias;
-            this.año =año;
         }
 
 
@@ -45,12 +32,11 @@ namespace Domain.Entities
         {
             this.salario = salario;
             this.dias = dias;
-            this.año = año;
+            this.año =año;
         }
 
 
-
-
+     
 
         public Empleado() : base() { }
 

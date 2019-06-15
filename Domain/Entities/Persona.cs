@@ -8,10 +8,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
-    [Table("Persona")]
+    
     public class Persona : Entity<int>
     {
-
+        public string documento { get; set; }
+        public string primerNombre { get; set; }
+        public string segundoNombre { get; set; }
+        public string primerApellido { get; set; }
+        public string segundoApellido { get; set; }
+        public string telefono { get; set; }
+        public int edad { get; set; }
 
         public Persona()
         {
@@ -39,37 +45,8 @@ namespace Domain.Entities
         
         }
 
-        [Required]
-        [MaxLength(10), MinLength(10)]
-        [Column("documento")]
-        public string documento;
 
-        [Required]
-        [MaxLength(50)]
-        [Column("primerNombre")]
-        public string primerNombre;
-
-        [Column("segundoNombre")]
-        public string segundoNombre;
-
-        [Required]
-        [MaxLength(50)]
-        [Column("primerApellido")]
-        public string primerApellido;
-
-        [Required]
-        [MaxLength(50)]
-        [Column("segundoApellido")]
-        public string segundoApellido;
-
-        [Required]
-        [MaxLength(10), MinLength(10)]
-        [Column("telefono")]
-        public string telefono;
-
-        [Required]
-        [MaxLength(3)]
-        [Column("edad")]
-        public int edad;
+       
+        
     }
 }

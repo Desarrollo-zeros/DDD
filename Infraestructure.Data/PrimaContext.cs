@@ -13,7 +13,9 @@ namespace Infraestructure.Data
 {
     public class PrimaContext : DbContextBase
     {
-        public PrimaContext() : base("Name=mysqlContext") {}
+
+        
+        public PrimaContext() : base("name=PrimaContext") {}
        
         protected PrimaContext(DbConnection connection) : base(connection) { }
 

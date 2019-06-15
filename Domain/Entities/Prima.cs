@@ -16,13 +16,7 @@ namespace Domain.Entities
         public DateTime fecha { private set; get; }
 
 
-        [Display(Name = "Empleado")]
-        public int empleadoId { get; set; }
-
-        [ForeignKey("Empleado")]
-        public virtual Empleado empleado { get; set; }
-
-
+      
         public void calcular(double salario, int dias, int año = 360)
         {
             if (salario <= 0) { throw new CalcularPrimaException("El salario no puede ser menor o igual a 0"); }

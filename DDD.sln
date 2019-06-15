@@ -18,6 +18,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIConsole", "UIConsole\UICo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Test", "Application.Test\Application.Test.csproj", "{759B8E1E-33F0-4C9B-A9F7-8079621FD7DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Test", "Domain.Test\Domain.Test.csproj", "{255F2B6C-6210-43B5-A4C0-668627522C78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infraestructure.Test", "Infraestructure.Test\Infraestructure.Test.csproj", "{7D685BF2-41DD-45B1-8827-84D4AC8449B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +48,14 @@ Global
 		{759B8E1E-33F0-4C9B-A9F7-8079621FD7DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{759B8E1E-33F0-4C9B-A9F7-8079621FD7DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{759B8E1E-33F0-4C9B-A9F7-8079621FD7DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{255F2B6C-6210-43B5-A4C0-668627522C78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{255F2B6C-6210-43B5-A4C0-668627522C78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{255F2B6C-6210-43B5-A4C0-668627522C78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{255F2B6C-6210-43B5-A4C0-668627522C78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D685BF2-41DD-45B1-8827-84D4AC8449B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D685BF2-41DD-45B1-8827-84D4AC8449B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D685BF2-41DD-45B1-8827-84D4AC8449B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D685BF2-41DD-45B1-8827-84D4AC8449B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

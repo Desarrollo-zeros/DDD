@@ -7,6 +7,7 @@ using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
+
 namespace Infraestructure.Data.Base
 {
     public interface IDbContext
@@ -19,6 +20,7 @@ namespace Infraestructure.Data.Base
         int SaveChanges();
     }
 
+    [DbConfigurationType(typeof(MySql.Data.EntityFramework.MySqlEFConfiguration))]
     public class DbContextBase : DbContext, IDbContext
     {
         public DbContextBase(string nameOrConnectionString)
