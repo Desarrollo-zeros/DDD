@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Entities;
 
 namespace Domain.Abstracts
 {
-    public interface IFormattedValidationException
+    public interface IPersonaRepository : IGenericRepository<Persona>
     {
-        string Message { set; get; }
+
     }
 }

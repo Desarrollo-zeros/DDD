@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Abstracts
+namespace Domain.Entities
 {
-    public interface IFormattedValidationException
+    public interface IServicioFinanciero
     {
-        string Message { set; get; }
+        void calcular(double salario, int dias, int año = 360);
     }
 }

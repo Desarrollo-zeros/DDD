@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Abstracts
+namespace Application.Base
+
 {
-    public interface IFormattedValidationException
+    public interface IOperacionPrima : IService
     {
-        string Message { set; get; }
+
     }
 }
