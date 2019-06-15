@@ -13,7 +13,7 @@ namespace Domain.Entities
     {
 
         public double prima { private set; get; }
-        public DateTime fechaCalculoPrima { private set; get; }
+        public DateTime fecha { private set; get; }
 
 
         [Display(Name = "Empleado")]

@@ -11,7 +11,7 @@ using Infraestructure.Data.Base;
 
 namespace Infraestructure.Data
 {
-    class PrimaContext : DbContextBase
+    public class PrimaContext : DbContextBase
     {
         public PrimaContext() : base("Name=mysqlContext") {}
        

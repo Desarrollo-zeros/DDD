@@ -10,9 +10,12 @@ namespace Domain.Entities
 {
     public class Empleado : Persona
     {
-
+        [Column("salario")]
         public double salario { private set; get; }
+
+        [Column("dias")]
         public int dias { private set; get; }
+
         public int año { private set; get; }
 
 
