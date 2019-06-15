@@ -32,6 +32,26 @@ namespace Domain.Entities
             this.año = empleado.año;
         }
 
+
+        public Empleado(double salario, int dias, int año, Persona persona) : base(persona)
+        {
+            this.salario = salario;
+            this.dias = dias;
+            this.año =año;
+        }
+
+
+        public Empleado(double salario, int dias, int año) : base()
+        {
+            this.salario = salario;
+            this.dias = dias;
+            this.año = año;
+        }
+
+
+
+
+
         public Empleado() : base() { }
 
     }
