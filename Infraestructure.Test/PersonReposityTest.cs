@@ -40,16 +40,13 @@ namespace Infraestructure.Test
         public void Persona_del()
         {
             Console.WriteLine("Ejecutando Persona add");
-            
+           
             Persona personas = objRepo.FindBy(t => t.documento.Equals("1063969856")).FirstOrDefault();
             if(personas != null)
             {
                 objRepo.Delete(personas);
-                databaseContext.SaveChanges();
-                
-
+                databaseContext.SaveChanges();  
             }
-
             Persona persona = objRepo.FindBy(t => t.documento.Equals("1063969856")).FirstOrDefault();
             Assert.AreEqual(persona, null);
         }
