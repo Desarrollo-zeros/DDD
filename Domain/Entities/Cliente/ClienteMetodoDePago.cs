@@ -17,10 +17,11 @@ namespace Domain.Entities.Cliente
             Saldo = saldo;
         }
 
-        public ClienteMetodoDePago(int cliente_Id, double saldo)
+        public ClienteMetodoDePago(int cliente_Id, double saldo, bool activo)
         {
             Cliente_Id = cliente_Id;
             Saldo = saldo;
+            Activo = activo;
         }
 
         public ClienteMetodoDePago() { }

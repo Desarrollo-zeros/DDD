@@ -10,16 +10,17 @@ namespace Domain.Entities.Producto
 {
     public class Descuento : Entity<int>
     {
-        public Descuento(TipoDescuento tipoDescuento, bool acomulable, DateTime fechaYHoraInicio, DateTime fechaYHoraTerminación)
+        public Descuento(TipoDescuento tipoDescuento, bool acomulable, DateTime fechaYHoraInicio, DateTime fechaYHoraTerminación, double descuento)
         {
-            if(!DescuentoEsAplicable(fechaYHoraInicio, fechaYHoraTerminación))
+            if (!DescuentoEsAplicable(fechaYHoraInicio, fechaYHoraTerminación))
             {
-                throw new Exception("Solo se puede crear descuento para dias festivos");
+                throw new Exception("Solo se puede crear descuento para Fines de semanas");
             }
             this.TipoDescuento = tipoDescuento;
             Acomulable = acomulable;
             FechaYHoraInicio = fechaYHoraInicio;
             FechaYHoraTerminación = fechaYHoraTerminación;
+            Descu = descuento;
         }
         public Descuento() { }
 

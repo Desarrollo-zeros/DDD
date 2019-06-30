@@ -11,7 +11,7 @@ namespace Domain.Entities.Producto
     public class Producto : Entity<int>
     {
         public Producto() { }
-        public Producto(string nombre, string descripción, Imagen imagen, double precioCompra, double precioVenta)
+        public Producto(string nombre, string descripción, Imagen imagen, double precioCompra, double precioVenta, int cantidadProducto)
         {
             Nombre = nombre;
             Descripción = descripción;
@@ -26,6 +26,7 @@ namespace Domain.Entities.Producto
             }
             this.PrecioCompra = precioCompra;
             this.PrecioVenta = precioVenta;
+            CantidadProducto = cantidadProducto;
         }
 
         public string Nombre { set; get; }
@@ -33,6 +34,7 @@ namespace Domain.Entities.Producto
         public  Imagen Imagen { set; get; }
         public double PrecioCompra { set; get; }
         public double PrecioVenta { set; get; }
+        public int CantidadProducto { set; get; }
 
         public virtual IEnumerable<ProductoDescuento> ProductoDescuentos { set; get; }
 
@@ -49,6 +51,8 @@ namespace Domain.Entities.Producto
             return (precioVenta > 0 && precioVenta > precioCompra);
         }
 
+
+       
       
     }
 }

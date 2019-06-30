@@ -83,6 +83,7 @@
     <Compile Include="Entities\Factura\CompraEnvio.cs" />
     <Compile Include="Entities\Factura\ProductoCliente.cs" />
     <Compile Include="Enum\CreditCardType.cs" />
+    <Compile Include="Enum\EstadoClienteArticulo.cs" />
     <Compile Include="Enum\EstadoDeEnvio.cs" />
     <Compile Include="Factories\GeneryFactories.cs" />
     <Compile Include="Factories\IGeneric.cs" />

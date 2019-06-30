@@ -20,9 +20,8 @@ namespace Domain.Test.Entities
         [SetUp]
         public void Initialize()
         {
-            ClienteMetodoDePago = new ClienteMetodoDePago(1,20000);
-            ClienteMetodoDePago.Activo = true;
-
+            ClienteMetodoDePago = new ClienteMetodoDePago(1,20000,true);
+       
             //creditCard = new CreditCard(CreditCardType.Amex, "3718 892513 11442","000","carlos",new DateTime());
 
         }
