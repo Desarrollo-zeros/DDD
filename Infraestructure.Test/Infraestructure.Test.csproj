@@ -188,9 +188,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PersonReposityTest.cs" />
-    <Compile Include="PrimaContextTest.cs" />
+    <Compile Include="Cliente\FRepositoryClienteTest.cs" />
+    <Compile Include="Cliente\GRepositoryTelefonoTest.cs" />
+    <Compile Include="Cliente\HRepositoryTelefónoClienteTest.cs" />
+    <Compile Include="Cliente\JRepositoryClienteDirección.cs" />
+    <Compile Include="Compra\NRepositoryCompraTest.cs" />
+    <Compile Include="Compra\ORepositoryCompraEnvioTest.cs" />
+    <Compile Include="Compra\MRepositoryComprobanteDePagoTest.cs" />
+    <Compile Include="Compra\PRepositoryProductoClienteTest.cs" />
+    <Compile Include="DBContextTest.cs" />
+    <Compile Include="Localizacion\BRepositoryDepartamentoTest.cs" />
+    <Compile Include="Localizacion\DRepositoryDirecciónTest.cs" />
+    <Compile Include="Localizacion\CRepositoryMunicipioTest.cs" />
+    <Compile Include="Localizacion\ARepositoryPaísTest.cs" />
+    <Compile Include="Producto\IRepositoryProductoTest.cs" />
+    <Compile Include="Producto\KRepositoryDescuentoTest.cs" />
+    <Compile Include="Producto\LRepositoryProductoDescuentoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Cliente\ERepositoryUsuarioTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain.Test\Domain.Test.csproj">
@@ -210,6 +225,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

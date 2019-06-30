@@ -46,6 +46,7 @@
     <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -70,18 +71,43 @@
   <ItemGroup>
     <Compile Include="Abstracts\IFormattedValidationException.cs" />
     <Compile Include="Abstracts\IGenericRepository.cs" />
-    <Compile Include="Abstracts\IPersonaRepository.cs" />
-    <Compile Include="Abstracts\IEmpleadoRepository.cs" />
-    <Compile Include="Abstracts\IPrimaRepository.cs" />
+    <Compile Include="Abstracts\IRepository.cs" />
     <Compile Include="Abstracts\IUnitOfWork.cs" />
     <Compile Include="Base\BaseEntity.cs" />
     <Compile Include="Base\IEntity.cs" />
-    <Compile Include="Entities\Empleado.cs" />
-    <Compile Include="Entities\Exception.cs" />
-    <Compile Include="Entities\IServicioFinanciero.cs" />
-    <Compile Include="Entities\Persona.cs" />
-    <Compile Include="Entities\Prima.cs" />
+    <Compile Include="Entities\Cliente\Cliente.cs" />
+    <Compile Include="Entities\Cliente\ClienteDireccíon.cs" />
+    <Compile Include="Entities\Factura\Compra.cs" />
+    <Compile Include="Entities\Factura\CompraEnvio.cs" />
+    <Compile Include="Entities\Factura\ProductoCliente.cs" />
+    <Compile Include="Enum\EstadoDeEnvio.cs" />
+    <Compile Include="ValueObjects\CarritoDeCompra.cs" />
+    <Compile Include="ValueObjects\Cotización.cs" />
+    <Compile Include="ValueObjects\Email.cs" />
+    <Compile Include="ValueObjects\TotalDescuentoAplicados.cs" />
+    <Compile Include="Entities\Producto\Descuento.cs" />
+    <Compile Include="Entities\Producto\Producto.cs" />
+    <Compile Include="Entities\Producto\ProductoDescuento.cs" />
+    <Compile Include="Enum\Continente.cs" />
+    <Compile Include="Entities\Localización\Departamento.cs" />
+    <Compile Include="Entities\Localización\Dirección.cs" />
+    <Compile Include="Entities\Localización\Municipio.cs" />
+    <Compile Include="Entities\Localización\País.cs" />
+    <Compile Include="Entities\Cliente\Telefóno.cs" />
+    <Compile Include="Entities\Cliente\TelefónoCliente.cs" />
+    <Compile Include="Entities\Cliente\Usuario.cs" />
+    <Compile Include="Enum\EstadoDePago.cs" />
+    <Compile Include="Enum\EstadoDescuento.cs" />
+    <Compile Include="Enum\MedioPago.cs" />
+    <Compile Include="Enum\TipoDescuento.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Entities\Factura\ComprobanteDePago.cs" />
+    <Compile Include="ValueObjects\Documento.cs" />
+    <Compile Include="ValueObjects\Imagen.cs" />
+    <Compile Include="ValueObjects\Nombre.cs" />
+    <Compile Include="ValueObjects\Pago.cs" />
+    <Compile Include="ValueObjects\Telefono.cs" />
+    <Compile Include="Enum\TipoTelefono.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

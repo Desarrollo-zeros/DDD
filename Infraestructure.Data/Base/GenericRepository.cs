@@ -104,8 +104,5 @@ namespace Infraestructure.Data.Base
         {
             return _dbset.AddRange(entities);
         }
-
-
-
     }
 }

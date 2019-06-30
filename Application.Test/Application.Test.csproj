@@ -68,7 +68,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PersonaServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +82,10 @@
     <ProjectReference Include="..\Infraestructure.Data\Infraestructure.Data.csproj">
       <Project>{e80fa5e9-f77a-4072-98e6-b0efa31f9a5e}</Project>
       <Name>Infraestructure.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infraestructure.Test\Infraestructure.Test.csproj">
+      <Project>{7d685bf2-41dd-45b1-8827-84d4ac8449b9}</Project>
+      <Name>Infraestructure.Test</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

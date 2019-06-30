@@ -95,11 +95,9 @@
   <ItemGroup>
     <Compile Include="Base\DbContextBase.cs" />
     <Compile Include="Base\UnitOfWork.cs" />
-    <Compile Include="PrimaContext.cs" />
+    <Compile Include="DBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\PersonaRepository.cs" />
-    <Compile Include="Repositories\EmpleadoRepository.cs" />
-    <Compile Include="Repositories\PrimaRepository.cs" />
+    <Compile Include="Repositories\Repositorys.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj">
