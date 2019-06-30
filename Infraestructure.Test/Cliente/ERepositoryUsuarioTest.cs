@@ -23,7 +23,7 @@ namespace Infraestructure.Test
         {
             connection = new DBContextTest();
             repository = new Repository<Usuario>(connection);
-            usuario = new Usuario("zeros", "toor", true);
+            usuario = new Usuario("zeros", new Usuario().EncryptPassword("toor"), true);
         }
 
         /*save Usuario*/

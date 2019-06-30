@@ -24,7 +24,7 @@ namespace Infraestructure.Test
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             // Suppress code first model migration check          
-            Database.SetInitializer<DBContextTest>(new AlwaysCreateInitializer());
+            Database.SetInitializer<DBContextTest>(new DropCreateIfChangeInitializer());
 
 
             base.OnModelCreating(modelBuilder);

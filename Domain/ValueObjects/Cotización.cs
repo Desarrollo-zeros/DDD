@@ -39,7 +39,7 @@ namespace Domain.ValueObjects
         {
             foreach (var producto in Productos)
             {
-                this.Total += producto.precioCompra;
+                this.Total += producto.PrecioCompra;
             }
         } 
 

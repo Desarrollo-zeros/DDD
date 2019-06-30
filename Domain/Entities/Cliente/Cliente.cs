@@ -18,6 +18,7 @@ namespace Domain.Entities.Cliente
             this.Email = Email;
             this.Usuario_Id = Usuario_Id;
         }
+        public Cliente() { }
 
         public Documento Documento { set; get; }
         public Nombre Nombre { set; get; }
@@ -30,6 +31,9 @@ namespace Domain.Entities.Cliente
 
         public virtual IEnumerable<ClienteDireccíon> ClienteDireccíones { set; get; }
 
-        public IEnumerable<ProductoCliente> productos { set; get; }
+        public virtual IEnumerable<ProductoCliente> Productos { set; get; }
+
+        public virtual IEnumerable<ClienteMetodoDePago> ClienteMetodoDePagos { set; get; }
+
     }
 }

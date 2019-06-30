@@ -42,10 +42,7 @@ namespace Infraestructure.Data.Repositories
             return t;
         }
 
-        public static implicit operator Repository<T>(Repository<País> v)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
 

@@ -30,8 +30,6 @@ namespace Domain.Entities.Factura
          
         public Pago Pago { set; get; }
 
-
-
         public DateTime FechaDePago { set; get; }
 
         public TotalDescuentoAplicados TotalDescuentoAplicados { set; get; }

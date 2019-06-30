@@ -16,18 +16,39 @@ namespace Domain.Entities.Producto
             Nombre = nombre;
             Descripción = descripción;
             Imagen = imagen;
-            this.precioCompra = precioCompra;
-            this.precioVenta = precioVenta;
+            if (!this.ComprobarPrecioCompra(precioCompra, precioVenta))
+            {
+                throw new Exception("El precio de compra no puede ser menor al precio de venta, debe ser mayor a 0");
+            }
+            if(!this.ComprobarPrecioVenta(precioCompra, precioVenta))
+            {
+                throw new Exception("El precio de Venta no puede ser menor al precio de Compra, debe ser mayor a 0");
+            }
+            this.PrecioCompra = precioCompra;
+            this.PrecioVenta = precioVenta;
         }
 
         public string Nombre { set; get; }
         public string Descripción { set; get; }
         public  Imagen Imagen { set; get; }
-        public double precioCompra { set; get; }
-        public double precioVenta { set; get; }
+        public double PrecioCompra { set; get; }
+        public double PrecioVenta { set; get; }
 
         public virtual IEnumerable<ProductoDescuento> ProductoDescuentos { set; get; }
 
-        public IEnumerable<ProductoCliente> productos { set; get; }
+        public virtual IEnumerable<ProductoCliente> productos { set; get; }
+
+
+        public bool ComprobarPrecioCompra(double precioCompra,double precioVenta)
+        {
+            return (precioCompra > 0 && precioCompra < precioVenta);
+        }
+
+        public bool ComprobarPrecioVenta(double precioCompra, double precioVenta)
+        {
+            return (precioVenta > 0 && precioVenta > precioCompra);
+        }
+
+      
     }
 }

@@ -21,14 +21,16 @@ namespace Domain.Entities.Producto
         {
             Producto_Id = producto_Id;
             Descuento_Id = descuento_Id;
-            this.estadoDescuento = estadoDescuento;
+            this.EstadoDescuento = estadoDescuento;
         }
 
         public int Producto_Id { set; get; }
         [ForeignKey("Producto_Id")] public Producto Producto { set; get; }
         public int Descuento_Id { set; get; }
         [ForeignKey("Descuento_Id")] public Descuento Descuento { set; get; }
-        public EstadoDescuento estadoDescuento { set; get; }
+        public EstadoDescuento EstadoDescuento { set; get; }
+
+      
      
     }
 }

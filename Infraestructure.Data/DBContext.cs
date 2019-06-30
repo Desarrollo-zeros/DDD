@@ -47,5 +47,9 @@ namespace Infraestructure.Data
         public DbSet<Descuento> Descuentos { get; set; }
         public DbSet<Producto> Productos { get; set; }
         public DbSet<ProductoDescuento> ProductoDescuentos { get; set; }
+
+        public DbSet<ClienteMetodoDePago> ClienteMetodoDePagos { get; set; }
+
+        public DbSet<ClienteMetodoHistoriaDePago> ClienteMetodoHistoriaDePagos { set; get; }
     }
 }
