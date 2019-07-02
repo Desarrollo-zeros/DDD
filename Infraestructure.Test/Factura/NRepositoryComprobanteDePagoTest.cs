@@ -12,7 +12,7 @@ using Domain.Entities.Factura;
 namespace Infraestructure.Test
 {
     [TestFixture]
-    class MRepositoryComprobanteDePagoTest
+    class NRepositoryComprobanteDePagoTest
     {
         DBContextTest connection;
         Repository<ComprobanteDePago> repository;
@@ -27,10 +27,10 @@ namespace Infraestructure.Test
         [Test]
         public void ComprobanteDePagoAddTest()
         {
-            var pago = new Domain.ValueObjects.Pago(0,12000);
+        
             double[] items2 = { 1000, 200, 200 };
-            var totalDescuentoAplicados = new Domain.ValueObjects.TotalDescuentoAplicados(items2);
-            Assert.NotNull(repository.Add(new ComprobanteDePago(0,12000,12000, pago,DateTime.Now, totalDescuentoAplicados), true));
+     
+            Assert.NotNull(repository.Add(new ComprobanteDePago(0,12000,12000, 0, 12000, DateTime.Now, items2.Sum(), 1), true));
         }
     }
 }

@@ -90,6 +90,9 @@
     <Compile Include="Implements\Cliente\ServicioCliente\CrearServicio.cs" />
     <Compile Include="Implements\Cliente\ServicioCliente\EliminarServicio.cs" />
     <Compile Include="Implements\Cliente\ServicioCliente\ModificarServicio.cs" />
+    <Compile Include="Implements\Factura\CompraServicio\ProductoClienteServicio.cs" />
+    <Compile Include="Implements\Factura\CompraServicio\CrearServicio.cs" />
+    <Compile Include="Implements\Producto\ProductoServicio\ProductoServicio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

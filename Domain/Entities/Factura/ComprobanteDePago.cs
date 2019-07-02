@@ -12,27 +12,39 @@ namespace Domain.Entities.Factura
     [Table("Comprobante_De_Pago")]
     public class ComprobanteDePago : Entity<int>
     {
-        public ComprobanteDePago(EstadoDePago estadoDePago, double total, double subTotal, Pago pago, DateTime fechaDePago, TotalDescuentoAplicados totalDescuentoAplicados)
+        public ComprobanteDePago(EstadoDePago estadoDePago, double total, double subTotal, MedioPago medioPago, double monto, DateTime fechaDePago, double totalDescuentoAplicados, int compra_id)
         {
             EstadoDePago = estadoDePago;
             Total = total;
             SubTotal = subTotal;
-            Pago = pago;
+            MedioPago = medioPago;
             FechaDePago = fechaDePago;
+            Monto = monto;
             TotalDescuentoAplicados = totalDescuentoAplicados;
+            Compra_Id = compra_id;
         }
 
         public ComprobanteDePago() { }
 
+
+        public int Compra_Id { set; get; }
+
+        [ForeignKey("Compra_Id")]
+        public Compra Compra { set; get; }
+
         public EstadoDePago EstadoDePago { set; get; }
         public double Total { set; get; }
         public double SubTotal { set; get; }
-         
-        public Pago Pago { set; get; }
+
+        [Column("Estado_De_Pago")]
+        public MedioPago MedioPago { set; get; }
+        [Column("Monto_Pagado")]
+        public double Monto { get; set; }
 
         public DateTime FechaDePago { set; get; }
 
-        public TotalDescuentoAplicados TotalDescuentoAplicados { set; get; }
+        [Column("Total_Descuento_Aplicado")]
+        public double TotalDescuentoAplicados { set; get; }
 
     }
 }

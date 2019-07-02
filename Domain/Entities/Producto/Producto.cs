@@ -11,7 +11,7 @@ namespace Domain.Entities.Producto
     public class Producto : Entity<int>
     {
         public Producto() { }
-        public Producto(string nombre, string descripción, Imagen imagen, double precioCompra, double precioVenta, int cantidadProducto)
+        public Producto(string nombre, string descripción, string imagen, double precioCompra, double precioVenta, int cantidadProducto)
         {
             Nombre = nombre;
             Descripción = descripción;
@@ -31,7 +31,7 @@ namespace Domain.Entities.Producto
 
         public string Nombre { set; get; }
         public string Descripción { set; get; }
-        public  Imagen Imagen { set; get; }
+        public  string Imagen { set; get; }
         public double PrecioCompra { set; get; }
         public double PrecioVenta { set; get; }
         public int CantidadProducto { set; get; }

@@ -94,8 +94,6 @@
     <Compile Include="ValueObjects\CarritoDeCompra.cs" />
     <Compile Include="ValueObjects\Cotización.cs" />
     <Compile Include="ValueObjects\CreditCard.cs" />
-    <Compile Include="ValueObjects\Email.cs" />
-    <Compile Include="ValueObjects\TotalDescuentoAplicados.cs" />
     <Compile Include="Entities\Producto\Descuento.cs" />
     <Compile Include="Entities\Producto\Producto.cs" />
     <Compile Include="Entities\Producto\ProductoDescuento.cs" />

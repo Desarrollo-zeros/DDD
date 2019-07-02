@@ -12,27 +12,30 @@ using Application.Base;
 
 namespace Application.Implements.Cliente.ServicioCliente
 {
-    public class CrearServicio : EntityService<Domain.Entities.Cliente.Cliente>
+    public class CrearServicio
     {
         readonly IUnitOfWork _unitOfWork;
-        Repository<Domain.Entities.Cliente.Cliente> _repository;
+        Repository<Domain.Entities.Cliente.Cliente> _repositoryCliente;
+        
 
-       public CrearServicio(IUnitOfWork unitOfWork, Repository<Domain.Entities.Cliente.Cliente> repository): base(unitOfWork, repository) {
+        public CrearServicio(IUnitOfWork unitOfWork, Repository<Domain.Entities.Cliente.Cliente> repository) {
             _unitOfWork = unitOfWork;
-            _repository = repository;
+            _repositoryCliente = repository;
        }
+
        
+
 
         public ServiceResponse Ejecutar(ServicesRequest request)
         {
            
-            if (_repository.FindBy(x => x.Usuario_Id == request.Usuario_Id).FirstOrDefault() == null)
+            if (_repositoryCliente.FindBy(x => x.Usuario_Id == request.Usuario_Id).FirstOrDefault() == null)
             {
                 var buildCliente = BuilderFactories.Cliente(request.Documento,request.Nombre,request.Email,request.Usuario_Id);
-                _repository.Add(buildCliente);
+                _repositoryCliente.Add(buildCliente);
                 _unitOfWork.Commit();
 
-                if (_repository.FindBy(x => x.Documento.Numero == buildCliente.Documento.Numero).FirstOrDefault() != null)
+                if (_repositoryCliente.FindBy(x => x.Documento.Numero == buildCliente.Documento.Numero).FirstOrDefault() != null)
                 {
                     return new ServiceResponse() { Mensaje = "Cliente Creado Con exito" };
                 }
@@ -47,6 +50,17 @@ namespace Application.Implements.Cliente.ServicioCliente
             }
             
         }
+
+        public Domain.Entities.Cliente.Cliente BuscarCliente(int cliente_id)
+        {
+            return _repositoryCliente.FindBy(x => x.Id == cliente_id).FirstOrDefault();
+        }
+
+        public List<Domain.Entities.Cliente.ClienteMetodoDePago> BuscarMetodoDePago(int cliente_id, Repository<Domain.Entities.Cliente.ClienteMetodoDePago> repositoryMetodoPago)
+        {
+            return repositoryMetodoPago.FindBy(x => x.Cliente_Id == cliente_id && x.Activo == true).ToList();
+        }
+
     }
 
     public class ServicesRequest

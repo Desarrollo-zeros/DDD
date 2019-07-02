@@ -28,7 +28,7 @@ namespace Application.Implements.Cliente.ServicioUsuario
             if (_repository.FindBy(x => x.Username == request.Username).FirstOrDefault() == null)
             {
                 var buildUser = BuilderFactories.Usuario(request.Username,request.Password,request.Activo);
-                _repository.Add(buildUser,true);
+                _repository.Add(buildUser);
                 _unitOfWork.Commit();
 
                 if (_repository.FindBy(x => x.Username == buildUser.Username).FirstOrDefault() != null)

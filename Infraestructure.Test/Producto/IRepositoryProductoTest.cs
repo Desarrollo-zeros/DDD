@@ -29,8 +29,8 @@ namespace Infraestructure.Test
         [Test]
         public void ProductoAddTest()
         {
-            var imagen = new Domain.ValueObjects.Imagen("");
-            Assert.NotNull(repository.Add(new Domain.Entities.Producto.Producto("ejemplo","ejemplo", imagen,10000,12000,100), true));
+            
+            Assert.NotNull(repository.Add(new Domain.Entities.Producto.Producto("ejemplo","ejemplo", "",1000,1200,100), true));
         }
     }
 }

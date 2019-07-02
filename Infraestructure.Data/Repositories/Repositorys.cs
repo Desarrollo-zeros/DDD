@@ -14,8 +14,6 @@ using Infraestructure.Data.Base;
 
 namespace Infraestructure.Data.Repositories
 {
-   
-
     public class Repository<T> : GenericRepository<T>  where T : BaseEntity
     {
         private readonly IDbContext Context;
@@ -40,9 +38,7 @@ namespace Infraestructure.Data.Repositories
             Delete(t);
             if (saveChange) { Context.SaveChanges(); }
             return t;
-        }
-
-        
+        }       
     }
 }
 

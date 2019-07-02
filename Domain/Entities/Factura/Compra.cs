@@ -10,11 +10,11 @@ namespace Domain.Entities.Factura
 {
     public class Compra : Entity<int>
     {
-        public Compra(int cliente_Id, DateTime fechaCompra, int comprobante_De_Pago_Id)
+        public Compra(int cliente_Id, DateTime fechaCompra)
         {
             Cliente_Id = cliente_Id;
             FechaCompra = fechaCompra;
-            Comprobante_De_Pago_Id = comprobante_De_Pago_Id;
+
             CantidadProductoNoExistentes = 0;
         }
 
@@ -26,51 +26,42 @@ namespace Domain.Entities.Factura
         public virtual IEnumerable<ProductoCliente> ProductoCliente { set; get; }
 
         public virtual IEnumerable<CompraEnvio> CompraEnvios { set; get; }
-
-        public int Comprobante_De_Pago_Id { set; get; }
-        [ForeignKey("Comprobante_De_Pago_Id")]  public ComprobanteDePago ComprobanteDePago { set; get; }
-
+      
+         public virtual IEnumerable<ComprobanteDePago>  ComprobanteDePagos { set; get; }
 
 
         [NotMapped]
         public int CantidadProductoNoExistentes { private set; get; }
 
-        public bool ComprarArticulos(List<ProductoCliente> productos, int cantidad)
+
+        public bool ComprarArticulos()
         {
             double descuentoTotal = 0;
             double precioVenta = 0;
 
-            
+            int compra_id = 0;
 
-            if(productos.Count() == 0)
+            if (ProductoCliente.Count() == 0)
             {
                 throw new Exception("No hay productos para realizar la compra");
             }
-            foreach (var p in productos)
+            foreach (var p in ProductoCliente)
             {
-                if(!SePuedeComprarProducto(p.Producto.CantidadProducto,cantidad))
-                {
-                    this.CantidadProductoNoExistentes = cantidad-p.Producto.CantidadProducto;
-                    
-                }
-                else
-                {
-                    descuentoTotal += ObtenerDescuentoPorProductoCompra(p.Cliente_Id, p.Producto_Id, cantidad);
-                    precioVenta += p.Producto.PrecioVenta;
-                    p.EstadoProductoCliente = Enum.EstadoClienteArticulo.PAGADO;
-                }
+                descuentoTotal += ObtenerDescuentoPorProductoCompra(p.Cliente_Id, p.Producto_Id, p.Cantidad);
+                precioVenta += p.Producto.PrecioVenta*p.Cantidad;
+                p.EstadoProductoCliente = Enum.EstadoClienteArticulo.PAGADO;
+                compra_id = p.Compra_Id;
             }
 
-            if (!this.DescontarTotalProductoEnSaldo(precioVenta - descuentoTotal) && this.CantidadProductoNoExistentes == 0)
+            if (!this.DescontarTotalProductoEnSaldo((precioVenta - descuentoTotal), compra_id))
             {
-                throw new Exception("No se puede completar la compra, no tiene sufienciente saldo");
+                throw new Exception("No tien saldo suficiente para realizar la compra");
             }
 
-           
             return true;
         }
 
-        public bool DescontarTotalProductoEnSaldo(double saldo)
+        public bool DescontarTotalProductoEnSaldo(double saldo, int compra_id)
         {
             foreach(Cliente.ClienteMetodoDePago pagos in Cliente.ClienteMetodoDePagos.ToList())
             {
@@ -78,7 +69,7 @@ namespace Domain.Entities.Factura
                 {
                     if (pagos.DescontarSaldo(saldo))
                     {
-                        ComprobanteDePago.EstadoDePago = Enum.EstadoDePago.PAGADO;
+                        ComprobanteDePagos.ToList().Find(x=>x.Compra_Id == compra_id).EstadoDePago = Enum.EstadoDePago.PAGADO;
                         return true;
                     }
                 }
@@ -121,7 +112,7 @@ namespace Domain.Entities.Factura
        
         public bool EnviarCompra(int compra_id, int producto_id)
         {
-            if(ComprobanteDePago.EstadoDePago == Enum.EstadoDePago.PAGADO)
+            if(ComprobanteDePagos.ToList().Find(x => x.Compra_Id == compra_id).EstadoDePago == Enum.EstadoDePago.PAGADO)
             {
                 CompraEnvio compraEnvio = CompraEnvios.ToList().Find(x => x.Compra_Id == compra_id);
                 if(compraEnvio == null)
@@ -136,7 +127,13 @@ namespace Domain.Entities.Factura
 
         public bool EnviarCompra(int compra_id)
         {
-            if (ComprobanteDePago.EstadoDePago == Enum.EstadoDePago.PAGADO)
+            var ComprobanteDePagosL = ComprobanteDePagos.ToList().Find(x => x.Compra_Id == compra_id);
+            if(ComprobanteDePagosL == null)
+            {
+                throw new Exception("No existe Un Estado De pago");
+            }
+
+            if (ComprobanteDePagos.ToList().Find(x => x.Compra_Id == compra_id).EstadoDePago == Enum.EstadoDePago.PAGADO)
             {
                 CompraEnvio compraEnvio = CompraEnvios.ToList().Find(x => x.Compra_Id == compra_id);
                 if (compraEnvio == null)

@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.ValueObjects
 {
-    public class Pago
+    /*public class Pago
     {
        
         public Pago(MedioPago estadoDePago, double monto)
@@ -22,5 +22,5 @@ namespace Domain.ValueObjects
         public MedioPago EstadoDePago { set; get; }
         [Column("Monto_Pagado")]
         public double Monto { get; set; }
-    }
+    }*/
 }

@@ -192,9 +192,9 @@
     <Compile Include="Cliente\GRepositoryTelefonoTest.cs" />
     <Compile Include="Cliente\HRepositoryTelefónoClienteTest.cs" />
     <Compile Include="Cliente\JRepositoryClienteDirección.cs" />
-    <Compile Include="Factura\NRepositoryCompraTest.cs" />
+    <Compile Include="Factura\MRepositoryCompraTest.cs" />
     <Compile Include="Factura\ORepositoryCompraEnvioTest.cs" />
-    <Compile Include="Factura\MRepositoryComprobanteDePagoTest.cs" />
+    <Compile Include="Factura\NRepositoryComprobanteDePagoTest.cs" />
     <Compile Include="Factura\PRepositoryProductoClienteTest.cs" />
     <Compile Include="DBContextTest.cs" />
     <Compile Include="Localizacion\BRepositoryDepartamentoTest.cs" />

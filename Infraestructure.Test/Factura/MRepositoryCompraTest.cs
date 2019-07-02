@@ -12,7 +12,7 @@ using Domain.Entities.Factura;
 namespace Infraestructure.Test
 {
     [TestFixture]
-    class NRepositoryCompraTest
+    class MRepositoryCompraTest
     {
         DBContextTest connection;
         Repository<Compra> repository;
@@ -27,7 +27,7 @@ namespace Infraestructure.Test
         [Test]
         public void CompraAddTest()
         {
-            Assert.NotNull(repository.Add(new Compra(1, DateTime.Now, 1), true));
+            Assert.NotNull(repository.Add(new Compra(1, DateTime.Now), true));
         }
     }
 }
