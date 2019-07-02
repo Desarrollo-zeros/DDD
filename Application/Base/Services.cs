@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Enum
+namespace Application.Base
 {
-    public enum EstadoClienteArticulo
+    public class ServiceResponse
     {
-        NO_PAGADO,
-        CANCELADO,
-        PAGADO
+        public string Mensaje { get; set; }
     }
+
 }

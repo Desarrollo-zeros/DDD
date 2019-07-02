@@ -29,7 +29,7 @@ namespace Infraestructure.Test
         public void TelefonoAddTest()
         {
             var telefono = new Domain.ValueObjects.Teléfono("3043541475");
-            repository.Add(new Telefóno(telefono,0), true);
+            Assert.NotNull(repository.Add(new Telefóno(telefono,0), true));
         }
     }
 }

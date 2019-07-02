@@ -9,11 +9,6 @@ namespace Domain.ValueObjects
 {
     public class EmailValueObject
     {
-        public EmailValueObject(string email)
-        {
-            this.Email = email;
-        }
-
-       [Column("Email")] public string Email { set; get; }
+       [Column("Email")] public static string Email { set; get; }
     }
 }

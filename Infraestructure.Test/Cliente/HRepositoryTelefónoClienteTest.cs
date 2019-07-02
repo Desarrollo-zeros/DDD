@@ -29,7 +29,7 @@ namespace Infraestructure.Test
         [Test]
         public void TelefonosAddTest()
         {
-            repository.Add(new TelefónoCliente(1, 1), true);
+            Assert.NotNull(repository.Add(new TelefónoCliente(1, 1), true));
         }
 
     }

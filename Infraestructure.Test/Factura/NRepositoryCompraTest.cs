@@ -27,7 +27,7 @@ namespace Infraestructure.Test
         [Test]
         public void CompraAddTest()
         {
-            repository.Add(new Compra(1, DateTime.Now, 1), true);
+            Assert.NotNull(repository.Add(new Compra(1, DateTime.Now, 1), true));
         }
     }
 }

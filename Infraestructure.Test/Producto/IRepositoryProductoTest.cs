@@ -30,7 +30,7 @@ namespace Infraestructure.Test
         public void ProductoAddTest()
         {
             var imagen = new Domain.ValueObjects.Imagen("");
-            repository.Add(new Domain.Entities.Producto.Producto("ejemplo","ejemplo", imagen,10000,12000), true);
+            Assert.NotNull(repository.Add(new Domain.Entities.Producto.Producto("ejemplo","ejemplo", imagen,10000,12000,100), true));
         }
     }
 }

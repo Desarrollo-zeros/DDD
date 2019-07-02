@@ -25,7 +25,7 @@ namespace Infraestructure.Test
         [Test]
         public void DepartamentoAddTest()
         {
-            repository.Add(new Departamento("Cesar",1), true);
+            Assert.NotNull(repository.Add(new Departamento("Cesar",1), true));
         }
     }
 }

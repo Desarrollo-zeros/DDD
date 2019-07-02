@@ -68,6 +68,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cliente\BServicioCliente\BClienteServicioTest.cs" />
+    <Compile Include="Cliente\AServicioUsuario\AUsuarioServicioTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

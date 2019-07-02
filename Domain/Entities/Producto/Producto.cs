@@ -38,7 +38,10 @@ namespace Domain.Entities.Producto
 
         public virtual IEnumerable<ProductoDescuento> ProductoDescuentos { set; get; }
 
-        public virtual IEnumerable<ProductoCliente> productos { set; get; }
+        public virtual IEnumerable<ProductoCliente> ProductoClientes { set; get; }
+
+        public virtual IEnumerable<CompraEnvioProducto> CompraEnvioProductos { set; get; }
+
 
 
         public bool ComprobarPrecioCompra(double precioCompra,double precioVenta)

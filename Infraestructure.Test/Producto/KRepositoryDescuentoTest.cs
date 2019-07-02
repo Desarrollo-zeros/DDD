@@ -25,7 +25,7 @@ namespace Infraestructure.Test
         [Test]
         public void DescuentoAddTest()
         {
-            repository.Add(new Descuento(0,true,DateTime.Now,new DateTime(2019,06,30)), true);
+            Assert.NotNull(repository.Add(new Descuento(0, true, new DateTime(2019, 06, 29, 1, 0, 0), new DateTime(2019, 06, 30, 23, 0, 0), 0.05), true));
         }
 
     }

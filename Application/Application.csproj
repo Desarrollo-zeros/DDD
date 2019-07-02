@@ -83,11 +83,16 @@
     <Compile Include="Base\EntityService.cs" />
     <Compile Include="Base\IEntityService.cs" />
     <Compile Include="Base\IService.cs" />
+    <Compile Include="Base\Services.cs" />
+    <Compile Include="Implements\Cliente\ServicioUsuario\CrearServicio.cs" />
+    <Compile Include="Implements\Cliente\ServicioUsuario\EliminarServicio.cs" />
+    <Compile Include="Implements\Cliente\ServicioUsuario\ModificarServicio.cs" />
+    <Compile Include="Implements\Cliente\ServicioCliente\CrearServicio.cs" />
+    <Compile Include="Implements\Cliente\ServicioCliente\EliminarServicio.cs" />
+    <Compile Include="Implements\Cliente\ServicioCliente\ModificarServicio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Implements\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj">
       <Project>{d34872dc-ec38-429b-b6a6-24bc568c1256}</Project>

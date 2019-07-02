@@ -26,7 +26,7 @@ namespace Infraestructure.Test
         [Test]
         public void DirecciónAddTest()
         {
-            repository.Add(new Dirección("San jorge","calle 21A N° 5b-61","ABC123",1), true);
+            Assert.NotNull(repository.Add(new Dirección("San jorge","calle 21A N° 5b-61","ABC123",1), true));
         }
     }
 }

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Enum
 {
-    public enum EstadoClienteArticulo
+    public enum EstadoDeEnvioProducto
     {
-        NO_PAGADO,
-        CANCELADO,
-        PAGADO
+        NO_ENVIADO,
+        ENVIADO,
+        ERROR
     }
 }

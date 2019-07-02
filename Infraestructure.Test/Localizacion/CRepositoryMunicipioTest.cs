@@ -26,7 +26,7 @@ namespace Infraestructure.Test
         [Test]
         public void MunicipioAddTest()
         {
-            repository.Add(new Municipio("Valledupar",1), true);
+            Assert.NotNull(repository.Add(new Municipio("Valledupar",1), true));
         }
     }
 }

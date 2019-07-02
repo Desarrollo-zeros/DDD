@@ -11,18 +11,20 @@ namespace Domain.Entities.Cliente
 {
     public class Cliente : Entity<int>
     {
-        public Cliente(Documento Documento, Nombre Nombre, EmailValueObject Email, int Usuario_Id)
+        public Cliente(Documento Documento, Nombre Nombre, string Email, int Usuario_Id)
         {
             this.Documento = Documento;
             this.Nombre = Nombre;
             this.Email = Email;
             this.Usuario_Id = Usuario_Id;
         }
-        public Cliente() { }
+        public Cliente() {
+          
+        }
 
         public Documento Documento { set; get; }
         public Nombre Nombre { set; get; }
-        public EmailValueObject Email { set; get; }
+        public string Email { set; get; }
         public virtual IEnumerable<TelefónoCliente> Telefónos { set; get; }
 
         public int Usuario_Id { set; get; }

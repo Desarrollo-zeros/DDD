@@ -51,5 +51,7 @@ namespace Infraestructure.Data
         public DbSet<ClienteMetodoDePago> ClienteMetodoDePagos { get; set; }
 
         public DbSet<ClienteMetodoHistoriaDePago> ClienteMetodoHistoriaDePagos { set; get; }
+
+        public DbSet<CompraEnvioProducto> CompraEnvioProductos { set; get; }
     }
 }

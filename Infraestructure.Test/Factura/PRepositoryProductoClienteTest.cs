@@ -12,22 +12,22 @@ using Domain.Entities.Factura;
 namespace Infraestructure.Test
 {
     [TestFixture]
-    class ORepositoryCompraEnvioTest
+    class PRepositoryProductoClienteTest
     {
         DBContextTest connection;
-        Repository<CompraEnvio> repository;
+        Repository<ProductoCliente> repository;
 
         [SetUp]
         public void Initialize()
         {
             connection = new DBContextTest();
-            repository = new Repository<CompraEnvio>(connection);
+            repository = new Repository<ProductoCliente>(connection);
         }
 
         [Test]
         public void CompraEnvioAddTest()
         {
-           repository.Add(new CompraEnvio(1,1,DateTime.Now,DateTime.Now,0), true);
+            Assert.NotNull(repository.Add(new ProductoCliente(1,1,1,10,Domain.Enum.EstadoClienteArticulo.NO_PAGADO), true));
         }
     }
 }

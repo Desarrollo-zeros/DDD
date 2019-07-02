@@ -26,7 +26,7 @@ namespace Infraestructure.Test
         [Test]
         public void PaísAddTest()
         {
-            repository.Add(new País("Colombia", 0),true);
+            Assert.NotNull(repository.Add(new País("Colombia", 0),true));
         }
     }
 }

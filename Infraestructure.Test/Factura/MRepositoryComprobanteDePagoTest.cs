@@ -30,7 +30,7 @@ namespace Infraestructure.Test
             var pago = new Domain.ValueObjects.Pago(0,12000);
             double[] items2 = { 1000, 200, 200 };
             var totalDescuentoAplicados = new Domain.ValueObjects.TotalDescuentoAplicados(items2);
-            repository.Add(new ComprobanteDePago(0,12000,12000, pago,DateTime.Now, totalDescuentoAplicados), true);
+            Assert.NotNull(repository.Add(new ComprobanteDePago(0,12000,12000, pago,DateTime.Now, totalDescuentoAplicados), true));
         }
     }
 }

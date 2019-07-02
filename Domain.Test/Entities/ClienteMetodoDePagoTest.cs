@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Cliente;
-using Domain.Factories;
 using Domain.Enum;
 using Domain.ValueObjects;
 
@@ -75,5 +74,7 @@ namespace Domain.Test.Entities
             Assert.AreEqual(ClienteMetodoDePago.Saldo, 19000);
 
         }
+
+
     }
 }

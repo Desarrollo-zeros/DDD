@@ -15,6 +15,7 @@ namespace Domain.Entities.Factura
             Cliente_Id = cliente_Id;
             FechaCompra = fechaCompra;
             Comprobante_De_Pago_Id = comprobante_De_Pago_Id;
+            CantidadProductoNoExistentes = 0;
         }
 
         public Compra() { }
@@ -24,15 +25,22 @@ namespace Domain.Entities.Factura
         public DateTime FechaCompra { set; get; }
         public virtual IEnumerable<ProductoCliente> ProductoCliente { set; get; }
 
+        public virtual IEnumerable<CompraEnvio> CompraEnvios { set; get; }
+
         public int Comprobante_De_Pago_Id { set; get; }
         [ForeignKey("Comprobante_De_Pago_Id")]  public ComprobanteDePago ComprobanteDePago { set; get; }
+
+
+
+        [NotMapped]
+        public int CantidadProductoNoExistentes { private set; get; }
 
         public bool ComprarArticulos(List<ProductoCliente> productos, int cantidad)
         {
             double descuentoTotal = 0;
             double precioVenta = 0;
 
-            int cantidadProductoNoExistentes = 0;
+            
 
             if(productos.Count() == 0)
             {
@@ -42,26 +50,23 @@ namespace Domain.Entities.Factura
             {
                 if(!SePuedeComprarProducto(p.Producto.CantidadProducto,cantidad))
                 {
-                    cantidadProductoNoExistentes += 1;
+                    this.CantidadProductoNoExistentes = cantidad-p.Producto.CantidadProducto;
                     
                 }
                 else
                 {
                     descuentoTotal += ObtenerDescuentoPorProductoCompra(p.Cliente_Id, p.Producto_Id, cantidad);
                     precioVenta += p.Producto.PrecioVenta;
-                    p.EstadoProductoCliente = true;
+                    p.EstadoProductoCliente = Enum.EstadoClienteArticulo.PAGADO;
                 }
             }
 
-            if (!this.DescontarTotalProductoEnSaldo(precioVenta - descuentoTotal))
+            if (!this.DescontarTotalProductoEnSaldo(precioVenta - descuentoTotal) && this.CantidadProductoNoExistentes == 0)
             {
                 throw new Exception("No se puede completar la compra, no tiene sufienciente saldo");
             }
 
-            if(cantidadProductoNoExistentes > 0)
-            {
-                throw new Exception("Algunos articulos no puedieron ser comprados");
-            }
+           
             return true;
         }
 
@@ -111,9 +116,37 @@ namespace Domain.Entities.Factura
 
         public bool SePuedeComprarProducto(int CantidadProducto, int cantidad)
         {
-            return CantidadProducto > cantidad && CantidadProducto > 0 ;
+            return CantidadProducto > cantidad;
         }
-        
+       
+        public bool EnviarCompra(int compra_id, int producto_id)
+        {
+            if(ComprobanteDePago.EstadoDePago == Enum.EstadoDePago.PAGADO)
+            {
+                CompraEnvio compraEnvio = CompraEnvios.ToList().Find(x => x.Compra_Id == compra_id);
+                if(compraEnvio == null)
+                {
+                    throw new Exception("No existe Envios para esta compra");
+                }
+                
+                return compraEnvio.EnviarProducto(producto_id);
+            }
+            return false;
+        }
+
+        public bool EnviarCompra(int compra_id)
+        {
+            if (ComprobanteDePago.EstadoDePago == Enum.EstadoDePago.PAGADO)
+            {
+                CompraEnvio compraEnvio = CompraEnvios.ToList().Find(x => x.Compra_Id == compra_id);
+                if (compraEnvio == null)
+                {
+                    throw new Exception("No existe Envios para esta compra");
+                }
+                return compraEnvio.EnviarProducto();
+            }
+            return false;
+        }
 
     }
 }

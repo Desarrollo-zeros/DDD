@@ -30,7 +30,7 @@ namespace Infraestructure.Test
         [Test]
         public void UsuarioAddTest()
         {
-            repository.Add(usuario,true);
+            Assert.NotNull(repository.Add(usuario, true));
         }
 
     }

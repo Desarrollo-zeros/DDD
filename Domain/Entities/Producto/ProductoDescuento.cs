@@ -21,7 +21,7 @@ namespace Domain.Entities.Producto
         {
             Producto_Id = producto_Id;
             Descuento_Id = descuento_Id;
-            this.EstadoDescuento = estadoDescuento;
+            EstadoDescuento = estadoDescuento;
         }
 
         public int Producto_Id { set; get; }

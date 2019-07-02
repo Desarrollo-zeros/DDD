@@ -8,6 +8,7 @@ using Infraestructure.Data;
 using Infraestructure.Data.Base;
 using Infraestructure.Data.Repositories;
 using Domain.Entities.Cliente;
+using Domain.Factories;
 
 namespace Infraestructure.Test
 {
@@ -28,10 +29,12 @@ namespace Infraestructure.Test
         [Test]
         public void ClienteAddTest()
         {
-            var documento = new Domain.ValueObjects.Documento("1063969856");
+            /*var documento = new Domain.ValueObjects.Documento("1063969856");
             var nombre = new Domain.ValueObjects.Nombre("Carlos","Andres","Castilla","Garcia");
             var email = new Domain.ValueObjects.EmailValueObject("carloscastilla31@gmail.com");
-            repository.Add(new Domain.Entities.Cliente.Cliente(documento, nombre, email,1), true);
+            Assert.NotNull(repository.Add(new Domain.Entities.Cliente.Cliente(documento, nombre, email,1), true));]*/
+            repository.Add(BuilderFactories.Cliente("1063969856", "carlos castilla garcia", "carloscastilla31@gmail.com", 1),true);
+
         }
     }
 }

@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Enum
+namespace Domain.Base
 {
-    public enum EstadoClienteArticulo
+    public interface IBaseFactory
     {
-        NO_PAGADO,
-        CANCELADO,
-        PAGADO
     }
 }

@@ -4,30 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Domain.Factories;
 using Domain.Entities.Cliente;
+using Domain.Factories;
+using Domain.Base;
 
 namespace Domain.Test.Entities
 {
     [TestFixture]
     class UsuarioTest
     {
-        private Usuario usuario = FactoryPattern<Usuario>.CreateInstance();
+        private Usuario usuario;
 
         [SetUp]
         public void Initialize()
         {
-            usuario.Username = "zeros";
-            usuario.Password = usuario.EncryptPassword("toor");
-            usuario.Active = true;
+            usuario = Factories.BuilderFactories.Usuario("zeros","toor",true);
         }
 
         //usuario y contraseña validos
         [Test]
         public void AutentificateTestSuccess()
         {
-            var auth = usuario.Authenticate("zeros", "toor");
+            var auth = usuario.Authenticate("zeros", usuario.EncryptPassword("toor"));
             Assert.AreEqual(auth, true);
+
         }
 
         //usuarios y contraseña invalidos

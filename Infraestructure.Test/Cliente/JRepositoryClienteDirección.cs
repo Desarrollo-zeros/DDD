@@ -26,7 +26,7 @@ namespace Infraestructure.Test
         [Test]
         public void ClienteDirecciónAddTest()
         {
-            repository.Add(new ClienteDireccíon(1,1), true);
+            Assert.NotNull(repository.Add(new ClienteDireccíon(1,1), true));
         }
     }
 }

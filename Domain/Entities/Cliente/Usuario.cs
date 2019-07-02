@@ -1,4 +1,6 @@
-﻿using Domain.Factories;
+﻿
+
+using Domain.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,23 +19,25 @@ namespace Domain.Entities.Cliente
         public Usuario(string username, string password, bool active)
         {
             Username = username;
-            Password = password;
-            Active = active;
+            Password = password.Length < 10 ? EncryptPassword(password) : password;
+            Activo = active;
         }
+
+    
 
         public string Username { get;  set; }
 
         public string Password { get;  set; }
-        public bool Active { get;  set; }
+        public bool Activo { get;  set; }
 
 
-        public void Activate() => this.Active = true;
+        public void Activate() => this.Activo = true;
 
-        public void DeActivate() => this.Active = false;
+        public void DeActivate() => this.Activo = false;
 
         public bool Authenticate(string username, string password)
         {
-            return (Username == username && Password == EncryptPassword(password));
+            return (Username == username && Password == (password));
         }
 
         public string EncryptPassword(string password)
@@ -50,6 +54,6 @@ namespace Domain.Entities.Cliente
             return sbString.ToString();
         }
 
-       
+        
     }
 }

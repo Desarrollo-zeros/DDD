@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\ClienteMetodoDePagoTest.cs" />
+    <Compile Include="Entities\CompraEnvioTest.cs" />
     <Compile Include="Entities\CompraTest.cs" />
     <Compile Include="Entities\UsuarioTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

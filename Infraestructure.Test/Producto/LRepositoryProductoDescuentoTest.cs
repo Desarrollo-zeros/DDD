@@ -26,7 +26,7 @@ namespace Infraestructure.Test
         [Test]
         public void ProductoDescuentoAddTest()
         {
-            repository.Add(new ProductoDescuento(1,1,0), true);
+            Assert.NotNull(repository.Add(new ProductoDescuento(1,1,Domain.Enum.EstadoDescuento.ACTIVO), true));
         }
     }
 }

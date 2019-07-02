@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Domain.Entities.Factura
     [Table("Producto_Cliente")]
     public class ProductoCliente : Entity<int>
     {
-        public ProductoCliente(int cliente_Id, int producto_Id, int compra_Id, int cantidad, bool estadoProductoCliente)
+        public ProductoCliente(int cliente_Id, int producto_Id, int compra_Id, int cantidad, Enum.EstadoClienteArticulo estadoProductoCliente)
         {
             Cliente_Id = cliente_Id;
             Producto_Id = producto_Id;
@@ -31,10 +32,7 @@ namespace Domain.Entities.Factura
         [ForeignKey("Producto_Id")] public Producto.Producto Producto { set; get; }
         public int Cantidad { set; get; }
 
-        public bool EstadoProductoCliente { set; get; }
+        public EstadoClienteArticulo EstadoProductoCliente { set; get; }
 
-
-
-       
     }
 }

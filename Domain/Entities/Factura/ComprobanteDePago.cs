@@ -34,6 +34,5 @@ namespace Domain.Entities.Factura
 
         public TotalDescuentoAplicados TotalDescuentoAplicados { set; get; }
 
-        
     }
 }

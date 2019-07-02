@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Enum
 {
-    public enum EstadoClienteArticulo
+    public enum Factories
     {
-        NO_PAGADO,
-        CANCELADO,
-        PAGADO
+        USUARIO
     }
 }
