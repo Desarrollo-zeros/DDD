@@ -1,6 +1,7 @@
 ﻿
-
 using Domain.Base;
+using Domain.Enum;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,20 +17,20 @@ namespace Domain.Entities.Cliente
         {
         }
 
-        public Usuario(string username, string password, bool active)
+        public Usuario(string username, string password, bool active, Rol rol)
         {
             Username = username;
             Password = password.Length < 10 ? EncryptPassword(password) : password;
             Activo = active;
+            Rol = rol;
         }
-
-    
 
         public string Username { get;  set; }
 
         public string Password { get;  set; }
         public bool Activo { get;  set; }
 
+        public Rol Rol { set; get; }
 
         public void Activate() => this.Activo = true;
 

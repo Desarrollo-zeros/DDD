@@ -31,7 +31,7 @@ namespace Application.Implements.Producto.ProductoServicio
 
         public ServiceResponse Crear(ProductoRequest request)
         {
-            var producto = new Domain.Entities.Producto.Producto(request.Nombre,request.Descripción,request.Imagen,request.PrecioCompra,request.PrecioVenta,request.CantidadProducto);
+            var producto = new Domain.Entities.Producto.Producto(request.Nombre,request.Descripción,request.Imagen,request.PrecioCompra,request.PrecioVenta,request.CantidadProducto,1);
             _repository.Add(producto);
             if (_unitOfWork.Commit() == 1)
             {

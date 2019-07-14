@@ -15,10 +15,10 @@ namespace Domain.ValueObjects
 
         public Nombre(string primerNombre, string segundoNombre, string primerApellido, string segundoApellido)
         {
-            PrimerNombre = primerNombre;
-            SegundoNombre = segundoNombre;
-            PrimerApellido = primerApellido;
-            SegundoApellido = segundoApellido;
+            PrimerNombre = primerNombre.ToLower();
+            SegundoNombre = segundoNombre.ToLower();
+            PrimerApellido = primerApellido.ToLower();
+            SegundoApellido = segundoApellido.ToLower();
         }
 
 

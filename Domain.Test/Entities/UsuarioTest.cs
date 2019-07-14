@@ -18,7 +18,7 @@ namespace Domain.Test.Entities
         [SetUp]
         public void Initialize()
         {
-            usuario = Factories.BuilderFactories.Usuario("zeros","toor",true);
+            usuario = Factories.BuilderFactories.Usuario("zeros","toor",true, Enum.Rol.INVITADO);
         }
 
         //usuario y contraseña validos

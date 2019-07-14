@@ -29,6 +29,8 @@ namespace Application.Base
             return _repository.Find(id);
         }
 
+        
+
         public virtual void Create(T entity)
         {
             if (entity == null)

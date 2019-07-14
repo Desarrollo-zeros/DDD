@@ -188,22 +188,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cliente\FRepositoryClienteTest.cs" />
-    <Compile Include="Cliente\GRepositoryTelefonoTest.cs" />
-    <Compile Include="Cliente\HRepositoryTelefónoClienteTest.cs" />
-    <Compile Include="Cliente\JRepositoryClienteDirección.cs" />
-    <Compile Include="Factura\MRepositoryCompraTest.cs" />
-    <Compile Include="Factura\ORepositoryCompraEnvioTest.cs" />
-    <Compile Include="Factura\NRepositoryComprobanteDePagoTest.cs" />
-    <Compile Include="Factura\PRepositoryProductoClienteTest.cs" />
     <Compile Include="DBContextTest.cs" />
-    <Compile Include="Localizacion\BRepositoryDepartamentoTest.cs" />
-    <Compile Include="Localizacion\DRepositoryDirecciónTest.cs" />
-    <Compile Include="Localizacion\CRepositoryMunicipioTest.cs" />
-    <Compile Include="Localizacion\ARepositoryPaísTest.cs" />
-    <Compile Include="Producto\IRepositoryProductoTest.cs" />
-    <Compile Include="Producto\KRepositoryDescuentoTest.cs" />
-    <Compile Include="Producto\LRepositoryProductoDescuentoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Cliente\ERepositoryUsuarioTest.cs" />
   </ItemGroup>

@@ -29,7 +29,6 @@ namespace Domain.Entities.Cliente
         public int Cliente_Id { set; get; }
         [ForeignKey("Cliente_Id")] public Cliente Cliente { set; get; }
         public CreditCard CreditCard { set; get; }
-
         public double Saldo { set; get; }
         public bool Activo { set; get; }
 
@@ -46,6 +45,12 @@ namespace Domain.Entities.Cliente
 
         public bool DescontarSaldo(double saldo)
         {
+
+            if (Cliente.Usuario.Rol != Enum.Rol.DEV || Cliente.Usuario.Rol != Enum.Rol.ADMINISTRADOR)
+            {
+                return false;
+            }
+
             if (TieneSaldo(saldo) && SePuedeDescontar(saldo) && this.Activo && saldo > 0)
             {
                 this.Saldo -= saldo;
@@ -58,6 +63,11 @@ namespace Domain.Entities.Cliente
 
         public bool AumentarSaldo(double saldo)
         {
+            if(Cliente.Usuario.Rol != Enum.Rol.DEV || Cliente.Usuario.Rol != Enum.Rol.ADMINISTRADOR)
+            {
+                return false;
+            }
+
             if(saldo > 0 && this.Activo)
             {
                 this.Saldo += saldo;
@@ -68,7 +78,5 @@ namespace Domain.Entities.Cliente
                 return false;
             }
         }
-
-        
     }
 }

@@ -26,7 +26,7 @@ namespace Domain.ValueObjects
 
         public CreditCard(CreditCardType cardType, string cardNumber, string securityNumber, string ownerName, DateTime expiration)
         {
-            string val = this.validateTarjeta(cardType, cardNumber);
+            string val = this.ValidateTarjeta(cardType, cardNumber);
             if(val != "")
             {
                 throw new Exception(val);
@@ -46,7 +46,7 @@ namespace Domain.ValueObjects
         }
 
 
-        private string validateTarjeta(CreditCardType cardType, string cardNumber)
+        private string ValidateTarjeta(CreditCardType cardType, string cardNumber)
         {
             if (cardType == CreditCardType.Visa || cardType == CreditCardType.Mastercard)
             {

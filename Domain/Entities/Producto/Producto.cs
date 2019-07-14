@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.Producto
 {
     public class Producto : Entity<int>
     {
         public Producto() { }
-        public Producto(string nombre, string descripción, string imagen, double precioCompra, double precioVenta, int cantidadProducto)
+        public Producto(string nombre, string descripción, string imagen, double precioCompra, double precioVenta, int cantidadProducto, int categoria_Id)
         {
             Nombre = nombre;
             Descripción = descripción;
@@ -27,6 +28,7 @@ namespace Domain.Entities.Producto
             this.PrecioCompra = precioCompra;
             this.PrecioVenta = precioVenta;
             CantidadProducto = cantidadProducto;
+            Categoria_Id = categoria_Id;
         }
 
         public string Nombre { set; get; }
@@ -36,11 +38,17 @@ namespace Domain.Entities.Producto
         public double PrecioVenta { set; get; }
         public int CantidadProducto { set; get; }
 
+        public int Categoria_Id { set; get; }
+
+        [ForeignKey("Categoria_Id")] public Categoria Categoria { set; get; }
+
         public virtual IEnumerable<ProductoDescuento> ProductoDescuentos { set; get; }
 
-        public virtual IEnumerable<ProductoCliente> ProductoClientes { set; get; }
+        public virtual IEnumerable<CompraCliente> ProductoClientes { set; get; }
 
         public virtual IEnumerable<CompraEnvioProducto> CompraEnvioProductos { set; get; }
+
+        
 
 
 

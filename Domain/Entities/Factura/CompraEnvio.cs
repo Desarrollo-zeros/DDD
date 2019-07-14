@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Enum;
+using Domain.Entities.Cliente;
 
 namespace Domain.Entities.Factura
 {

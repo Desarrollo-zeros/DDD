@@ -84,12 +84,10 @@
     <Compile Include="Base\IEntityService.cs" />
     <Compile Include="Base\IService.cs" />
     <Compile Include="Base\Services.cs" />
-    <Compile Include="Implements\Cliente\ServicioUsuario\CrearServicio.cs" />
-    <Compile Include="Implements\Cliente\ServicioUsuario\EliminarServicio.cs" />
-    <Compile Include="Implements\Cliente\ServicioUsuario\ModificarServicio.cs" />
-    <Compile Include="Implements\Cliente\ServicioCliente\CrearServicio.cs" />
-    <Compile Include="Implements\Cliente\ServicioCliente\EliminarServicio.cs" />
-    <Compile Include="Implements\Cliente\ServicioCliente\ModificarServicio.cs" />
+    <Compile Include="Implements\Cliente\ServicioCliente\ServicioCliente.cs" />
+    <Compile Include="Implements\Cliente\ServicioCliente\ServicioDirección.cs" />
+    <Compile Include="Implements\Cliente\ServicioCliente\ServicioTelefóno.cs" />
+    <Compile Include="Implements\Cliente\ServicioUsuario\ServicioUsuario.cs" />
     <Compile Include="Implements\Factura\CompraServicio\ProductoClienteServicio.cs" />
     <Compile Include="Implements\Factura\CompraServicio\CrearServicio.cs" />
     <Compile Include="Implements\Producto\ProductoServicio\ProductoServicio.cs" />

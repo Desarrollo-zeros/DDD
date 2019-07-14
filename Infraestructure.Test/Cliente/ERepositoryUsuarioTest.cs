@@ -8,6 +8,7 @@ using Infraestructure.Data;
 using Infraestructure.Data.Base;
 using Infraestructure.Data.Repositories;
 using Domain.Entities.Cliente;
+using Domain.Enum;
 
 namespace Infraestructure.Test
 {
@@ -23,7 +24,7 @@ namespace Infraestructure.Test
         {
             connection = new DBContextTest();
             repository = new Repository<Usuario>(connection);
-            usuario = new Usuario("zeros", new Usuario().EncryptPassword("toor"), true);
+            usuario = new Usuario("zeros", new Usuario().EncryptPassword("toor"), true, Rol.INVITADO);
         }
 
         /*save Usuario*/

@@ -17,8 +17,6 @@ namespace Infraestructure.Data
 {
     public class DBContext : DbContextBase
     {
-
-        
         public DBContext() : base("name=DBContext") {}
        
         protected DBContext(DbConnection connection) : base(connection) { }
@@ -36,13 +34,11 @@ namespace Infraestructure.Data
         public DbSet<Dirección> Direccións { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Telefóno> Telefónos { get; set; }
-        public DbSet<TelefónoCliente> telefónoCLientes { get; set; }
-        public DbSet<ClienteDireccíon> ClienteDireccíons { get; set; }
-
+      
         public DbSet<Compra> Compras { get; set; }
         public DbSet<CompraEnvio> CompraEnvios { get; set; }
-        public DbSet<ComprobanteDePago> comprobanteDePagos { get; set; }
-        public DbSet<ProductoCliente> ProductoClientes { get; set; }
+        public DbSet<ComprobanteDePago> ComprobanteDePagos { get; set; }
+        public DbSet<CompraCliente> ProductoClientes { get; set; }
 
         public DbSet<Descuento> Descuentos { get; set; }
         public DbSet<Producto> Productos { get; set; }
@@ -53,5 +49,7 @@ namespace Infraestructure.Data
         public DbSet<ClienteMetodoHistoriaDePago> ClienteMetodoHistoriaDePagos { set; get; }
 
         public DbSet<CompraEnvioProducto> CompraEnvioProductos { set; get; }
+
+        public DbSet<Categoria> Categorias { set; get; }
     }
 }

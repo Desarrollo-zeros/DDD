@@ -23,7 +23,7 @@ namespace Domain.Entities.Factura
         public int Cliente_Id { set; get; }
         [ForeignKey("Cliente_Id")]  public Cliente.Cliente Cliente { set; get; }
         public DateTime FechaCompra { set; get; }
-        public virtual IEnumerable<ProductoCliente> ProductoCliente { set; get; }
+        public virtual IEnumerable<CompraCliente> ProductoCliente { set; get; }
 
         public virtual IEnumerable<CompraEnvio> CompraEnvios { set; get; }
       
@@ -84,7 +84,7 @@ namespace Domain.Entities.Factura
             var valorProducto = 0.0;
             bool r = false;
 
-            foreach(ProductoCliente productoCliente in ProductoCliente)
+            foreach(CompraCliente productoCliente in ProductoCliente)
             {
                 if(productoCliente.Producto_Id == producto_Id && productoCliente.Cliente_Id == Cliente_Id)
                 {

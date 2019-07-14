@@ -23,7 +23,7 @@ namespace Application.Test.Cliente.CCompraServicio
     {
         IUnitOfWork _unitOfWork;
         IDbContext _db;
-        Repository<ProductoCliente> repositoryProductoCliente;
+        Repository<CompraCliente> repositoryProductoCliente;
         Repository<Domain.Entities.Producto.Producto> repositoryProducto;
         Repository<Domain.Entities.Cliente.Cliente> repositoryCliente;
         Repository<Domain.Entities.Factura.Compra> repositoryCompra;
@@ -50,7 +50,7 @@ namespace Application.Test.Cliente.CCompraServicio
         {
             _db = new DBContext();
             _unitOfWork = new UnitOfWork(_db);
-            repositoryProductoCliente = new Repository<ProductoCliente>(_db);
+            repositoryProductoCliente = new Repository<CompraCliente>(_db);
             repositoryProducto = new Repository<Domain.Entities.Producto.Producto>(_db);
             repositoryCliente = new Repository<Domain.Entities.Cliente.Cliente>(_db);
             repositoryCompra = new Repository<Compra>(_db);

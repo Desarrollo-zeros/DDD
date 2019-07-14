@@ -10,7 +10,7 @@ using Domain.Abstracts;
 using Infraestructure.Data.Repositories;
 using Application.Base;
 using Application.Implements.Producto.ProductoServicio;
-using Application.Implements.Cliente.ServicioCliente;
+using Application.Implements.Cliente;
 using Domain.Enum;
 
 namespace Application.Implements.Factura.CompraServicio
@@ -45,7 +45,7 @@ namespace Application.Implements.Factura.CompraServicio
             }
         }
 
-        public ServiceResponse CompletarCompra(ServicesRequest request, Repository<ProductoCliente> productoClientes, Repository<Domain.Entities.Producto.Producto> productos, Repository<Domain.Entities.Producto.ProductoDescuento> productoDescuentos, Repository<Domain.Entities.Producto.Descuento> descuentos, Repository< Domain.Entities.Cliente.Cliente> clientes, Repository<Domain.Entities.Cliente.ClienteMetodoDePago> clienteMetodoDePagos, Repository<Domain.Entities.Factura.ComprobanteDePago> comprobanteDePagos)
+        public ServiceResponse CompletarCompra(ServicesRequest request, Repository<CompraCliente> productoClientes, Repository<Domain.Entities.Producto.Producto> productos, Repository<Domain.Entities.Producto.ProductoDescuento> productoDescuentos, Repository<Domain.Entities.Producto.Descuento> descuentos, Repository< Domain.Entities.Cliente.Cliente> clientes, Repository<Domain.Entities.Cliente.ClienteMetodoDePago> clienteMetodoDePagos, Repository<Domain.Entities.Factura.ComprobanteDePago> comprobanteDePagos)
         {
            
             var compra = _repositoryCompra.FindBy(z => z.Id == request.Compra_Id).FirstOrDefault();
@@ -84,11 +84,11 @@ namespace Application.Implements.Factura.CompraServicio
             }
         }
 
-        public Compra BuscarCompraPorProducto(ServicesRequest request, int producto_id, Repository<ProductoCliente> repositoryProductoCliente, Repository<Domain.Entities.Producto.Producto> repositoryProducto, Repository<Domain.Entities.Cliente.Cliente> repositoryCliente, Repository<ComprobanteDePago> repositoryComprobanteDePago, Repository<Domain.Entities.Producto.ProductoDescuento> repositoryProductoDescuento, Repository<Domain.Entities.Producto.Descuento> repositoryDescuento, Repository<Domain.Entities.Cliente.ClienteMetodoDePago> repositoryMetodoPago)
+        public Compra BuscarCompraPorProducto(ServicesRequest request, int producto_id, Repository<CompraCliente> repositoryProductoCliente, Repository<Domain.Entities.Producto.Producto> repositoryProducto, Repository<Domain.Entities.Cliente.Cliente> repositoryCliente, Repository<ComprobanteDePago> repositoryComprobanteDePago, Repository<Domain.Entities.Producto.ProductoDescuento> repositoryProductoDescuento, Repository<Domain.Entities.Producto.Descuento> repositoryDescuento, Repository<Domain.Entities.Cliente.ClienteMetodoDePago> repositoryMetodoPago)
         {
-            ProductoClienteServicio productoClienteServicio = new ProductoClienteServicio(_unitOfWork, repositoryProductoCliente);
+            /*ProductoClienteServicio productoClienteServicio = new ProductoClienteServicio(_unitOfWork, repositoryProductoCliente);
             ProductoServicio producto = new ProductoServicio(_unitOfWork, repositoryProducto);
-            var cliente = new Cliente.ServicioCliente.CrearServicio(_unitOfWork, repositoryCliente);
+            var cliente = new Cliente.ServicioCliente(_unitOfWork, repositoryCliente);
 
             var compra = _repositoryCompra.FindBy(z => z.Id == request.Compra_Id).FirstOrDefault();
             compra.ComprobanteDePagos = repositoryComprobanteDePago.FindBy(v => v.Compra_Id == compra.Id).ToList();
@@ -103,8 +103,8 @@ namespace Application.Implements.Factura.CompraServicio
                     y.Descuento = producto.BuscarDescuento(y.Descuento_Id, repositoryDescuento);
                 });
 
-            });
-            return compra;
+            });*/
+            return null;
         }
 
     }

@@ -21,20 +21,20 @@ namespace Domain.Test.Entities
         public void Initialize()
         {
             compra = new Compra();
-           /* var documento = new Domain.ValueObjects.Documento("1063969856");
-            var nombre = new Domain.ValueObjects.Nombre("Carlos", "Andres", "Castilla", "Garcia");
+            //var documento = new Domain.ValueObjects.Documento("1063969856");
+            var nombre = new Domain.ValueObjects.Nombre("Carlos", "Andres", "Castilla", "Garcia");/*
             var email = new Domain.ValueObjects.EmailValueObject("carloscastilla31@gmail.com");*/
-            compra.Cliente = Factories.BuilderFactories.Cliente("1063969856","carlos andres castilla garcia","carloscastilla31@gmail.com",1); ;
+            compra.Cliente = Factories.BuilderFactories.Cliente("1063969856", nombre, "carloscastilla31@gmail.com",1); ;
 
             var x = new List<Domain.Entities.Cliente.ClienteMetodoDePago>();
             x.Add(new Domain.Entities.Cliente.ClienteMetodoDePago(1, 10000,true));
             compra.Cliente.ClienteMetodoDePagos = x;
 
-            var y = new List<ProductoCliente>();
-            y.Add(new ProductoCliente(1, 1, 1, 10, Enum.EstadoClienteArticulo.NO_PAGADO));
+            var y = new List<CompraCliente>();
+            y.Add(new CompraCliente(1, 1, 1, 10, Enum.EstadoClienteArticulo.NO_PAGADO));
             compra.ProductoCliente = y;
 
-            compra.ProductoCliente.ToList().FirstOrDefault().Producto = new Producto("algo","algo algo",null,1000,1200,10);
+            compra.ProductoCliente.ToList().FirstOrDefault().Producto = new Producto("algo","algo algo",null,1000,1200,10,1);
 
             var z = new List<ProductoDescuento>();
             z.Add(new ProductoDescuento(1,1,Enum.EstadoDescuento.ACTIVO));
