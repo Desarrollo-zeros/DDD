@@ -21,25 +21,42 @@ namespace Domain.Test.Entities
         public void Initialize()
         {
             compra = new Compra();
+
+            
+
             //var documento = new Domain.ValueObjects.Documento("1063969856");
             var nombre = new Domain.ValueObjects.Nombre("Carlos", "Andres", "Castilla", "Garcia");/*
             var email = new Domain.ValueObjects.EmailValueObject("carloscastilla31@gmail.com");*/
             compra.Cliente = Factories.BuilderFactories.Cliente("1063969856", nombre, "carloscastilla31@gmail.com",1); ;
 
-            var x = new List<Domain.Entities.Cliente.ClienteMetodoDePago>();
-            x.Add(new Domain.Entities.Cliente.ClienteMetodoDePago(1, 10000,true));
+            compra.Cliente.Usuario = new Usuario("0", "", true, Enum.Rol.ADMINISTRADOR)
+            {
+                Id = 1
+            };
+
+            var x = new List<ClienteMetodoDePago>
+            {
+                new ClienteMetodoDePago(1, 10000, true),
+                new ClienteMetodoDePago(1, 10000, true)
+            };
             compra.Cliente.ClienteMetodoDePagos = x;
 
-            var y = new List<CompraCliente>();
-            y.Add(new CompraCliente(1, 1, 1, 10, Enum.EstadoClienteArticulo.NO_PAGADO));
+            compra.Cliente.ClienteMetodoDePagos.ToList().FirstOrDefault().Cliente = compra.Cliente;
+
+            var y = new List<CompraCliente>
+            {
+                new CompraCliente(1, 1, 1, 10, Enum.EstadoClienteArticulo.NO_PAGADO)
+            };
             compra.ProductoCliente = y;
 
             compra.ProductoCliente.ToList().FirstOrDefault().Producto = new Producto("algo","algo algo",null,1000,1200,10,1);
 
-            var z = new List<ProductoDescuento>();
-            z.Add(new ProductoDescuento(1,1,Enum.EstadoDescuento.ACTIVO));
-            z.Add(new ProductoDescuento(1, 1, Enum.EstadoDescuento.ACTIVO));
-            z.Add(new ProductoDescuento(1, 1, Enum.EstadoDescuento.ACTIVO));
+            var z = new List<ProductoDescuento>
+            {
+                new ProductoDescuento(1, 1, Enum.EstadoDescuento.ACTIVO),
+                new ProductoDescuento(1, 1, Enum.EstadoDescuento.ACTIVO),
+                new ProductoDescuento(1, 1, Enum.EstadoDescuento.ACTIVO)
+            };
 
             compra.ProductoCliente.ToList().FirstOrDefault().Producto.ProductoDescuentos = z;
 
@@ -73,8 +90,9 @@ namespace Domain.Test.Entities
             compra.CompraEnvios.FirstOrDefault().CompraEnvioProductos = compraEnvioProductos;
             compra.CompraEnvios.FirstOrDefault().EstadoDeEnvio = Enum.EstadoDeEnvio.EN_VERIFICACIÓN;
 
+            
 
-           
+
         }
 
 
@@ -166,6 +184,7 @@ namespace Domain.Test.Entities
         [Test]
         public void ComprarArticulosSuccessTest()
         {
+            
             compra.ProductoCliente.FirstOrDefault().Cantidad = 5;
             Assert.AreEqual(compra.ComprarArticulos(),true);
             Assert.AreEqual(compra.ProductoCliente.FirstOrDefault().EstadoProductoCliente, Enum.EstadoClienteArticulo.PAGADO);

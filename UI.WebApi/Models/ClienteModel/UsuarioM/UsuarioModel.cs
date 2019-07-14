@@ -9,6 +9,8 @@ using System.Security.Principal;
 using System.Threading;
 using System.Web.Http;
 using UI.WebApi.Singleton;
+using UI.WebApi.Models.ClienteModel.ClienteM;
+using Application.Implements.Cliente.ServicioCliente;
 
 namespace UI.WebApi.Models.ClienteModel.UsuarioM
 {
@@ -16,9 +18,11 @@ namespace UI.WebApi.Models.ClienteModel.UsuarioM
     {
 
         public Usuario Usuario { set; get; }
+       
 
-        public readonly ServicioUsuario servicioUsuario;
+        [JsonIgnore]
         public readonly IGenericRepository<Usuario> repository;
+        [JsonIgnore]
         public readonly int id = 0;
 
 
@@ -48,11 +52,18 @@ namespace UI.WebApi.Models.ClienteModel.UsuarioM
 
             
         }
-
         public IIdentity Auth()
         {
             return Thread.CurrentPrincipal.Identity;
         }
+
+        public static UsuarioModel Get(int id)
+        {
+            Instance.Usuario = Instance.Get(new ServicioUsuarioRequest { Id = id });
+            Instance.Usuario.Password = "Secret";
+            return Instance;
+        }
+
 
     }
 }

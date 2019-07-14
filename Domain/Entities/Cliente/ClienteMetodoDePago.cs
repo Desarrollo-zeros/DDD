@@ -1,4 +1,5 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Enum;
+using Domain.ValueObjects;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -45,38 +46,37 @@ namespace Domain.Entities.Cliente
 
         public bool DescontarSaldo(double saldo)
         {
-
-            if (Cliente.Usuario.Rol != Enum.Rol.DEV || Cliente.Usuario.Rol != Enum.Rol.ADMINISTRADOR)
+            if (Cliente.Usuario.Rol == Rol.DEV || Cliente.Usuario.Rol == Rol.ADMINISTRADOR)
             {
-                return false;
+                if (TieneSaldo(saldo) && SePuedeDescontar(saldo) && this.Activo && saldo > 0)
+                {
+                    this.Saldo -= saldo;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-
-            if (TieneSaldo(saldo) && SePuedeDescontar(saldo) && this.Activo && saldo > 0)
-            {
-                this.Saldo -= saldo;
-                return true;
-            }
-            else {
-                return false;
-            }
+            return false;
         }
 
         public bool AumentarSaldo(double saldo)
         {
-            if(Cliente.Usuario.Rol != Enum.Rol.DEV || Cliente.Usuario.Rol != Enum.Rol.ADMINISTRADOR)
+            if(Cliente.Usuario.Rol == Rol.DEV || Cliente.Usuario.Rol == Rol.ADMINISTRADOR)
             {
-                return false;
+                if (saldo > 0 && this.Activo == true)
+                {
+                    this.Saldo += saldo;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
 
-            if(saldo > 0 && this.Activo)
-            {
-                this.Saldo += saldo;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 }

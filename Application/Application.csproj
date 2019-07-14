@@ -86,6 +86,7 @@
     <Compile Include="Base\Services.cs" />
     <Compile Include="Implements\Cliente\ServicioCliente\ServicioCliente.cs" />
     <Compile Include="Implements\Cliente\ServicioCliente\ServicioDirección.cs" />
+    <Compile Include="Implements\Cliente\ServicioCliente\ServicioMetodoPago.cs" />
     <Compile Include="Implements\Cliente\ServicioCliente\ServicioTelefóno.cs" />
     <Compile Include="Implements\Cliente\ServicioUsuario\ServicioUsuario.cs" />
     <Compile Include="Implements\Factura\CompraServicio\ProductoClienteServicio.cs" />

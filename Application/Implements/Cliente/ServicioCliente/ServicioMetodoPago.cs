@@ -169,19 +169,8 @@ namespace Application.Implements.Cliente.ServicioCliente
 
         public IEnumerable<ClienteMetodoDePago> GetAll(ServicioMetodoPagoRequest request)
         {
-            if(request.Id != 0 && request.CreditCard.CardNumber != null)
-            {
-                return _repository.FindBy(x => x.Id == request.Id && x.CreditCard.CardNumber == request.CreditCard.CardNumber).ToList();
-            }
-            if(request.Id != 0)
-            {
-                return _repository.FindBy(x => x.Id == request.Id ).ToList();
-            }
-            if(null != request.CreditCard.CardNumber)
-            {
-                return _repository.FindBy(x => x.CreditCard.CardNumber == request.CreditCard.CardNumber).ToList();
-            }
-            return null;
+            var meotodo = _repository.FindBy(x => x.Cliente_Id == request.Cliente_Id);
+            return meotodo;
         }
 
 

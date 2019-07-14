@@ -63,7 +63,13 @@ namespace Domain.Entities.Factura
 
         public bool DescontarTotalProductoEnSaldo(double saldo, int compra_id)
         {
-            foreach(Cliente.ClienteMetodoDePago pagos in Cliente.ClienteMetodoDePagos.ToList())
+
+            if(compra_id == 0 || saldo == 0)
+            {
+                return false;
+            }
+
+            foreach (ClienteMetodoDePago pagos in Cliente.ClienteMetodoDePagos.ToList())
             {
                 if (pagos.Activo && pagos.Saldo > saldo)
                 {
@@ -72,6 +78,7 @@ namespace Domain.Entities.Factura
                         ComprobanteDePagos.ToList().Find(x=>x.Compra_Id == compra_id).EstadoDePago = Enum.EstadoDePago.PAGADO;
                         return true;
                     }
+                   
                 }
             }
             return false;

@@ -29,11 +29,6 @@ namespace Application.Implements.Cliente.ServicioCliente
                 return new ServiceResponse() { Mensaje = "Telefono ya registrado", Status = false };
             }
             
-            if(request.Telefónos != null)
-            {
-                telefóno = _repository.AddRange(request.Telefónos.ToList()).FirstOrDefault();
-            }
-            
             if(request.Número != null)
             {
                 telefóno = _repository.Add(BuilderFactories.Telefóno(request.Número, request.TipoTelefono, request.Cliente_Id));
@@ -67,18 +62,6 @@ namespace Application.Implements.Cliente.ServicioCliente
                 _repository.Edit(telefóno); 
             }
            
-            if (request.Telefónos != null)
-            {
-                
-                request.Telefónos.ToList().ForEach(x =>
-                {
-                    telefóno = _repository.FindBy(y => y.Id == x.Id).FirstOrDefault();
-                    telefóno.Número = x.Número;
-                    telefóno.TipoTelefono = x.TipoTelefono;
-                    _repository.Edit(telefóno);
-                });
-            }
-
             if (telefóno == null)
             {
                 return new ServiceResponse() { Mensaje = "Usuario fue Creado con exito, (Error al Modificar telefono)", Status = false };

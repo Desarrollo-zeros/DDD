@@ -35,6 +35,7 @@ namespace UI.WebApi.Controllers.Cliente.Usuario
         [Route("Autenticate")]
         public IHttpActionResult Autenticar(UsuarioModel usuario)
         {
+          
             if (usuario == null || usuario.Usuario.Username == null || usuario.Usuario.Password == null)
                 return Json(Mensaje.MensajeJson(Constants.IS_ERROR, Constants.USER_INVALID, Constants.USER_FAIL));
 
@@ -52,7 +53,7 @@ namespace UI.WebApi.Controllers.Cliente.Usuario
                 }
 
                 var token = TokenGenerator.GenerateTokenJwt(usuario.Usuario.Username);
-                return Ok(token);
+                return Ok((Mensaje.MensajeJson(Constants.NO_ERROR, "Token => "+token, Constants.USER_SUCCESS)));
             }
             catch (Exception e)
             {
@@ -83,6 +84,19 @@ namespace UI.WebApi.Controllers.Cliente.Usuario
             }
         }
 
+        [HttpGet]
+        [Route("get")]
+        public IHttpActionResult Get()
+        {
+            if (UsuarioModel.Instance.Auth().IsAuthenticated)
+            {
+                return Json(UsuarioModel.Get(UsuarioModel.Instance.id));
+            }
+            else
+            {
+                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, Constants.NO_AUTH, Constants.USER_FAIL));
+            }
+        }
 
     }
 }

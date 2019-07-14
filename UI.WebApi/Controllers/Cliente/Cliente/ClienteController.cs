@@ -25,43 +25,48 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
                 throw new ArgumentException(Constants.NO_AUTH);
             }
         }
-        
+
 
         [HttpPost]
         [Route("create")]
-        public IHttpActionResult Crear(ClienteModel cliente)
+        public IHttpActionResult Create(ClienteModel cliente)
         {
 
-           var FactoryCliente = BuilderFactories.Cliente(cliente.Cliente.Documento, cliente.Cliente.Nombre, cliente.Cliente.Email, usuario.id);
-           var responseCliente = cliente.Create(new ServicioClienteRequest()
+            var FactoryCliente = BuilderFactories.Cliente(cliente.Cliente.Documento, cliente.Cliente.Nombre, cliente.Cliente.Email, usuario.id);
+            var responseCliente = cliente.Create(new ServicioClienteRequest()
             {
                 Documento = FactoryCliente.Documento,
                 Email = FactoryCliente.Email,
                 Nombre = FactoryCliente.Nombre,
                 Usuario_Id = usuario.id
-           });
+            });
 
-           
-           if (!responseCliente.Status)
-           {
+            if (!responseCliente.Status)
+            {
                 return Json(Mensaje.MensajeJson(Constants.IS_ERROR, responseCliente.Mensaje, Constants.CLIENT_FAIL));
-           }
-           var responseTelefóno = cliente.telefónoModel.Create(new ServicioTelefónoRequest() { Cliente_Id = responseCliente.Id, Telefónos = BuilderFactories.Telefónos(cliente.Cliente.Telefónos, responseCliente.Id) });
-           var responseDirecciónes = cliente.direcciónModel.Create(new ServicioDireccíonRequest() { Cliente_Id = responseCliente.Id, Direcciónes = BuilderFactories.Direcciónes(cliente.Cliente.Direcciónes, responseCliente.Id) });
-
-            if (!responseTelefóno.Status && !responseDirecciónes.Status)
-            {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, Constants.CLIENT_DIRECCIÓN_TELEFÓNO_FAIL, Constants.CLIENT_SUCCESS));
             }
 
-            if (!responseTelefóno.Status)
+            cliente.Cliente.Telefónos.ToList().ForEach(x =>
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, responseTelefóno.Mensaje, Constants.CLIENT_SUCCESS));
-            }
-            if (!responseDirecciónes.Status)
+                cliente.telefónoModel.Create(new ServicioTelefónoRequest
+                {
+                    Cliente_Id = responseCliente.Id,
+                    Número = x.Número,
+                    TipoTelefono = x.TipoTelefono
+                });
+            });
+
+            cliente.Cliente.Direcciónes.ToList().ForEach(x =>
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, responseDirecciónes.Mensaje, Constants.CLIENT_SUCCESS));
-            }
+                cliente.direcciónModel.Create(new ServicioDireccíonRequest
+                {
+                    Cliente_Id = responseCliente.Id,
+                    Barrio = x.Barrio,
+                    Direccion = x.Direccion,
+                    Municipio_Id = x.Municipio_Id,
+                    CodigoPostal = x.CodigoPostal
+                });
+            });
 
             return Json(Mensaje.MensajeJson(Constants.NO_ERROR, responseCliente.Mensaje, Constants.CLIENT_SUCCESS));
         }
@@ -69,7 +74,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
 
         [HttpPost]
         [Route("edit")]
-        public IHttpActionResult Modificar(ClienteModel cliente)
+        public IHttpActionResult Edit(ClienteModel cliente)
         {
             var FactoryCliente = BuilderFactories.Cliente(cliente.Cliente.Documento, cliente.Cliente.Nombre, cliente.Cliente.Email, usuario.id);
             var responseCliente = cliente.Edit(new ServicioClienteRequest()
@@ -80,43 +85,46 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
                 Usuario_Id = usuario.id,
             });
 
-            var responseTelefóno = cliente.telefónoModel.Edit(new ServicioTelefónoRequest() {Telefónos = BuilderFactories.Telefónos(cliente.Cliente.Telefónos, responseCliente.Id) });
-            var responseDirecciónes = cliente.direcciónModel.Edit(new ServicioDireccíonRequest() { Direcciónes = BuilderFactories.Direcciónes(cliente.Cliente.Direcciónes, responseCliente.Id) });
 
-            if (!responseTelefóno.Status && !responseDirecciónes.Status)
+            cliente.Cliente.Telefónos.ToList().ForEach(x =>
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, Constants.CLIENT_DIRECCIÓN_TELEFÓNO_FAIL, Constants.CLIENT_SUCCESS));
-            }
+                cliente.telefónoModel.Edit(new ServicioTelefónoRequest
+                {
+                    Cliente_Id = responseCliente.Id,
+                    Número = x.Número,
+                    TipoTelefono = x.TipoTelefono,
+                    Id = x.Id
+                    
+                });
+            });
 
-            if (!responseTelefóno.Status)
+            cliente.Cliente.Direcciónes.ToList().ForEach(x =>
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, responseTelefóno.Mensaje, Constants.CLIENT_SUCCESS));
-            }
-            if (!responseDirecciónes.Status)
-            {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, responseDirecciónes.Mensaje, Constants.CLIENT_SUCCESS));
-            }
+                cliente.direcciónModel.Edit(new ServicioDireccíonRequest
+                {
+                    Cliente_Id = responseCliente.Id,
+                    Barrio = x.Barrio,
+                    Direccion = x.Direccion,
+                    Municipio = x.Municipio,
+                    CodigoPostal = x.CodigoPostal,
+                    Id = x.Id
+                });
+            });
 
-
-            if (!responseCliente.Status)
-            {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, responseCliente.Mensaje, Constants.CLIENT_FAIL));
-
-            }
             return Json(Mensaje.MensajeJson(Constants.NO_ERROR, responseCliente.Mensaje, Constants.CLIENT_SUCCESS));
         }
 
         [HttpGet]
         [Route("get")]
-        public IHttpActionResult Obtener()
+        public IHttpActionResult Get()
         {
-            return Json(ClienteModel.Instance.repository.FindBy(x=>x.Usuario_Id == usuario.id).ToList());
+            return Json(ClienteModel.Instance.Get(new ServicioClienteRequest { Usuario_Id = usuario.id}));
         }
 
         [HttpGet]
       
         [Route("get_all")]
-        public IHttpActionResult ObtenerTodo()
+        public IHttpActionResult GetAll()
         {
             return Json(ClienteModel.GetAll(usuario.id));
         }

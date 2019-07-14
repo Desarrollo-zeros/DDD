@@ -43,17 +43,7 @@ namespace Domain.Factories
             return new Telefóno(número, tipoTelefono, cliente_id);
         }
 
-        public static IEnumerable<Telefóno> Telefónos(IEnumerable<Telefóno> telefónos, int cliente_id)
-        {
-            telefónos.ToList().ForEach(x=> {
-                if(x.Número == null || x.TipoTelefono == TipoTelefono.DESCONOCIDO)
-                {
-                    telefónos.ToList().Remove(x);
-                }
-                x.Cliente_Id = cliente_id;
-            });
-            return telefónos;
-        }
+       
 
         public static Dirección Dirección(string barrio, string direccion, string codigoPostal, int municipio_Id, int cliente_Id)
         {
@@ -65,17 +55,7 @@ namespace Domain.Factories
         }
 
 
-        public static IEnumerable<Dirección> Direcciónes(IEnumerable<Dirección> direcciónes, int cliente_id)
-        {
-            direcciónes.ToList().ForEach(x => {
-                if (x.Barrio == null || x.Direccion == null || x.CodigoPostal == null || x.Municipio_Id == 0)
-                {
-                    direcciónes.ToList().Remove(x);
-                }
-                x.Cliente_Id = cliente_id;
-            });
-            return direcciónes;
-        }
+
 
         public static ClienteMetodoDePago ClienteMetodoDePago(int cliente_Id, double saldo, CreditCardType cardType, string cardNumber, string securityNumber, string ownerName, DateTime expiration)
         {

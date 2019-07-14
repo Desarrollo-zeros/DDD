@@ -21,7 +21,6 @@ namespace Domain.Entities.Cliente
         public Cliente() {
 
         }
-
         public string Documento { set; get; }
         public Nombre Nombre { set; get; }
         public string Email { set; get; }

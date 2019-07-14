@@ -26,36 +26,39 @@ namespace Application.Implements.Cliente.ServicioCliente
 
         public ServiceResponse Create(ServicioClienteRequest request)
         {
+            var cliente = Get(request);
 
-            var usuario = Get(request);
-
-            if(usuario != null || usuario.Usuario_Id == request.Usuario_Id)
+            if(cliente == null)
             {
-                return new ServiceResponse() { Mensaje = "Cliente ya existe", Status = false };
-            }
+                if (_repository.FindBy(x=>x.Usuario_Id == request.Usuario_Id).FirstOrDefault() != null)
+                {
+                    return new ServiceResponse() { Mensaje = "Cliente ya existe", Status = false };
+                }
 
-            if (usuario.Documento == request.Documento)
-            {
-                return new ServiceResponse() { Mensaje = "Documento ya existe", Status = false };
-            }
-            if (usuario.Email == request.Email)
-            {
-                return new ServiceResponse() { Mensaje = "Email ya existe", Status = false };
-            }
+                if (_repository.FindBy(x => x.Documento == request.Documento).FirstOrDefault() != null)
+                {
+                    return new ServiceResponse() { Mensaje = "Documento ya existe", Status = false };
+                }
+                if (_repository.FindBy(x => x.Email == request.Email).FirstOrDefault() != null)
+                {
+                    return new ServiceResponse() { Mensaje = "Email ya existe", Status = false };
+                }
 
-            var builderCLient = BuilderFactories.Cliente(request.Documento, request.Nombre, request.Email, request.Usuario_Id);
+                var builderCLient = BuilderFactories.Cliente(request.Documento, request.Nombre, request.Email, request.Usuario_Id);
 
-            var cliente = _repository.Add(builderCLient);
+                cliente = _repository.Add(builderCLient);
 
-            if (_unitOfWork.Commit() == 1)
-            {
+                if (_unitOfWork.Commit() == 1)
+                {
 
-                return new ServiceResponse() { Mensaje = "Cliente creado exito", Status = true, Id = cliente.Id };
+                    return new ServiceResponse() { Mensaje = "Cliente creado exito", Status = true, Id = cliente.Id };
+                }
+                else
+                {
+                    return new ServiceResponse() { Mensaje = "No se pudo crear cliente", Status = false };
+                }
             }
-            else
-            {
-                return new ServiceResponse() { Mensaje = "No se pudo crear cliente", Status = false };
-            }
+            return new ServiceResponse() { Mensaje = "Cliente ya existe", Status = false };
         }
 
 
@@ -68,7 +71,6 @@ namespace Application.Implements.Cliente.ServicioCliente
                         x.Usuario_Id == request.Usuario_Id &&
                         x.Documento == request.Documento &&
                         x.Nombre.PrimerNombre == request.Nombre.PrimerNombre &&
-                        x.Nombre.SegundoNombre == request.Nombre.SegundoNombre &&
                         x.Nombre.PrimerApellido == request.Nombre.PrimerApellido &&
                         x.Nombre.SegundoApellido == request.Nombre.SegundoApellido &&
                         x.Email == request.Email
@@ -96,6 +98,7 @@ namespace Application.Implements.Cliente.ServicioCliente
                     return null;
                 }
             }
+           
         }
 
         public ServiceResponse Edit(ServicioClienteRequest request)

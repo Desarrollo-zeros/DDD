@@ -25,6 +25,7 @@ namespace Domain.Entities.Cliente
             Rol = rol;
         }
 
+       
         public string Username { get;  set; }
 
         public string Password { get;  set; }
