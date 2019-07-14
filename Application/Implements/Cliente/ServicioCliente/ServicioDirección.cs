@@ -67,19 +67,6 @@ namespace Application.Implements.Cliente.ServicioCliente
                 _repository.Edit(dirección);
             }
 
-            if (request.Direcciónes != null)
-            {
-
-                request.Direcciónes.ToList().ForEach(x =>
-                {
-                    dirección = _repository.FindBy(y => y.Id == x.Id).FirstOrDefault();
-                    dirección.Barrio = x.Barrio;
-                    dirección.CodigoPostal = x.CodigoPostal;
-                    dirección.Direccion = x.Direccion;
-                    dirección.Municipio_Id = x.Municipio_Id;
-                    _repository.Edit(dirección);
-                });
-            }
 
             if (dirección == null)
             {
