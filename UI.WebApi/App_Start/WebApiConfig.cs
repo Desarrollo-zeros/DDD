@@ -11,7 +11,7 @@ namespace UI.WebApi
         {
             // Configuración y servicios de API web
 
-            var corsAttr = new EnableCorsAttribute("http://example.com", "*", "*");
+            var corsAttr = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(corsAttr);
 
             // Rutas de API web
