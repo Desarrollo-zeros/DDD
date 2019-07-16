@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace Domain.Entities.Producto
 {
@@ -56,7 +57,9 @@ namespace Domain.Entities.Producto
 
         //public virtual IEnumerable<CompraEnvioProducto> CompraEnvioProductos { set; get; }
 
+        [NotMapped]
         
+        public double Descuento { set; get; }
 
 
 
