@@ -13,7 +13,7 @@ namespace Application.Implements.Cliente.ServicioCliente
     public class ServicioMetodoPago
     {
         readonly IUnitOfWork _unitOfWork;
-        readonly IGenericRepository<ClienteMetodoDePago> _repository;
+        public readonly IGenericRepository<ClienteMetodoDePago> _repository;
 
         public ServicioMetodoPago(IUnitOfWork unitOfWork, IGenericRepository<ClienteMetodoDePago> repository)
         {
@@ -33,7 +33,7 @@ namespace Application.Implements.Cliente.ServicioCliente
                     Status = false
                 };
             }
-            var buildMetodoPago = BuilderFactories.ClienteMetodoDePago(request.Cliente_Id, request.Saldo, request.CreditCard.Type, request.CreditCard.CardNumber, request.CreditCard.SecurityNumber, request.CreditCard.OwnerName, request.CreditCard.ExpirationDate);
+            var buildMetodoPago = BuilderFactories.ClienteMetodoDePago(request.Cliente_Id, request.Activo, request.Saldo, request.CreditCard.Type, request.CreditCard.CardNumber, request.CreditCard.SecurityNumber, request.CreditCard.OwnerName, request.CreditCard.ExpirationDate);
             metodoPago = _repository.Add(buildMetodoPago);
 
             if (_unitOfWork.Commit() == 1)
@@ -58,91 +58,81 @@ namespace Application.Implements.Cliente.ServicioCliente
 
         public ServiceResponse Edit(ServicioMetodoPagoRequest request)
         {
-            try
+            var metodoPago = Get(new ServicioMetodoPagoRequest { Id = request.Id, Cliente_Id = request.Cliente_Id  });
+         
+            metodoPago.Cliente = request.Cliente;
+
+
+            if (metodoPago == null)
             {
-                var metodoPago = Get(new ServicioMetodoPagoRequest { Id = request.Id });
+                return new ServiceResponse
+                {
+                    Mensaje = "Metodo de pago no existe",
+                    Status = false
+                };
+            }
 
-                if (metodoPago == null)
+            if (metodoPago.Cliente == null)
+            {
+                return new ServiceResponse
+                {
+                    Mensaje = "CLiente no existe",
+                    Status = false
+                };
+            }
+
+            if (metodoPago.Saldo > request.Saldo)
+            {
+
+                if (!metodoPago.DescontarSaldo(request.Saldo))
+                {
+                    throw new Exception("No tiene permiso para modificar su saldo, los datos no fueron modificados");
+                }
+            }
+
+            if (metodoPago.Saldo < request.Saldo)
+            {
+                if (!metodoPago.AumentarSaldo(request.Saldo))
+                {
+                    throw new Exception("No tiene permiso para modificar su saldo, los datos no fueron modificados");
+                }
+            }
+
+            metodoPago.Activo = request.Activo;
+
+            if (metodoPago.CreditCard.CardNumber != request.CreditCard.CardNumber)
+            {
+                var m = Get(new ServicioMetodoPagoRequest { CreditCard = request.CreditCard });
+                if (m != null)
                 {
                     return new ServiceResponse
                     {
-                        Mensaje = "Metodo de pago no existe",
-                        Status = false
-                    };
-                }
-
-                metodoPago.Cliente.Usuario = request.Cliente.Usuario;
-
-                if (metodoPago.Saldo > request.Saldo)
-                {
-
-                    if (!metodoPago.DescontarSaldo(request.Saldo))
-                    {
-                        return new ServiceResponse
-                        {
-                            Mensaje = "No tiene permiso para modificar su saldo, los datos no fueron modificados",
-                            Status = false
-                        };
-                    }
-                }
-                if (metodoPago.Saldo < request.Saldo)
-                {
-                    if (!metodoPago.AumentarSaldo(request.Saldo))
-                    {
-                        return new ServiceResponse
-                        {
-                            Mensaje = "No tiene permiso para modificar su saldo, los datos no fueron modificados",
-                            Status = false
-                        };
-                    }
-                }
-
-                metodoPago.Activo = request.Activo;
-                metodoPago.CreditCard.ExpirationDate = request.CreditCard.ExpirationDate;
-                metodoPago.CreditCard.OwnerName = request.CreditCard.OwnerName;
-                metodoPago.CreditCard.SecurityNumber = request.CreditCard.SecurityNumber;
-                metodoPago.CreditCard.Type = request.CreditCard.Type;
-
-                if (metodoPago.CreditCard.CardNumber != request.CreditCard.CardNumber)
-                {
-                    var m = Get(new ServicioMetodoPagoRequest { CreditCard = request.CreditCard });
-                    if (m != null)
-                    {
-                        return new ServiceResponse
-                        {
-                            Mensaje = "Numero de tarjeta ya esta en uso",
-                            Status = false
-                        };
-                    }
-                    else
-                    {
-                        metodoPago.CreditCard.CardNumber = request.CreditCard.CardNumber;
-                    }
-                }
-
-                _repository.Edit(metodoPago);
-                if(_unitOfWork.Commit() == 1)
-                {
-                    return new ServiceResponse
-                    {
-                        Mensaje = "Metodo de pago actualizado",
+                        Mensaje = "Numero de tarjeta ya esta en uso",
                         Status = false
                     };
                 }
                 else
                 {
-                    return new ServiceResponse
-                    {
-                        Mensaje = "No se puedo modificar el metodo de pago",
-                        Status = false
-                    };
+                    metodoPago.CreditCard = request.CreditCard;
                 }
             }
-            catch (Exception e)
+
+            metodoPago.Cliente = null;
+
+            _repository.Edit(metodoPago);
+            if (_unitOfWork.Commit() == 1)
             {
                 return new ServiceResponse
                 {
-                    Mensaje = "Metodo De Pago, "+e.Message,
+                    Mensaje = "Metodo de pago actualizado",
+                    Status = true
+                };
+            }
+            else
+            {
+                return new ServiceResponse
+                {
+                    Mensaje = "No se puedo modificar el metodo de pago",
                     Status = false
                 };
             }
@@ -151,13 +141,13 @@ namespace Application.Implements.Cliente.ServicioCliente
 
         public ClienteMetodoDePago Get(ServicioMetodoPagoRequest request)
         {
-            if (request.Id != 0 && request.CreditCard.CardNumber != null)
-            {
-                return _repository.FindBy(x => x.Id == request.Id && x.CreditCard.CardNumber == request.CreditCard.CardNumber).FirstOrDefault();
-            }
-            if (request.Id != 0)
+            if (request.Id > 0 && request.Cliente_Id == 0)
             {
                 return _repository.FindBy(x => x.Id == request.Id).FirstOrDefault();
+            }
+            if (request.Id > 0 && request.Cliente_Id != 0)
+            {
+                return _repository.FindBy(x => x.Id == request.Id && request.Cliente_Id == x.Cliente_Id).FirstOrDefault();
             }
             if (null != request.CreditCard.CardNumber)
             {
@@ -172,8 +162,6 @@ namespace Application.Implements.Cliente.ServicioCliente
             var meotodo = _repository.FindBy(x => x.Cliente_Id == request.Cliente_Id);
             return meotodo;
         }
-
-
     }
 
     public class ServicioMetodoPagoRequest : ClienteMetodoDePago

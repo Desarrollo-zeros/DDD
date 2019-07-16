@@ -13,9 +13,8 @@ namespace Domain.Entities.Factura
     [Table("Compra_Cliente")]
     public class CompraCliente : Entity<int>
     {
-        public CompraCliente(int cliente_Id, int producto_Id, int compra_Id, int cantidad, Enum.EstadoClienteArticulo estadoProductoCliente)
+        public CompraCliente(int producto_Id, int compra_Id, int cantidad, Enum.EstadoClienteArticulo estadoProductoCliente)
         {
-            Cliente_Id = cliente_Id;
             Producto_Id = producto_Id;
             Compra_Id = compra_Id;
             Cantidad = cantidad;
@@ -26,8 +25,7 @@ namespace Domain.Entities.Factura
 
         public int Compra_Id { set; get; }
         [ForeignKey("Compra_Id")] public Compra Compra { set; get; }
-        public int Cliente_Id { set; get; }
-        [ForeignKey("Cliente_Id")] public Cliente.Cliente Cliente { set; get; }
+      
         public int Producto_Id { set; get; }
         [ForeignKey("Producto_Id")] public Producto.Producto Producto { set; get; }
         public int Cantidad { set; get; }

@@ -11,19 +11,21 @@ using System.Web.Http;
 using UI.WebApi.Singleton;
 using UI.WebApi.Models.ClienteModel.ClienteM;
 using Application.Implements.Cliente.ServicioCliente;
+using Domain.Enum;
+using UI.WebApi.Generico;
 
 namespace UI.WebApi.Models.ClienteModel.UsuarioM
 {
-    public class UsuarioModel : ServicioUsuario
+    public class UsuarioModel : Model<Usuario>
     {
 
         public Usuario Usuario { set; get; }
        
-
-        [JsonIgnore]
-        public readonly IGenericRepository<Usuario> repository;
         [JsonIgnore]
         public readonly int id = 0;
+        public readonly Rol rol;
+
+
 
 
         public static UsuarioModel Instance
@@ -41,13 +43,13 @@ namespace UI.WebApi.Models.ClienteModel.UsuarioM
         [JsonIgnore]
         private static UsuarioModel usuarioModel;
 
-        public UsuarioModel() : base(FactoriesSingleton<Usuario>.UnitOfWork, FactoriesSingleton<Usuario>.GenericRepository)
+        public UsuarioModel()
         {
-            repository = FactoriesSingleton<Usuario>.GenericRepository;
-
             if (Auth().IsAuthenticated)
             {
-                id = GetId(new ServicioUsuarioRequest { Username = Auth().Name });
+                var usuario = ServicioUsuario.Get(new ServicioUsuarioRequest { Username = Auth().Name });
+                id = usuario.Id;
+                rol = usuario.Rol;
             }
 
             
@@ -59,11 +61,9 @@ namespace UI.WebApi.Models.ClienteModel.UsuarioM
 
         public static UsuarioModel Get(int id)
         {
-            Instance.Usuario = Instance.Get(new ServicioUsuarioRequest { Id = id });
+            Instance.Usuario = Instance.ServicioUsuario.Get(new ServicioUsuarioRequest { Id = id });
             Instance.Usuario.Password = "Secret";
             return Instance;
         }
-
-
     }
 }

@@ -10,15 +10,14 @@ using UI.WebApi.Singleton;
 
 namespace UI.WebApi.Models.ClienteModel.ClienteM
 {
-    public class DirecciónModel : ServicioDirección
+    public class DirecciónModel : Model<Dirección>
     {
        
-        public readonly IGenericRepository<Dirección> repository;
         public Dirección Dirección { set; get; }
 
-        public DirecciónModel() : base(FactoriesSingleton<Dirección>.UnitOfWork, FactoriesSingleton<Dirección>.GenericRepository)
+        public DirecciónModel()
         {
-            repository = FactoriesSingleton<Dirección>.GenericRepository;
+           
         }
 
 

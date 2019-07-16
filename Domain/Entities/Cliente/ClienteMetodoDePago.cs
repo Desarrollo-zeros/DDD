@@ -11,11 +11,12 @@ namespace Domain.Entities.Cliente
     [Table("Cliente_Metodo_De_Pago")]
     public class ClienteMetodoDePago : Entity<int>
     {
-        public ClienteMetodoDePago(int cliente_Id, CreditCard creditCard, double saldo)
+        public ClienteMetodoDePago(int cliente_Id, bool activo, CreditCard creditCard, double saldo)
         {
             Cliente_Id = cliente_Id;
             CreditCard = creditCard;
             Saldo = saldo;
+            Activo = activo;
         }
 
         public ClienteMetodoDePago(int cliente_Id, double saldo, bool activo)

@@ -23,7 +23,7 @@ namespace Domain.Entities.Factura
         public int Cliente_Id { set; get; }
         [ForeignKey("Cliente_Id")]  public Cliente.Cliente Cliente { set; get; }
         public DateTime FechaCompra { set; get; }
-        public virtual IEnumerable<CompraCliente> ProductoCliente { set; get; }
+        public virtual IEnumerable<CompraCliente> CompraClientes { set; get; }
 
         public virtual IEnumerable<CompraEnvio> CompraEnvios { set; get; }
       
@@ -41,13 +41,13 @@ namespace Domain.Entities.Factura
 
             int compra_id = 0;
 
-            if (ProductoCliente.Count() == 0)
+            if (CompraClientes.Count() == 0)
             {
                 throw new Exception("No hay productos para realizar la compra");
             }
-            foreach (var p in ProductoCliente)
+            foreach (var p in CompraClientes)
             {
-                descuentoTotal += ObtenerDescuentoPorProductoCompra(p.Cliente_Id, p.Producto_Id, p.Cantidad);
+                descuentoTotal += ObtenerDescuentoPorProductoCompra(Cliente_Id, p.Producto_Id, p.Cantidad);
                 precioVenta += p.Producto.PrecioVenta*p.Cantidad;
                 p.EstadoProductoCliente = Enum.EstadoClienteArticulo.PAGADO;
                 compra_id = p.Compra_Id;
@@ -85,15 +85,15 @@ namespace Domain.Entities.Factura
         }
 
 
-        public double ObtenerDescuentoPorProductoCompra(int Cliente_Id, int producto_Id, int cantidad)
+        public double ObtenerDescuentoPorProductoCompra(int cliente_Id, int producto_Id, int cantidad)
         {
             var sumaDescuento = 0.0;
             var valorProducto = 0.0;
             bool r = false;
 
-            foreach(CompraCliente productoCliente in ProductoCliente)
+            foreach(CompraCliente productoCliente in CompraClientes)
             {
-                if(productoCliente.Producto_Id == producto_Id && productoCliente.Cliente_Id == Cliente_Id)
+                if(productoCliente.Producto_Id == producto_Id && Cliente_Id == cliente_Id)
                 {
                     foreach (Producto.ProductoDescuento productoDescuento in productoCliente.Producto.ProductoDescuentos)
                     {

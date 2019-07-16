@@ -10,17 +10,14 @@ using UI.WebApi.Singleton;
 
 namespace UI.WebApi.Models.ClienteModel.ClienteM
 {
-    public class TelefónoModel : ServicioTelefóno
+    public class TelefónoModel : Model<Telefóno>
     {
-        public readonly ServicioTelefóno servicioTelefóno;
-        public readonly IGenericRepository<Telefóno> repository;
+     
         public Telefóno Telefóno { set; get; }
 
-        public TelefónoModel() : base(FactoriesSingleton<Telefóno>.UnitOfWork, FactoriesSingleton<Telefóno>.GenericRepository)
+        public TelefónoModel()
         {
-            repository = FactoriesSingleton<Telefóno>.GenericRepository;
         }
-
 
         public static TelefónoModel Instance
         {

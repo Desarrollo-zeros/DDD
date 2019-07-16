@@ -14,7 +14,7 @@ namespace Application.Implements.Cliente.ServicioCliente
     public class ServicioTelefóno
     {
         readonly IUnitOfWork _unitOfWork;
-        readonly IGenericRepository<Telefóno> _repository;
+        public readonly IGenericRepository<Telefóno> _repository;
 
         public ServicioTelefóno(IUnitOfWork unitOfWork, IGenericRepository<Telefóno> repository)
         {

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.ValueObjects;
 using Domain.Enum;
+using Domain.Entities.Producto;
 
 namespace Domain.Factories
 {
@@ -54,16 +55,38 @@ namespace Domain.Factories
             return new Dirección(barrio, direccion, codigoPostal, municipio_Id, cliente_Id);
         }
 
-
-
-
-        public static ClienteMetodoDePago ClienteMetodoDePago(int cliente_Id, double saldo, CreditCardType cardType, string cardNumber, string securityNumber, string ownerName, DateTime expiration)
+        public static ClienteMetodoDePago ClienteMetodoDePago(int cliente_Id, bool activo, double saldo, CreditCardType cardType, string cardNumber, string securityNumber, string ownerName, DateTime expiration)
         {
             if (0 == cliente_Id || 0 == saldo || cardType == CreditCardType.Unknown || cardNumber == null || null == securityNumber || ownerName == null || expiration == null)
             {
                 throw new Exception("Factories ClienteMetodoDePago no puede ser creado");
             }
-            return new ClienteMetodoDePago(cliente_Id, new CreditCard(cardType, cardNumber, securityNumber, ownerName, expiration), saldo);
+           
+            if (!CreditCard.VerificarTarjeta(cardNumber))
+            {
+                throw new Exception("Factories ClienteMetodoDePago no puede ser creado, Tarjeta invalidad");
+            }
+
+            if(expiration < DateTime.Now)
+            {
+                throw new Exception("Factories ClienteMetodoDePago no puede ser creado, tarjeta vencida");
+            }
+            return new ClienteMetodoDePago(cliente_Id, activo, new CreditCard(cardType, cardNumber, securityNumber, ownerName, expiration), saldo);
+        }
+
+        public static Categoria Categoria(string nombre, string descripción, DateTime fecha)
+        {
+            if(nombre == "" && descripción == "")
+            {
+                throw new Exception("Factories Categoria no puede ser creado");
+            }
+
+            if(fecha == null)
+            {
+                fecha = new DateTime();
+            }
+
+            return new Categoria(nombre, descripción, fecha);
         }
 
     }

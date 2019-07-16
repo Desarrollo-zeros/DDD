@@ -16,7 +16,7 @@ namespace Application.Implements.Cliente.ServicioCliente
     public class ServicioCliente 
     {
         readonly IUnitOfWork _unitOfWork;
-        readonly IGenericRepository<Domain.Entities.Cliente.Cliente> _repository;
+        public readonly IGenericRepository<Domain.Entities.Cliente.Cliente> _repository;
       
         public ServicioCliente(IUnitOfWork unitOfWork, IGenericRepository<Domain.Entities.Cliente.Cliente> repository)
         {

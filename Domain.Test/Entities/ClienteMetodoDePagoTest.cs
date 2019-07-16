@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Domain.Entities.Cliente;
 using Domain.Enum;
 using Domain.ValueObjects;
+using Domain.Factories;
 
 namespace Domain.Test.Entities
 {
@@ -31,7 +32,7 @@ namespace Domain.Test.Entities
         [Test]
         public void ValidarCreditCardNumberTestFails()
         {
-            var ex = Assert.Throws<Exception>(() => new CreditCard(CreditCardType.Amex, "12345678910236", "000", "carlos", new DateTime(2019,07,29)));
+            var ex = Assert.Throws<Exception>(() => new CreditCard(CreditCardType.Amex, "123456789123456", "000", "carlos", new DateTime(2019,07,29)));
             Assert.That(ex.Message, Is.EqualTo("Numero Tarjeta invalido"));
         }
 
@@ -39,7 +40,7 @@ namespace Domain.Test.Entities
         [Test]
         public void ValidarCreditCardeEpirationTestFails()
         {
-            var ex = Assert.Throws<Exception>(() => new CreditCard(CreditCardType.Amex, "123456789123456", "000", "carlos", new DateTime(2019, 06, 28)));
+            var ex = Assert.Throws<Exception>(() => new CreditCard(CreditCardType.Amex, "5312962723161181", "000", "carlos", new DateTime(2019, 06, 28)));
             Assert.That(ex.Message, Is.EqualTo("Tarjeta vencidad"));
         }
 

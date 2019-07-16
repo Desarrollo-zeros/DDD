@@ -12,7 +12,7 @@ namespace Application.Base
     public abstract class EntityService<T> : IEntityService<T> where T : BaseEntity
     {
         readonly IUnitOfWork _unitOfWork;
-        readonly IGenericRepository<T> _repository;
+        public readonly IGenericRepository<T> _repository;
 
         protected EntityService(IUnitOfWork unitOfWork, IGenericRepository<T> repository)
         {
@@ -31,29 +31,53 @@ namespace Application.Base
 
         
 
-        public virtual void Create(T entity)
+        public virtual T Create(T entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException("entity");
             }
-            _repository.Add(entity);
-            _unitOfWork.Commit();
+            var t = _repository.Add(entity);
+            if(_unitOfWork.Commit() == 1)
+            {
+                return t;
+            }
+            return null;
         }
 
-        public virtual void Update(T entity)
+        public virtual bool Update(T entity)
         {
             if (entity == null) throw new ArgumentNullException("entity");
             _repository.Edit(entity);
-            _unitOfWork.Commit();
+            if (_unitOfWork.Commit() == 1)
+            {
+                return true;
+            }
+            return false;
         }
 
-        public virtual void Delete(T entity)
+        public virtual bool Delete(int id)
+        {
+            if (id == 0) throw new ArgumentNullException("no id");
+            _repository.Delete(Find(id));
+            if (_unitOfWork.Commit() == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public virtual bool Delete(T entity)
         {
             if (entity == null) throw new ArgumentNullException("entity");
             _repository.Delete(entity);
-            _unitOfWork.Commit();
+            if (_unitOfWork.Commit() == 1)
+            {
+                return true;
+            }
+            return false;
         }
+
 
         public virtual IEnumerable<T> GetAll()
         {

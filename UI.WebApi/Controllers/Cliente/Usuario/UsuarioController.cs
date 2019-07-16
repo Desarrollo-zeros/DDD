@@ -35,14 +35,20 @@ namespace UI.WebApi.Controllers.Cliente.Usuario
         [Route("Autenticate")]
         public IHttpActionResult Autenticar(UsuarioModel usuario)
         {
-          
+            if (usuario.Usuario == null)
+            {
+                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.USER_FAIL));
+            }
+
+
             if (usuario == null || usuario.Usuario.Username == null || usuario.Usuario.Password == null)
                 return Json(Mensaje.MensajeJson(Constants.IS_ERROR, Constants.USER_INVALID, Constants.USER_FAIL));
 
             try
             {
                 var factoryUser = BuilderFactories.Usuario(usuario.Usuario.Username, usuario.Usuario.Password, true, Domain.Enum.Rol.INVITADO);
-                var user = usuario.Autenticar(new ServicioUsuarioRequest() { Username = factoryUser.Username, Password = factoryUser.Password });
+                var user = usuario.ServicioUsuario.Autenticar(new ServicioUsuarioRequest() { Username = factoryUser.Username, Password = factoryUser.Password });
+
 
                 if (user == null)
                     return Unauthorized();
@@ -65,10 +71,15 @@ namespace UI.WebApi.Controllers.Cliente.Usuario
         [Route("create")]
         public IHttpActionResult Crear(UsuarioModel usuario)
         {
+            if (usuario.Usuario == null)
+            {
+                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.USER_FAIL));
+            }
+
             try
             {
                 var factoryUser = BuilderFactories.Usuario(usuario.Usuario.Username, usuario.Usuario.Password, true, Rol.INVITADO);
-                var response = usuario.Create(new ServicioUsuarioRequest { Username = factoryUser.Username, Password = factoryUser.Password, Rol = Rol.CLIENTE, Activo = true });
+                var response = usuario.ServicioUsuario.Create(new ServicioUsuarioRequest { Username = factoryUser.Username, Password = factoryUser.Password, Rol = Rol.CLIENTE, Activo = true });
 
                 if (!response.Status)
                 {

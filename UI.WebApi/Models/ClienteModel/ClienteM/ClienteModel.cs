@@ -14,7 +14,7 @@ using UI.WebApi.Models.ClienteModel.UsuarioM;
 
 namespace UI.WebApi.Models.ClienteModel.ClienteM
 {
-    public class ClienteModel : ServicioCliente
+    public class ClienteModel : Model<Cliente>
     {
 
         public Cliente Cliente { set; get; }
@@ -35,40 +35,20 @@ namespace UI.WebApi.Models.ClienteModel.ClienteM
 
         public static ClienteModel GetAll(int id)
         {
-            Instance.Cliente = Instance.Get(new ServicioClienteRequest { Usuario_Id = id });
-            Instance.Cliente.Usuario = UsuarioModel.Instance.Get(new ServicioUsuarioRequest { Id = id });
+            Instance.Cliente = Instance.ServicioCliente.Get(new ServicioClienteRequest { Usuario_Id = id });
+            Instance.Cliente.Usuario = Instance.ServicioUsuario.Get(new ServicioUsuarioRequest { Id = id });
             Instance.Cliente.Usuario.Password = "secreta";
-            Instance.Cliente.Direcciónes = DirecciónModel.Instance.Get(new ServicioDireccíonRequest { Cliente_Id = Instance.Cliente.Id });
-            Instance.Cliente.Telefónos = TelefónoModel.Instance.Get(new ServicioTelefónoRequest { Cliente_Id = Instance.Cliente.Id });
-            Instance.Cliente.ClienteMetodoDePagos = MetodoPagoModel.Instance.GetAll(new ServicioMetodoPagoRequest { Cliente_Id = Instance.Cliente.Id });
+            Instance.Cliente.Direcciónes = Instance.ServicioDirección.Get(new ServicioDireccíonRequest { Cliente_Id = Instance.Cliente.Id });
+            Instance.Cliente.Telefónos = Instance.ServicioTelefóno.Get(new ServicioTelefónoRequest { Cliente_Id = Instance.Cliente.Id });
+            Instance.Cliente.ClienteMetodoDePagos = Instance.ServicioMetodoPago.GetAll(new ServicioMetodoPagoRequest { Cliente_Id = Instance.Cliente.Id });
             Instance.Cliente.CompraClientes = null;
             return Instance;
         }
 
-        public static void SetAll(Cliente cliente)
+    
+        public ClienteModel()
         {
-            Instance.Cliente = cliente;
-            Instance.Cliente.Usuario = cliente.Usuario;
-            Instance.Cliente.Usuario.Password = "secreta";
-            Instance.Cliente.Direcciónes = cliente.Direcciónes;
-            Instance.Cliente.Telefónos = cliente.Telefónos;
-            Instance.Cliente.ClienteMetodoDePagos = cliente.ClienteMetodoDePagos;
-            Instance.Cliente.CompraClientes = null;
-        }
-      
-        [JsonIgnore]
-        public readonly TelefónoModel telefónoModel;
-        [JsonIgnore]
-        public readonly DirecciónModel direcciónModel;
-
-        [JsonIgnore]
-        public readonly IGenericRepository<Cliente> repository;
-
-        public ClienteModel() : base(FactoriesSingleton<Cliente>.UnitOfWork, FactoriesSingleton<Cliente>.GenericRepository)
-        {
-            repository = FactoriesSingleton<Cliente>.GenericRepository;
-            telefónoModel = new TelefónoModel();
-            direcciónModel = new DirecciónModel();
+            
         }
     }
 }

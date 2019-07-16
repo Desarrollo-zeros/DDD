@@ -45,11 +45,11 @@ namespace Domain.Test.Entities
 
             var y = new List<CompraCliente>
             {
-                new CompraCliente(1, 1, 1, 10, Enum.EstadoClienteArticulo.NO_PAGADO)
+                new CompraCliente(1, 1, 10, Enum.EstadoClienteArticulo.NO_PAGADO)
             };
-            compra.ProductoCliente = y;
+            compra.CompraClientes = y;
 
-            compra.ProductoCliente.ToList().FirstOrDefault().Producto = new Producto("algo","algo algo",null,1000,1200,10,1);
+            compra.CompraClientes.ToList().FirstOrDefault().Producto = new Producto("algo","algo algo",null,1000,1200,10,1);
 
             var z = new List<ProductoDescuento>
             {
@@ -58,12 +58,12 @@ namespace Domain.Test.Entities
                 new ProductoDescuento(1, 1, Enum.EstadoDescuento.ACTIVO)
             };
 
-            compra.ProductoCliente.ToList().FirstOrDefault().Producto.ProductoDescuentos = z;
+            compra.CompraClientes.ToList().FirstOrDefault().Producto.ProductoDescuentos = z;
 
 
             double descuentoAplicado =0;
 
-            foreach(var l in compra.ProductoCliente.ToList().FirstOrDefault().Producto.ProductoDescuentos){
+            foreach(var l in compra.CompraClientes.ToList().FirstOrDefault().Producto.ProductoDescuentos){
                 l.Descuento = new Descuento(Enum.TipoDescuento.FIJO, true, new DateTime(2019, 06, 29, 1, 0, 0), new DateTime(2019, 06, 30, 23, 0, 0),0.05);
 
                 descuentoAplicado += l.Descuento.Descu;
@@ -116,6 +116,7 @@ namespace Domain.Test.Entities
         [Test]
         public void ComprarCambioEstadoDePagoSuccessTest()
         {
+            compra.Cliente_Id = 1;
             double x = compra.ObtenerDescuentoPorProductoCompra(1, 1, 5); 
             Assert.AreEqual(900,(int) x);
             Assert.AreEqual(compra.DescontarTotalProductoEnSaldo(1200-x,1), true);
@@ -126,6 +127,7 @@ namespace Domain.Test.Entities
         [Test]
         public void ComprarCambioEstadoDePagoFailTest()
         {
+            compra.Cliente_Id = 1;
             double x = compra.ObtenerDescuentoPorProductoCompra(1, 1, 5);
             Assert.AreEqual(900, (int)x);
             Assert.AreEqual(compra.DescontarTotalProductoEnSaldo(12000 - x,1), false);
@@ -146,6 +148,7 @@ namespace Domain.Test.Entities
         [Test]
         public void ObtenerDescuentoCompraSuccessTest()
         {
+            compra.Cliente_Id = 1;
             double x = compra.ObtenerDescuentoPorProductoCompra(1, 1, 5);
             Assert.AreEqual((int)x, 900);
         }
@@ -153,7 +156,7 @@ namespace Domain.Test.Entities
         [Test]
         public void ObtenerDescuentoCompraConListaVaciaTest1()
         {
-            var x = compra.ProductoCliente.ToList().FirstOrDefault().Producto.ProductoDescuentos;
+            var x = compra.CompraClientes.ToList().FirstOrDefault().Producto.ProductoDescuentos;
             x = new List<ProductoDescuento>();
             Assert.IsEmpty(x);
         }
@@ -161,8 +164,8 @@ namespace Domain.Test.Entities
         [Test]
         public void ObtenerDescuentoCompraConListaVaciaTest2()
         {
-            compra.ProductoCliente.ToList().FirstOrDefault().Producto.ProductoDescuentos.FirstOrDefault().Descuento = null;
-            var x = compra.ProductoCliente.ToList().FirstOrDefault().Producto.ProductoDescuentos.FirstOrDefault().Descuento;
+            compra.CompraClientes.ToList().FirstOrDefault().Producto.ProductoDescuentos.FirstOrDefault().Descuento = null;
+            var x = compra.CompraClientes.ToList().FirstOrDefault().Producto.ProductoDescuentos.FirstOrDefault().Descuento;
             Assert.Null(x);
         }
 
@@ -185,9 +188,9 @@ namespace Domain.Test.Entities
         public void ComprarArticulosSuccessTest()
         {
             
-            compra.ProductoCliente.FirstOrDefault().Cantidad = 5;
+            compra.CompraClientes.FirstOrDefault().Cantidad = 5;
             Assert.AreEqual(compra.ComprarArticulos(),true);
-            Assert.AreEqual(compra.ProductoCliente.FirstOrDefault().EstadoProductoCliente, Enum.EstadoClienteArticulo.PAGADO);
+            Assert.AreEqual(compra.CompraClientes.FirstOrDefault().EstadoProductoCliente, Enum.EstadoClienteArticulo.PAGADO);
             Assert.AreEqual(compra.Cliente.ClienteMetodoDePagos.FirstOrDefault().Saldo, 4900);
         }
 

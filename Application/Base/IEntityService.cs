@@ -12,9 +12,9 @@ namespace Application.Base
         where T : BaseEntity
     {
         T Find(object id);
-        void Create(T entity);
-        void Delete(T entity);
+        T Create(T entity);
+        bool Delete(T entity);
         IEnumerable<T> GetAll();
-        void Update(T entity);
+        bool Update(T entity);
     }
 }

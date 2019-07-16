@@ -18,7 +18,7 @@ namespace Domain.Entities.Producto
 
         public Categoria() { }
 
-      [Column("Categoria")]
+        [Column("Categoria")]
         public string Nombre { set; get; }
         public string Descripción { set; get; }
         public DateTime FechaCreacion { set; get; }

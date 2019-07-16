@@ -23,6 +23,11 @@
 
         public const string NO_AUTH = "No autorizado, o su tokent a vencido";
 
+        public const string PAY_SUCCESS = "Metodo Pago Ok";
+        public const string PAY_FAIL = "Metodo Pago Fail";
+
+        public const string CATEGORIA_SUCCES = "Categoria Ok";
+        public const string CATEGORIA_FAIL = "Categoria Fail";
 
     }
 }

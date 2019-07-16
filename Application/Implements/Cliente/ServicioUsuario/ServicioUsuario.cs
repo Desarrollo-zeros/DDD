@@ -8,10 +8,10 @@ using System.Linq;
 
 namespace Application.Implements.Cliente.ServicioUsuario
 {
-    public class ServicioUsuario 
+    public class ServicioUsuario
     {
         readonly IUnitOfWork _unitOfWork;
-        readonly IGenericRepository<Usuario> _repository;
+        public readonly IGenericRepository<Usuario> _repository;
         
 
         public ServicioUsuario(IUnitOfWork unitOfWork, IGenericRepository<Usuario> repository)
@@ -63,25 +63,17 @@ namespace Application.Implements.Cliente.ServicioUsuario
 
         public Usuario Get(ServicioUsuarioRequest request)
         {
-            if (request.Id != 0 && request.Username != null && request.Password != null)
+            if (request.Id != 0)
             {
-                return _repository.FindBy(x => x.Id == request.Id && x.Username == request.Username && x.Password == request.Password).FirstOrDefault();
-
+                return _repository.FindBy(x => x.Id == request.Id).FirstOrDefault();
+            }
+            else if (request.Username != null)
+            {
+                return _repository.FindBy(x => x.Username == request.Username).FirstOrDefault();
             }
             else
             {
-                if (request.Id != 0)
-                {
-                    return _repository.FindBy(x => x.Id == request.Id).FirstOrDefault();
-                }
-                else if (request.Username != null)
-                {
-                    return _repository.FindBy(x => x.Username == request.Username).FirstOrDefault();
-                }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
         }
 

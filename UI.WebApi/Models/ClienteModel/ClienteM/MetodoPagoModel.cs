@@ -10,16 +10,15 @@ using UI.WebApi.Singleton;
 
 namespace UI.WebApi.Models.ClienteModel.ClienteM
 {
-    public class MetodoPagoModel : ServicioMetodoPago
+    public class MetodoPagoModel : Model<ClienteMetodoDePago>
     {
 
-        public readonly IGenericRepository<ClienteMetodoDePago> repository;
 
-        public IEnumerable<ClienteMetodoDePago> MetodoDePagos { set; get; }
+        public IEnumerable<ClienteMetodoDePago> ClienteMetodos { set; get; }
 
-        public MetodoPagoModel() : base(FactoriesSingleton<ClienteMetodoDePago>.UnitOfWork, FactoriesSingleton<ClienteMetodoDePago>.GenericRepository)
+        public MetodoPagoModel() 
         {
-            repository = FactoriesSingleton<ClienteMetodoDePago>.GenericRepository;
+           
         }
 
 
@@ -40,15 +39,13 @@ namespace UI.WebApi.Models.ClienteModel.ClienteM
 
         public static MetodoPagoModel GetAll(int idUsuario)
         {
-            ClienteModel.Instance.Cliente = ClienteModel.GetAll(idUsuario).Cliente;
-            Instance.MetodoDePagos = ClienteModel.Instance.Cliente.ClienteMetodoDePagos;
+            Instance.ClienteMetodos = ClienteModel.GetAll(idUsuario).Cliente.ClienteMetodoDePagos;
             return Instance;
         }
 
         public static MetodoPagoModel Get(int idUsuario, int idMetodoPago)
         {
-            ClienteModel.Instance.Cliente = ClienteModel.GetAll(idUsuario).Cliente;
-            Instance.MetodoDePagos = ClienteModel.Instance.Cliente.ClienteMetodoDePagos.Where(x=>x.Id == idMetodoPago);
+            Instance.ClienteMetodos = ClienteModel.GetAll(idUsuario).Cliente.ClienteMetodoDePagos.Where(x=>x.Id == idMetodoPago);
             return Instance;
         }
     }

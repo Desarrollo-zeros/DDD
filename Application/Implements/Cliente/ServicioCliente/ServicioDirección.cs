@@ -13,7 +13,7 @@ namespace Application.Implements.Cliente.ServicioCliente
     public class ServicioDirección
     {
         readonly IUnitOfWork _unitOfWork;
-        readonly IGenericRepository<Dirección> _repository;
+        public readonly IGenericRepository<Dirección> _repository;
 
         public ServicioDirección(IUnitOfWork unitOfWork, IGenericRepository<Dirección> repository)
         {

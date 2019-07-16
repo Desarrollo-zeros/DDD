@@ -65,8 +65,14 @@
     <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.5.0\lib\net461\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=8.0.16.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.16\lib\net452\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swashbuckle.Core.5.6.0\lib\net40\Swashbuckle.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel" />
     <Reference Include="System.Configuration.Install" />
@@ -93,6 +99,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -116,10 +125,12 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\Cliente\Cliente\ClienteController.cs" />
     <Compile Include="Controllers\Cliente\Usuario\UsuarioController.cs" />
+    <Compile Include="Controllers\Producto\ProductoController.cs" />
     <Compile Include="Generico\Constants.cs" />
     <Compile Include="Generico\Mensaje.cs" />
     <Compile Include="Generico\TokenGenerator.cs" />
@@ -130,6 +141,11 @@
     <Compile Include="Models\ClienteModel\ClienteM\ClienteModel.cs" />
     <Compile Include="Models\ClienteModel\ClienteM\DirecciónModel.cs" />
     <Compile Include="Models\ClienteModel\ClienteM\MetodoPagoModel.cs" />
+    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\ProductoModel\CategoriaModel.cs" />
+    <Compile Include="Models\ProductoModel\DescuentoModel.cs" />
+    <Compile Include="Models\ProductoModel\ProductoDescuentoModel.cs" />
+    <Compile Include="Models\ProductoModel\ProductoModel.cs" />
     <Compile Include="Models\ResponseStatusModel.cs" />
     <Compile Include="Models\ClienteModel\ClienteM\TelefónoModel.cs" />
     <Compile Include="Models\ClienteModel\UsuarioM\UsuarioModel.cs" />

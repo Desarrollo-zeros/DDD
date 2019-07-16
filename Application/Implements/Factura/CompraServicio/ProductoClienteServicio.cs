@@ -27,13 +27,14 @@ namespace Application.Implements.Factura.CompraServicio
         
         public List<CompraCliente> BuscarProductoCLientes(int cliente_id, int producto_id)
         {
-            return _repository.FindBy(x => x.Cliente_Id == cliente_id && x.Producto_Id == producto_id).ToList();
+            //return _repository.FindBy(x => x. == cliente_id && x.Producto_Id == producto_id).ToList();
+            return null;
         }
 
 
         public ServiceResponse Crear(ServicesClienteProductoRequest request)
         {
-            var clineteProducto = new CompraCliente(request.Cliente_Id,request.Producto_Id,request.Compra_Id,request.Cantidad,request.EstadoProductoCliente);
+            var clineteProducto = new CompraCliente(request.Producto_Id,request.Compra_Id,request.Cantidad,request.EstadoProductoCliente);
             _repository.Add(clineteProducto);
             if (_unitOfWork.Commit() == 1)
             {
