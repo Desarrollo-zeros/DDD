@@ -59,7 +59,7 @@ namespace UI.WebApi.Controllers.Cliente.Usuario
                 }
 
                 var token = TokenGenerator.GenerateTokenJwt(usuario.Usuario.Username);
-                return Ok((Mensaje.MensajeJson(Constants.NO_ERROR, "Token => "+token, Constants.USER_SUCCESS)));
+                return Ok((Mensaje.MensajeJson(Constants.NO_ERROR, token, Constants.USER_SUCCESS)));
             }
             catch (Exception e)
             {

@@ -6,6 +6,7 @@ namespace UI.WebApi.Models.ProductoModel
     public class ProductoModel : Model<Producto>
     {
         public Producto Producto { set; get; }
+        public double TotalDescuento { set; get; }
 
         [JsonIgnore]
         private static ProductoModel productoModel;

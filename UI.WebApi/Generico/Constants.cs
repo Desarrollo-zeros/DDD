@@ -29,5 +29,14 @@
         public const string CATEGORIA_SUCCES = "Categoria Ok";
         public const string CATEGORIA_FAIL = "Categoria Fail";
 
+        public const string PRODUCTO_SUCCES = "Producto Ok";
+        public const string PRODUCTO_FAIL = "Producto Fail";
+
+        public const string DESCUENTO_SUCCES = "Descuento Ok";
+        public const string DESCUENTO_FAIL = "Descuento Fail";
+
+        public const string PRODUCTO_DESCUENTO_SUCCES = "Producto Descuento Ok";
+        public const string PRODUCTO_DESCUENTO_FAIL = "Producto Descuento Fail";
+
     }
 }

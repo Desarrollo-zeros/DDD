@@ -23,6 +23,6 @@ namespace Domain.Entities.Producto
         public string Descripción { set; get; }
         public DateTime FechaCreacion { set; get; }
 
-        public virtual IEnumerable<Producto> Producto { set; get; }
+        public virtual IEnumerable<Producto> Productos { set; get; }
     }
 }

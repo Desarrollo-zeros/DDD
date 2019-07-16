@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Abstracts;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Application.Base
     public abstract class EntityService<T> : IEntityService<T> where T : BaseEntity
     {
         readonly IUnitOfWork _unitOfWork;
+        [JsonIgnore]
         public readonly IGenericRepository<T> _repository;
 
         protected EntityService(IUnitOfWork unitOfWork, IGenericRepository<T> repository)

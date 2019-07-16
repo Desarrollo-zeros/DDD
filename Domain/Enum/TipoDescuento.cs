@@ -5,6 +5,7 @@ namespace Domain.Enum
     public enum TipoDescuento
     {
         FIJO,
-        DEPENDIENTE
+        DEPENDIENTE,
+        DESCONOCIDO
     }
 }

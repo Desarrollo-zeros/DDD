@@ -76,7 +76,7 @@ namespace Domain.Factories
 
         public static Categoria Categoria(string nombre, string descripción, DateTime fecha)
         {
-            if(nombre == "" && descripción == "")
+            if(nombre == "" || descripción == "")
             {
                 throw new Exception("Factories Categoria no puede ser creado");
             }
@@ -87,6 +87,34 @@ namespace Domain.Factories
             }
 
             return new Categoria(nombre, descripción, fecha);
+        }
+
+        public static Producto Producto(string nombre, string descripción, string imagen, double precioCompra, double precioVenta, int cantidadProducto, int categoria_Id)
+        {
+            if(string.Empty == nombre || string.Empty == descripción || 0== precioCompra || 0 == precioVenta || 0 == cantidadProducto || 0 == categoria_Id || precioCompra > precioVenta)
+            {
+                throw new Exception("Factories Producto no puede ser creado");
+            }
+
+            return new Producto(nombre,descripción,imagen,precioCompra,precioVenta,cantidadProducto,categoria_Id);
+        }
+
+        public static Descuento Descuento(TipoDescuento tipoDescuento, bool acomulable, DateTime fechaYHoraInicio, DateTime fechaYHoraTerminación, double descuento)
+        {
+            if(tipoDescuento == TipoDescuento.DESCONOCIDO || fechaYHoraInicio == null || fechaYHoraTerminación == null || descuento == 0 || descuento < 0)
+            {
+                throw new Exception("Factories Descuento no puede ser creado");
+            }
+            return new Descuento(tipoDescuento, acomulable, fechaYHoraInicio, fechaYHoraTerminación, descuento);
+        }
+
+        public static ProductoDescuento ProductoDescuento(int producto_Id, int descuento_Id, EstadoDescuento estadoDescuento)
+        {
+            if(producto_Id == 0 || descuento_Id == 0 || estadoDescuento == EstadoDescuento.DESCONOCIDO)
+            {
+                throw new Exception("Factories ProductoDescuento no puede ser creado");
+            }
+            return new ProductoDescuento(producto_Id,descuento_Id, estadoDescuento);
         }
 
     }

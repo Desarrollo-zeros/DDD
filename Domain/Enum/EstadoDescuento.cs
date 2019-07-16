@@ -5,6 +5,7 @@ namespace Domain.Enum
     {
         INACTIVO,
         EN_PAUSA,
-        ACTIVO
+        ACTIVO,
+        DESCONOCIDO
     }
 }

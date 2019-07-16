@@ -51,7 +51,7 @@ namespace Domain.Entities.Producto
                 {
                     if ((fechaYHoraInicio.Day + 1) == fechaYHoraTerminación.Day)
                     {
-                        if (fechaYHoraInicio.Hour == 1 && fechaYHoraTerminación.Hour == 23)
+                        if (fechaYHoraInicio.Hour <=23 && fechaYHoraTerminación.Hour <=23)
                         {
                             r = true;
                         }

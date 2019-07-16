@@ -11,6 +11,8 @@ namespace UI.WebApi.Models.ProductoModel
     {
         public Categoria Categoria { set; get; }
 
+        public IEnumerable<Categoria> Categorias { set; get; }
+
         [JsonIgnore]
         private static CategoriaModel categoriaModel;
         public static CategoriaModel Instance
