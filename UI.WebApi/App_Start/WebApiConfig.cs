@@ -1,5 +1,7 @@
 ﻿using System.Web.Http;
+using System.Web.Http.Cors;
 using UI.WebApi.Generico;
+
 
 namespace UI.WebApi
 {
@@ -8,6 +10,9 @@ namespace UI.WebApi
         public static void Register(HttpConfiguration config)
         {
             // Configuración y servicios de API web
+
+            var corsAttr = new EnableCorsAttribute("http://example.com", "*", "*");
+            config.EnableCors(corsAttr);
 
             // Rutas de API web
             config.MapHttpAttributeRoutes();

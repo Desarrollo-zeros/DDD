@@ -20,7 +20,7 @@ namespace UI.WebApi.Controllers.Producto
 
         [HttpPost]
         [Route("categoria_create")]
-        public IHttpActionResult Create(CategoriaModel categoriaModel)
+        public IHttpActionResult CategoriaCreate(CategoriaModel categoriaModel)
         {
 
             if (UsuarioModel.Instance.rol != Rol.ADMINISTRADOR && UsuarioModel.Instance.rol != Rol.DEV)
@@ -55,7 +55,7 @@ namespace UI.WebApi.Controllers.Producto
 
         [HttpPost]
         [Route("categoria_Edit")]
-        public IHttpActionResult Edit(CategoriaModel categoriaModel)
+        public IHttpActionResult CategoriaEdit(CategoriaModel categoriaModel)
         {
             if (UsuarioModel.Instance.rol != Rol.ADMINISTRADOR && UsuarioModel.Instance.rol != Rol.DEV)
             {
@@ -133,7 +133,7 @@ namespace UI.WebApi.Controllers.Producto
 
         [HttpPost]
         [Route("producto_create")]
-        public IHttpActionResult Create(ProductoModel productoModel)
+        public IHttpActionResult ProductoCreate(ProductoModel productoModel)
         {
             try
             {
@@ -168,7 +168,7 @@ namespace UI.WebApi.Controllers.Producto
 
         [HttpPost]
         [Route("producto_edit")]
-        public IHttpActionResult Edit(ProductoModel productoModel)
+        public IHttpActionResult ProductoEdit(ProductoModel productoModel)
         {
             try
             {
@@ -254,7 +254,7 @@ namespace UI.WebApi.Controllers.Producto
 
         [HttpPost]
         [Route("descuento_create")]
-        public IHttpActionResult Create(DescuentoModel descuentoModel)
+        public IHttpActionResult DescuentoCreate(DescuentoModel descuentoModel)
         {
             try
             {
@@ -284,7 +284,7 @@ namespace UI.WebApi.Controllers.Producto
 
         [HttpPost]
         [Route("descuento_edit")]
-        public IHttpActionResult Edit(DescuentoModel descuentoModel)
+        public IHttpActionResult DescuentoEdit(DescuentoModel descuentoModel)
         {
             try
             {
@@ -380,7 +380,7 @@ namespace UI.WebApi.Controllers.Producto
 
         [HttpPost]
         [Route("producto_descuento_create")]
-        public IHttpActionResult Create(ProductoDescuentoModel productoDescuentoModel)
+        public IHttpActionResult ProductoDescuentoCreate(ProductoDescuentoModel productoDescuentoModel)
         {
 
             try
@@ -419,7 +419,7 @@ namespace UI.WebApi.Controllers.Producto
 
         [HttpPost]
         [Route("producto_descuento_edit")]
-        public IHttpActionResult Edit(ProductoDescuentoModel productoDescuentoModel)
+        public IHttpActionResult ProductoDescuentoEdit(ProductoDescuentoModel productoDescuentoModel)
         {
 
             try
