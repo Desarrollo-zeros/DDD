@@ -14,7 +14,7 @@ namespace UI.WebApi.Models.ClienteModel.ClienteM
     {
 
 
-        public IEnumerable<ClienteMetodoDePago> ClienteMetodos { set; get; }
+        public IEnumerable<ClienteMetodoDePago> ClienteMetodoDePagos { set; get; }
 
         public MetodoPagoModel() 
         {
@@ -39,13 +39,13 @@ namespace UI.WebApi.Models.ClienteModel.ClienteM
 
         public static MetodoPagoModel GetAll(int idUsuario)
         {
-            Instance.ClienteMetodos = ClienteModel.GetAll(idUsuario).Cliente.ClienteMetodoDePagos;
+            Instance.ClienteMetodoDePagos = ClienteModel.GetAll(idUsuario).Cliente.ClienteMetodoDePagos;
             return Instance;
         }
 
         public static MetodoPagoModel Get(int idUsuario, int idMetodoPago)
         {
-            Instance.ClienteMetodos = ClienteModel.GetAll(idUsuario).Cliente.ClienteMetodoDePagos.Where(x=>x.Id == idMetodoPago);
+            Instance.ClienteMetodoDePagos = ClienteModel.GetAll(idUsuario).Cliente.ClienteMetodoDePagos.Where(x=>x.Id == idMetodoPago);
             return Instance;
         }
     }

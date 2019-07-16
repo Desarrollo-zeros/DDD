@@ -143,7 +143,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
         public IHttpActionResult PayCreate(MetodoPagoModel metodoPago)
         {
 
-            if (metodoPago.ClienteMetodos == null)
+            if (metodoPago.ClienteMetodoDePagos == null)
             {
                 return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
             }
@@ -152,7 +152,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
             bool activo = false;
             try
             {
-                metodoPago.ClienteMetodos.ToList().ForEach(x =>
+                metodoPago.ClienteMetodoDePagos.ToList().ForEach(x =>
                 {
                     if (cont == 0 && x.Saldo > 0)
                     {
@@ -188,7 +188,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
         {
 
 
-            if (metodoPago.ClienteMetodos == null)
+            if (metodoPago.ClienteMetodoDePagos == null)
             {
                 return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
             }
@@ -198,7 +198,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
                 int cont = 0;
                 var cliente = ClienteModel.GetAll(usuario.id).Cliente;
 
-                metodoPago.ClienteMetodos.ToList().ForEach(x =>
+                metodoPago.ClienteMetodoDePagos.ToList().ForEach(x =>
                 {
                     var response = metodoPago.ServicioMetodoPago.Edit(new ServicioMetodoPagoRequest
                     {
