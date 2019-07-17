@@ -74,7 +74,7 @@ namespace Application.Test.Cliente.CCompraServicio
         {
             CrearServicio productoCliente = new CrearServicio(_unitOfWork, repositoryCompra);
             var x = productoCliente.BuscarCompraPorProducto(new ServicesRequest() { Cliente_Id = 1, Compra_Id = 1 },1,repositoryProductoCliente, repositoryProducto, repositoryCliente, repositoryComprobanteDePago, repositoryProductoDescuento, repositoryDescuento, repositoryMetodoPago);
-            Console.WriteLine(x.ProductoCliente.FirstOrDefault().Producto.Nombre);
+            Console.WriteLine(x.CompraClientes.FirstOrDefault().Producto.Nombre);
         }
 
 

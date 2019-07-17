@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Cliente;
+using Domain.Entities.Producto;
+using Domain.Factories;
 
 namespace Domain.Entities.Factura
 {
@@ -14,8 +16,6 @@ namespace Domain.Entities.Factura
         {
             Cliente_Id = cliente_Id;
             FechaCompra = fechaCompra;
-
-            CantidadProductoNoExistentes = 0;
         }
 
         public Compra() { }
@@ -29,87 +29,96 @@ namespace Domain.Entities.Factura
       
          public virtual IEnumerable<ComprobanteDePago>  ComprobanteDePagos { set; get; }
 
-
         [NotMapped]
-        public int CantidadProductoNoExistentes { private set; get; }
+         public int Cantidad { set; get; }
 
 
-        public bool ComprarArticulos()
+      
+
+
+        public bool CompletarCompras()
         {
             double descuentoTotal = 0;
             double precioVenta = 0;
 
-            int compra_id = 0;
+            
 
             if (CompraClientes.Count() == 0)
             {
                 throw new Exception("No hay productos para realizar la compra");
             }
-            foreach (var p in CompraClientes)
-            {
-                descuentoTotal += ObtenerDescuentoPorProductoCompra(Cliente_Id, p.Producto_Id, p.Cantidad);
-                precioVenta += p.Producto.PrecioVenta*p.Cantidad;
-                p.EstadoProductoCliente = Enum.EstadoClienteArticulo.PAGADO;
-                compra_id = p.Compra_Id;
-            }
 
-            if (!this.DescontarTotalProductoEnSaldo((precioVenta - descuentoTotal), compra_id))
+
+            CompraClientes.ToList().ForEach(x => {
+                descuentoTotal += ObtenerDescuentoPorProductoCompra(x.Producto_Id, x.Cantidad);
+                precioVenta += x.Producto.PrecioVenta * x.Cantidad;
+                x.EstadoClienteArticulo = Enum.EstadoClienteArticulo.PAGADO;                
+            });
+
+            if (!DescontarTotalProductoEnSaldo((precioVenta - descuentoTotal)))
             {
                 throw new Exception("No tien saldo suficiente para realizar la compra");
             }
-
             return true;
         }
 
-        public bool DescontarTotalProductoEnSaldo(double saldo, int compra_id)
+        public bool DescontarTotalProductoEnSaldo(double saldo)
         {
 
-            if(compra_id == 0 || saldo == 0)
+            if(saldo < 1)
             {
                 return false;
             }
-
-            foreach (ClienteMetodoDePago pagos in Cliente.ClienteMetodoDePagos.ToList())
+            if(Cliente.ClienteMetodoDePagos != null)
             {
-                if (pagos.Activo && pagos.Saldo > saldo)
+                if(Cliente.ClienteMetodoDePagos.ToList().Find(x => x.Activo && x.Saldo > saldo).DescontarSaldo(saldo))
                 {
-                    if (pagos.DescontarSaldo(saldo))
-                    {
-                        ComprobanteDePagos.ToList().Find(x=>x.Compra_Id == compra_id).EstadoDePago = Enum.EstadoDePago.PAGADO;
-                        return true;
-                    }
-                   
+                    ComprobanteDePagos.ToList().Find(x => x.Compra_Id == Id).EstadoDePago = Enum.EstadoDePago.PAGADO;
+                    return true;
                 }
             }
             return false;
         }
 
 
-        public double ObtenerDescuentoPorProductoCompra(int cliente_Id, int producto_Id, int cantidad)
+        public double ObtenerDescuentoPorProductoCompra(int producto_Id, int cantidad)
         {
             var sumaDescuento = 0.0;
             var valorProducto = 0.0;
-            bool r = false;
-
-            foreach(CompraCliente productoCliente in CompraClientes)
+            if(CompraClientes != null)
             {
-                if(productoCliente.Producto_Id == producto_Id && Cliente_Id == cliente_Id)
+                var producto = CompraClientes.ToList().Find(x => x.Producto_Id == producto_Id).Producto;
+                if (producto != null)
                 {
-                    foreach (Producto.ProductoDescuento productoDescuento in productoCliente.Producto.ProductoDescuentos)
+                    if(producto.ProductoDescuentos != null)
                     {
-                        if(productoDescuento.Descuento.DescuentoEsAplicable(productoDescuento.Descuento.FechaYHoraInicio, productoDescuento.Descuento.FechaYHoraTerminación))
+                        producto.ProductoDescuentos.ToList().ForEach(x =>
                         {
-                            sumaDescuento += productoDescuento.Descuento.Descu;
-                            
-                        }
+                            if(x.Descuento != null)
+                            {
+                                if (x.Descuento.DescuentoEsAplicable(x.Descuento.FechaYHoraInicio, x.Descuento.FechaYHoraTerminación))
+                                {
+                                    sumaDescuento += x.Descuento.Descu;
+                                }
+                            }
+                        });
                     }
-                    valorProducto = productoCliente.Producto.PrecioVenta;
-                    r = true;
-                    break;
+                    else
+                    {
+                        throw new Exception("Producto Descuento esta vacio");
+                    }
+                    valorProducto = producto.PrecioVenta;
                 }
+                else
+                {
+                    throw new Exception("Producto esta vacio");
+                }
+                return valorProducto * cantidad * sumaDescuento;
             }
-            if(!r) throw new Exception("El producto Y/o el cliente no existen");
-            return valorProducto * cantidad * sumaDescuento;
+            else
+            {
+                throw new Exception("Compra cliente esta vacio");
+            }
         }
 
         public bool SePuedeComprarProducto(int CantidadProducto, int cantidad)
@@ -117,40 +126,76 @@ namespace Domain.Entities.Factura
             return CantidadProducto > cantidad;
         }
        
-        public bool EnviarCompra(int compra_id, int producto_id)
+        public bool EnviarCompra(int producto_id)
         {
-            if(ComprobanteDePagos.ToList().Find(x => x.Compra_Id == compra_id).EstadoDePago == Enum.EstadoDePago.PAGADO)
+            if(ComprobanteDePagos != null)
             {
-                CompraEnvio compraEnvio = CompraEnvios.ToList().Find(x => x.Compra_Id == compra_id);
-                if(compraEnvio == null)
+                if (ComprobanteDePagos.ToList().Find(x => x.Compra_Id == Id).EstadoDePago == Enum.EstadoDePago.PAGADO)
                 {
-                    throw new Exception("No existe Envios para esta compra");
+                    return CompraEnvios.ToList().Find(x => x.Compra_Id == Id).EnviarProducto(producto_id);
                 }
-                
-                return compraEnvio.EnviarProducto(producto_id);
             }
             return false;
         }
 
-        public bool EnviarCompra(int compra_id)
+        public bool EnviarCompra()
         {
-            var ComprobanteDePagosL = ComprobanteDePagos.ToList().Find(x => x.Compra_Id == compra_id);
-            if(ComprobanteDePagosL == null)
+            var comprobanteDe = ComprobanteDePagos.ToList().Find(x => x.Compra_Id == Id);
+            if(comprobanteDe == null)
             {
                 throw new Exception("No existe Un Estado De pago");
             }
-
-            if (ComprobanteDePagos.ToList().Find(x => x.Compra_Id == compra_id).EstadoDePago == Enum.EstadoDePago.PAGADO)
+            if (comprobanteDe.EstadoDePago == Enum.EstadoDePago.PAGADO)
             {
-                CompraEnvio compraEnvio = CompraEnvios.ToList().Find(x => x.Compra_Id == compra_id);
-                if (compraEnvio == null)
-                {
-                    throw new Exception("No existe Envios para esta compra");
-                }
-                return compraEnvio.EnviarProducto();
+                return CompraEnvios.ToList().Find(x => x.Compra_Id == Id).EnviarProducto();
             }
             return false;
         }
 
+        public double ObtenerTotal()
+        {
+            double descuentoTotal = 0;
+            double precioVenta = 0;
+            if (CompraClientes != null)
+            {
+                CompraClientes.ToList().ForEach(x => {
+                    if (x.Compra_Id == Id)
+                    {
+                        descuentoTotal += ObtenerDescuentoPorProductoCompra(x.Producto_Id, x.Cantidad);
+                        precioVenta += x.Producto.PrecioVenta * x.Cantidad;
+                    }
+                });
+            }
+            return precioVenta-descuentoTotal;
+        }
+
+        public double ObtenerSubTotal()
+        {
+            double precioVenta = 0;
+            if (CompraClientes != null)
+            {
+                CompraClientes.ToList().ForEach(x => {
+                    if(x.Compra_Id == Id)
+                    {
+                       precioVenta += x.Producto.PrecioVenta * x.Cantidad;
+                    }
+                });
+            }
+            return precioVenta;
+        }
+
+        public double ObtenerDescuento()
+        {
+            double descuento = 0;
+            CompraClientes.ToList().ForEach(x => {
+                if(x.Compra_Id == Id)
+                {
+                    descuento += ObtenerDescuentoPorProductoCompra(x.Producto_Id, x.Cantidad);
+                }
+               
+            });
+            return descuento;
+        }
+       
     }
 }

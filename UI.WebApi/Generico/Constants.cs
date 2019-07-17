@@ -38,5 +38,8 @@
         public const string PRODUCTO_DESCUENTO_SUCCES = "Producto Descuento Ok";
         public const string PRODUCTO_DESCUENTO_FAIL = "Producto Descuento Fail";
 
+        public const string COMPRA_SUCCES = "Compra Ok";
+        public const string COMPRA_FAIL = "Compra Fail";
+
     }
 }

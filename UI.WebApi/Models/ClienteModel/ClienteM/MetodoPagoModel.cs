@@ -12,15 +12,12 @@ namespace UI.WebApi.Models.ClienteModel.ClienteM
 {
     public class MetodoPagoModel : Model<ClienteMetodoDePago>
     {
-
-
         public IEnumerable<ClienteMetodoDePago> ClienteMetodoDePagos { set; get; }
 
         public MetodoPagoModel() 
         {
            
         }
-
 
         public static MetodoPagoModel Instance
         {

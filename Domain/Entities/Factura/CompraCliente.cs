@@ -18,7 +18,7 @@ namespace Domain.Entities.Factura
             Producto_Id = producto_Id;
             Compra_Id = compra_Id;
             Cantidad = cantidad;
-            EstadoProductoCliente = estadoProductoCliente;
+            EstadoClienteArticulo = estadoProductoCliente;
         }
 
         public CompraCliente() { }
@@ -30,7 +30,7 @@ namespace Domain.Entities.Factura
         [ForeignKey("Producto_Id")] public Producto.Producto Producto { set; get; }
         public int Cantidad { set; get; }
 
-        public EstadoClienteArticulo EstadoProductoCliente { set; get; }
+        public EstadoClienteArticulo EstadoClienteArticulo { set; get; }
 
     }
 }

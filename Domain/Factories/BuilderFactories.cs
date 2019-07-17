@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Domain.ValueObjects;
 using Domain.Enum;
 using Domain.Entities.Producto;
+using Domain.Entities.Factura;
 
 namespace Domain.Factories
 {
@@ -28,7 +29,7 @@ namespace Domain.Factories
 
         public static Cliente Cliente(string documento, Nombre nombre, string Email, int Usuario_Id)
         {
-            if(documento == null|| nombre == null|| Email == ""|| Usuario_Id == 0){
+            if(documento == null|| nombre == null|| Email == ""|| Usuario_Id < 1){
                 throw new Exception("Factories Cliente no puede ser creado");
             }
             
@@ -37,7 +38,7 @@ namespace Domain.Factories
 
         public static Telefóno Telefóno(string número, TipoTelefono tipoTelefono, int cliente_id)
         {
-            if (número == null || tipoTelefono == TipoTelefono.DESCONOCIDO || cliente_id == 0)
+            if (número == null || tipoTelefono == TipoTelefono.DESCONOCIDO || cliente_id < 1)
             {
                 throw new Exception("Factories Cliente no puede ser creado");
             }
@@ -48,7 +49,7 @@ namespace Domain.Factories
 
         public static Dirección Dirección(string barrio, string direccion, string codigoPostal, int municipio_Id, int cliente_Id)
         {
-            if(string.Empty == barrio || string.Empty == direccion || string.Empty == codigoPostal || municipio_Id == 0|| cliente_Id == 0)
+            if(string.Empty == barrio || string.Empty == direccion || string.Empty == codigoPostal || municipio_Id < 1 || cliente_Id < 1)
             {
                 throw new Exception("Factories Dirección no puede ser creado");
             }
@@ -57,7 +58,7 @@ namespace Domain.Factories
 
         public static ClienteMetodoDePago ClienteMetodoDePago(int cliente_Id, bool activo, double saldo, CreditCardType cardType, string cardNumber, string securityNumber, string ownerName, DateTime expiration)
         {
-            if (0 == cliente_Id || 0 == saldo || cardType == CreditCardType.Unknown || cardNumber == null || null == securityNumber || ownerName == null || expiration == null)
+            if (cliente_Id < 1  || saldo < 1 || cardType == CreditCardType.Unknown || cardNumber == null || null == securityNumber || ownerName == null || expiration == null)
             {
                 throw new Exception("Factories ClienteMetodoDePago no puede ser creado");
             }
@@ -91,7 +92,7 @@ namespace Domain.Factories
 
         public static Producto Producto(string nombre, string descripción, string imagen, double precioCompra, double precioVenta, int cantidadProducto, int categoria_Id)
         {
-            if(string.Empty == nombre || string.Empty == descripción || 0== precioCompra || 0 == precioVenta || 0 == cantidadProducto || 0 == categoria_Id || precioCompra > precioVenta)
+            if(string.Empty == nombre || string.Empty == descripción || precioCompra < 1 ||  precioVenta < 1  || cantidadProducto < 1 ||  categoria_Id < 1 || precioCompra > precioVenta)
             {
                 throw new Exception("Factories Producto no puede ser creado");
             }
@@ -101,7 +102,7 @@ namespace Domain.Factories
 
         public static Descuento Descuento(TipoDescuento tipoDescuento, bool acomulable, DateTime fechaYHoraInicio, DateTime fechaYHoraTerminación, double descuento)
         {
-            if(tipoDescuento == TipoDescuento.DESCONOCIDO || fechaYHoraInicio == null || fechaYHoraTerminación == null || descuento == 0 || descuento < 0)
+            if(tipoDescuento == TipoDescuento.DESCONOCIDO || fechaYHoraInicio == null || fechaYHoraTerminación == null || descuento < 1)
             {
                 throw new Exception("Factories Descuento no puede ser creado");
             }
@@ -110,11 +111,39 @@ namespace Domain.Factories
 
         public static ProductoDescuento ProductoDescuento(int producto_Id, int descuento_Id, EstadoDescuento estadoDescuento)
         {
-            if(producto_Id == 0 || descuento_Id == 0 || estadoDescuento == EstadoDescuento.DESCONOCIDO)
+            if(producto_Id < 1 || descuento_Id < 1 || estadoDescuento == EstadoDescuento.DESCONOCIDO)
             {
                 throw new Exception("Factories ProductoDescuento no puede ser creado");
             }
             return new ProductoDescuento(producto_Id,descuento_Id, estadoDescuento);
+        }
+
+
+        public static Compra Compra(int cliente_id, DateTime fecha)
+        {
+            if(cliente_id < 1 || fecha == null)
+            {
+                throw new Exception("Factories Compra no puede ser creado");
+            }
+            return new Compra(cliente_id, fecha);
+        }
+
+        public static CompraCliente CompraCliente(int producto_Id, int compra_Id, int cantidad, Enum.EstadoClienteArticulo estadoProductoCliente)
+        {
+            if(producto_Id < 1 || compra_Id < 1 || cantidad < 1)
+            {
+                throw new Exception("CompraCliente Compra no puede ser creado");
+            }
+            return new CompraCliente(producto_Id, compra_Id, cantidad, estadoProductoCliente);
+        }
+
+        public static ComprobanteDePago ComprobanteDePago(EstadoDePago estadoDePago, double total, double subTotal, MedioPago medioPago, double monto, DateTime fechaDePago, double totalDescuentoAplicados, int compra_id)
+        {
+            if(total < 1 || subTotal < 1 || compra_id < 1)
+            {
+                throw new Exception("ComprobanteDePago Compra no puede ser creado");
+            }
+            return new ComprobanteDePago(estadoDePago, total,subTotal,medioPago,monto,fechaDePago,totalDescuentoAplicados,compra_id);
         }
 
     }

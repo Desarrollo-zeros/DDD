@@ -138,6 +138,7 @@
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\Cliente\Cliente\ClienteController.cs" />
     <Compile Include="Controllers\Cliente\Usuario\UsuarioController.cs" />
+    <Compile Include="Controllers\Factura\FacturaController.cs" />
     <Compile Include="Controllers\Producto\ProductoController.cs" />
     <Compile Include="Generico\Constants.cs" />
     <Compile Include="Generico\Mensaje.cs" />
@@ -149,6 +150,9 @@
     <Compile Include="Models\ClienteModel\ClienteM\ClienteModel.cs" />
     <Compile Include="Models\ClienteModel\ClienteM\DirecciónModel.cs" />
     <Compile Include="Models\ClienteModel\ClienteM\MetodoPagoModel.cs" />
+    <Compile Include="Models\FacturaModel\CompraClienteModel.cs" />
+    <Compile Include="Models\FacturaModel\CompraModel.cs" />
+    <Compile Include="Models\FacturaModel\ComprobanteDePagoModel.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\ProductoModel\CategoriaModel.cs" />
     <Compile Include="Models\ProductoModel\DescuentoModel.cs" />

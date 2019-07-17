@@ -29,7 +29,7 @@ namespace Domain.ValueObjects
         public CreditCard(CreditCardType cardType, string cardNumber, string securityNumber, string ownerName, DateTime expiration)
         {
 
-            if (!VerificarTarjeta(cardNumber))
+            /*if (!VerificarTarjeta(cardNumber))
             {
                 throw new Exception("Numero Tarjeta invalido");
             }
@@ -37,7 +37,7 @@ namespace Domain.ValueObjects
             if (expiration < DateTime.Now)
             {
                 throw new Exception("Tarjeta vencidad");
-            }
+            }*/
 
             Type = cardType;
             CardNumber = !string.IsNullOrWhiteSpace(cardNumber) ? cardNumber : "";

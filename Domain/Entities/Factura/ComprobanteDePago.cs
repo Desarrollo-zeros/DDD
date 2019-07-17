@@ -32,19 +32,18 @@ namespace Domain.Entities.Factura
         [ForeignKey("Compra_Id")]
         public Compra Compra { set; get; }
 
-        public EstadoDePago EstadoDePago { set; get; }
+        [Column("Estado_de_pago")]  public EstadoDePago EstadoDePago { set; get; }
         public double Total { set; get; }
         public double SubTotal { set; get; }
 
-        [Column("Estado_De_Pago")]
-        public MedioPago MedioPago { set; get; }
-        [Column("Monto_Pagado")]
-        public double Monto { get; set; }
+        [Column("Medio_de_pago")] public MedioPago MedioPago { set; get; }
+
+        [Column("Monto_Pagado")] public double Monto { get; set; }
 
         public DateTime FechaDePago { set; get; }
 
-        [Column("Total_Descuento_Aplicado")]
-        public double TotalDescuentoAplicados { set; get; }
+
+        [Column("Total_Descuento_Aplicado")] public double TotalDescuentoAplicados { set; get; }
 
     }
 }

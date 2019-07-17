@@ -90,9 +90,6 @@ namespace Domain.Test.Entities
             compra.CompraEnvios.FirstOrDefault().CompraEnvioProductos = compraEnvioProductos;
             compra.CompraEnvios.FirstOrDefault().EstadoDeEnvio = Enum.EstadoDeEnvio.EN_VERIFICACIÓN;
 
-            
-
-
         }
 
 
@@ -117,7 +114,7 @@ namespace Domain.Test.Entities
         public void ComprarCambioEstadoDePagoSuccessTest()
         {
             compra.Cliente_Id = 1;
-            double x = compra.ObtenerDescuentoPorProductoCompra(1, 1, 5); 
+            double x = compra.ObtenerDescuentoPorProductoCompra( 1, 5); 
             Assert.AreEqual(900,(int) x);
             Assert.AreEqual(compra.DescontarTotalProductoEnSaldo(1200-x,1), true);
             Assert.AreEqual(compra.Cliente.ClienteMetodoDePagos.First().Saldo, 9700);
@@ -128,7 +125,7 @@ namespace Domain.Test.Entities
         public void ComprarCambioEstadoDePagoFailTest()
         {
             compra.Cliente_Id = 1;
-            double x = compra.ObtenerDescuentoPorProductoCompra(1, 1, 5);
+            double x = compra.ObtenerDescuentoPorProductoCompra(1, 5);
             Assert.AreEqual(900, (int)x);
             Assert.AreEqual(compra.DescontarTotalProductoEnSaldo(12000 - x,1), false);
             Assert.AreEqual(compra.Cliente.ClienteMetodoDePagos.First().Saldo, 10000);
@@ -149,7 +146,7 @@ namespace Domain.Test.Entities
         public void ObtenerDescuentoCompraSuccessTest()
         {
             compra.Cliente_Id = 1;
-            double x = compra.ObtenerDescuentoPorProductoCompra(1, 1, 5);
+            double x = compra.ObtenerDescuentoPorProductoCompra(1, 5);
             Assert.AreEqual((int)x, 900);
         }
 
@@ -173,13 +170,13 @@ namespace Domain.Test.Entities
         [Test]
         public void ObtenerDescuentoCompraExcepcionesTest()
         {
-            var ex1 = Assert.Throws<Exception>(() => compra.ObtenerDescuentoPorProductoCompra(1, 2, 10));
+            var ex1 = Assert.Throws<Exception>(() => compra.ObtenerDescuentoPorProductoCompra( 2, 10));
             Assert.That(ex1.Message, Is.EqualTo("El producto Y/o el cliente no existen"));
 
-            var ex2 = Assert.Throws<Exception>(() => compra.ObtenerDescuentoPorProductoCompra(2, 1, 10));
+            var ex2 = Assert.Throws<Exception>(() => compra.ObtenerDescuentoPorProductoCompra( 1, 10));
             Assert.That(ex2.Message, Is.EqualTo("El producto Y/o el cliente no existen"));
 
-            var ex3 = Assert.Throws<Exception>(() => compra.ObtenerDescuentoPorProductoCompra(2, 2, 10));
+            var ex3 = Assert.Throws<Exception>(() => compra.ObtenerDescuentoPorProductoCompra(2, 10));
             Assert.That(ex3.Message, Is.EqualTo("El producto Y/o el cliente no existen"));
         }
 
@@ -189,7 +186,7 @@ namespace Domain.Test.Entities
         {
             
             compra.CompraClientes.FirstOrDefault().Cantidad = 5;
-            Assert.AreEqual(compra.ComprarArticulos(),true);
+            Assert.AreEqual(compra.PagarCompras(),true);
             Assert.AreEqual(compra.CompraClientes.FirstOrDefault().EstadoProductoCliente, Enum.EstadoClienteArticulo.PAGADO);
             Assert.AreEqual(compra.Cliente.ClienteMetodoDePagos.FirstOrDefault().Saldo, 4900);
         }

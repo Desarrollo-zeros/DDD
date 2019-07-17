@@ -10,6 +10,7 @@ namespace Domain.Enum
     {
         NO_PAGADO,
         CANCELADO,
-        PAGADO
+        PAGADO,
+        DESCONOCIDO
     }
 }

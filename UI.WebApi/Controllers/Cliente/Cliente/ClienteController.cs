@@ -52,27 +52,37 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
                 return Json(Mensaje.MensajeJson(Constants.IS_ERROR, responseCliente.Mensaje, Constants.CLIENT_FAIL));
             }
 
-            clienteModel.Cliente.Telefónos.ToList().ForEach(x =>
+            if(clienteModel.Cliente.Telefónos != null)
             {
-                clienteModel.ServicioTelefóno.Create(new ServicioTelefónoRequest
+                clienteModel.Cliente.Telefónos.ToList().ForEach(x =>
                 {
-                    Cliente_Id = responseCliente.Id,
-                    Número = x.Número,
-                    TipoTelefono = x.TipoTelefono
+                    clienteModel.ServicioTelefóno.Create(new ServicioTelefónoRequest
+                    {
+                        Cliente_Id = responseCliente.Id,
+                        Número = x.Número,
+                        TipoTelefono = x.TipoTelefono
+                    });
                 });
-            });
 
-            clienteModel.Cliente.Direcciónes.ToList().ForEach(x =>
+            }
+
+
+            if (clienteModel.Cliente.Direcciónes != null)
             {
-                clienteModel.ServicioDirección.Create(new ServicioDireccíonRequest
+                clienteModel.Cliente.Direcciónes.ToList().ForEach(x =>
                 {
-                    Cliente_Id = responseCliente.Id,
-                    Barrio = x.Barrio,
-                    Direccion = x.Direccion,
-                    Municipio_Id = x.Municipio_Id,
-                    CodigoPostal = x.CodigoPostal
+                    clienteModel.ServicioDirección.Create(new ServicioDireccíonRequest
+                    {
+                        Cliente_Id = responseCliente.Id,
+                        Barrio = x.Barrio,
+                        Direccion = x.Direccion,
+                        Municipio_Id = x.Municipio_Id,
+                        CodigoPostal = x.CodigoPostal
+                    });
                 });
-            });
+            }
+
+           
 
             return Json(Mensaje.MensajeJson(Constants.NO_ERROR, responseCliente.Mensaje, Constants.CLIENT_SUCCESS));
         }
@@ -96,29 +106,37 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
                 Usuario_Id = usuario.id,
             });
 
-            clienteModel.Cliente.Telefónos.ToList().ForEach(x =>
+            if(clienteModel.Cliente.Telefónos != null)
             {
-                clienteModel.ServicioTelefóno.Edit(new ServicioTelefónoRequest
+                clienteModel.Cliente.Telefónos.ToList().ForEach(x =>
                 {
-                    Cliente_Id = responseCliente.Id,
-                    Número = x.Número,
-                    TipoTelefono = x.TipoTelefono,
-                    Id = x.Id
+                    clienteModel.ServicioTelefóno.Edit(new ServicioTelefónoRequest
+                    {
+                        Cliente_Id = responseCliente.Id,
+                        Número = x.Número,
+                        TipoTelefono = x.TipoTelefono,
+                        Id = x.Id
+                    });
                 });
-            });
+            }
 
-            clienteModel.Cliente.Direcciónes.ToList().ForEach(x =>
+            
+            if (clienteModel.Cliente.Direcciónes != null)
             {
-                clienteModel.ServicioDirección.Edit(new ServicioDireccíonRequest
+                clienteModel.Cliente.Direcciónes.ToList().ForEach(x =>
                 {
-                    Cliente_Id = responseCliente.Id,
-                    Barrio = x.Barrio,
-                    Direccion = x.Direccion,
-                    Municipio = x.Municipio,
-                    CodigoPostal = x.CodigoPostal,
-                    Id = x.Id
+                    clienteModel.ServicioDirección.Edit(new ServicioDireccíonRequest
+                    {
+                        Cliente_Id = responseCliente.Id,
+                        Barrio = x.Barrio,
+                        Direccion = x.Direccion,
+                        Municipio = x.Municipio,
+                        CodigoPostal = x.CodigoPostal,
+                        Id = x.Id
+                    });
                 });
-            });
+            } 
+            
 
             return Json(Mensaje.MensajeJson(Constants.NO_ERROR, responseCliente.Mensaje, Constants.CLIENT_SUCCESS));
         }
@@ -147,6 +165,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
             {
                 return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
             }
+            
 
             int cont = 0, id = metodoPago.ServicioCliente.Get(new ServicioClienteRequest { Usuario_Id = usuario.id }).Id;
             bool activo = false;

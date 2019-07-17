@@ -47,37 +47,29 @@ namespace Domain.Entities.Cliente
 
         public bool DescontarSaldo(double saldo)
         {
-            if (Cliente.Usuario.Rol == Rol.DEV || Cliente.Usuario.Rol == Rol.ADMINISTRADOR)
+            if (TieneSaldo(saldo) && SePuedeDescontar(saldo) && Activo && saldo > 0)
             {
-                if (TieneSaldo(saldo) && SePuedeDescontar(saldo) && this.Activo && saldo > 0)
-                {
-                    this.Saldo -= saldo;
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                Saldo -= saldo;
+                return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
+            
         }
 
         public bool AumentarSaldo(double saldo)
         {
-            if(Cliente.Usuario.Rol == Rol.DEV || Cliente.Usuario.Rol == Rol.ADMINISTRADOR)
+            if (saldo > 0 && Activo == true)
             {
-                if (saldo > 0 && this.Activo == true)
-                {
-                    this.Saldo += saldo;
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                Saldo += saldo;
+                return true;
             }
-
-            return false;
+            else
+            {
+                return false;
+            }
         }
     }
 }

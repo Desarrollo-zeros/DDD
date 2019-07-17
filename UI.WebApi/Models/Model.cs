@@ -10,6 +10,8 @@ using System.Web;
 using UI.WebApi.Singleton;
 using Application.Base;
 using Newtonsoft.Json;
+using Application.Implements.Factura;
+using Domain.Entities.Factura;
 
 namespace UI.WebApi.Models
 {
@@ -25,6 +27,10 @@ namespace UI.WebApi.Models
         public ServicioTelefóno ServicioTelefóno { set; get; }
         [JsonIgnore]
         public ServicioMetodoPago ServicioMetodoPago { set; get; }
+        [JsonIgnore]
+        public ServicioCompra ServicioCompra { set; get; }
+        [JsonIgnore]
+        public ServicioCompraCliente ServicioCompraCliente { set; get; }
 
        
         public Model() : base(FactoriesSingleton<T>.UnitOfWork, FactoriesSingleton<T>.GenericRepository)
@@ -34,6 +40,8 @@ namespace UI.WebApi.Models
             ServicioDirección = new ServicioDirección(FactoriesSingleton<Dirección>.UnitOfWork, FactoriesSingleton<Dirección>.GenericRepository);
             ServicioTelefóno = new ServicioTelefóno(FactoriesSingleton<Telefóno>.UnitOfWork, FactoriesSingleton<Telefóno>.GenericRepository);
             ServicioMetodoPago = new ServicioMetodoPago(FactoriesSingleton<ClienteMetodoDePago>.UnitOfWork, FactoriesSingleton<ClienteMetodoDePago>.GenericRepository);
+            ServicioCompra = new ServicioCompra(FactoriesSingleton<Compra>.UnitOfWork, FactoriesSingleton<Compra>.GenericRepository);
+            ServicioCompraCliente = new ServicioCompraCliente(FactoriesSingleton<CompraCliente>.UnitOfWork, FactoriesSingleton<CompraCliente>.GenericRepository);
         }
 
     }

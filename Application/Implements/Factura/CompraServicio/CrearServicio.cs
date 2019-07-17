@@ -52,7 +52,7 @@ namespace Application.Implements.Factura.CompraServicio
             compra.Cliente = clientes.FindBy(c => c.Id == compra.Cliente_Id).FirstOrDefault();
             compra.Cliente.ClienteMetodoDePagos = clienteMetodoDePagos.FindBy(c => c.Cliente_Id == compra.Cliente_Id && c.Activo == true).ToList();
             compra.ComprobanteDePagos = comprobanteDePagos.FindBy(c => c.Compra_Id == request.Compra_Id).ToList();
-            compra.CompraClientes = productoClientes.FindBy(m => m.Compra_Id == request.Compra_Id && m.EstadoProductoCliente == EstadoClienteArticulo.NO_PAGADO).ToList();
+            compra.CompraClientes = productoClientes.FindBy(m => m.Compra_Id == request.Compra_Id && m.EstadoClienteArticulo == EstadoClienteArticulo.NO_PAGADO).ToList();
             compra.CompraClientes.ToList().ForEach(x =>
             {
                 x.Producto = productos.FindBy(f=>f.Id == x.Producto_Id).FirstOrDefault();
@@ -64,7 +64,7 @@ namespace Application.Implements.Factura.CompraServicio
                 });
 
             });
-            if (compra.ComprarArticulos())
+            if (compra.CompletarCompras())
             {
                 _repositoryCompra.Edit(compra);
                 compra.CompraClientes.ToList().ForEach(x =>
