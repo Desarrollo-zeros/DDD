@@ -1,7 +1,6 @@
 ﻿using Application.Base;
 using Domain.Abstracts;
 using Domain.Entities.Cliente;
-using Domain.Enum;
 using Domain.Factories;
 using System.Linq;
 
@@ -12,7 +11,7 @@ namespace Application.Implements.Cliente.ServicioUsuario
     {
         readonly IUnitOfWork _unitOfWork;
         public readonly IGenericRepository<Usuario> _repository;
-        
+
 
         public ServicioUsuario(IUnitOfWork unitOfWork, IGenericRepository<Usuario> repository)
         {
@@ -20,15 +19,15 @@ namespace Application.Implements.Cliente.ServicioUsuario
             _repository = repository;
         }
 
-        
+
         public ServiceResponse Create(ServicioUsuarioRequest request)
         {
             var usuario = Get(request);
-            if(usuario == null)
+            if (usuario == null)
             {
                 var buildUser = BuilderFactories.Usuario(request.Username, request.Password, request.Activo, request.Rol);
-                 usuario = _repository.Add(buildUser);
-                if(_unitOfWork.Commit() == 1)
+                usuario = _repository.Add(buildUser);
+                if (_unitOfWork.Commit() == 1)
                 {
                     return new ServiceResponse()
                     {

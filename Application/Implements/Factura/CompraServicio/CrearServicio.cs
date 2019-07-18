@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Infraestructure.Data;
-using Domain.Factories;
-using Domain.Entities.Factura;
+﻿using Application.Base;
 using Domain.Abstracts;
-using Infraestructure.Data.Repositories;
-using Application.Base;
-using Application.Implements.Producto.ProductoServicio;
-using Application.Implements.Cliente;
+using Domain.Entities.Factura;
 using Domain.Enum;
+using Infraestructure.Data.Repositories;
+using System;
+using System.Linq;
 
 namespace Application.Implements.Factura.CompraServicio
 {
@@ -45,9 +38,9 @@ namespace Application.Implements.Factura.CompraServicio
             }
         }
 
-        public ServiceResponse CompletarCompra(ServicesRequest request, Repository<CompraCliente> productoClientes, Repository<Domain.Entities.Producto.Producto> productos, Repository<Domain.Entities.Producto.ProductoDescuento> productoDescuentos, Repository<Domain.Entities.Producto.Descuento> descuentos, Repository< Domain.Entities.Cliente.Cliente> clientes, Repository<Domain.Entities.Cliente.ClienteMetodoDePago> clienteMetodoDePagos, Repository<Domain.Entities.Factura.ComprobanteDePago> comprobanteDePagos)
+        public ServiceResponse CompletarCompra(ServicesRequest request, Repository<CompraCliente> productoClientes, Repository<Domain.Entities.Producto.Producto> productos, Repository<Domain.Entities.Producto.ProductoDescuento> productoDescuentos, Repository<Domain.Entities.Producto.Descuento> descuentos, Repository<Domain.Entities.Cliente.Cliente> clientes, Repository<Domain.Entities.Cliente.ClienteMetodoDePago> clienteMetodoDePagos, Repository<Domain.Entities.Factura.ComprobanteDePago> comprobanteDePagos)
         {
-           
+
             var compra = _repositoryCompra.FindBy(z => z.Id == request.Compra_Id).FirstOrDefault();
             compra.Cliente = clientes.FindBy(c => c.Id == compra.Cliente_Id).FirstOrDefault();
             compra.Cliente.ClienteMetodoDePagos = clienteMetodoDePagos.FindBy(c => c.Cliente_Id == compra.Cliente_Id && c.Activo == true).ToList();
@@ -55,7 +48,7 @@ namespace Application.Implements.Factura.CompraServicio
             compra.CompraClientes = productoClientes.FindBy(m => m.Compra_Id == request.Compra_Id && m.EstadoClienteArticulo == EstadoClienteArticulo.NO_PAGADO).ToList();
             compra.CompraClientes.ToList().ForEach(x =>
             {
-                x.Producto = productos.FindBy(f=>f.Id == x.Producto_Id).FirstOrDefault();
+                x.Producto = productos.FindBy(f => f.Id == x.Producto_Id).FirstOrDefault();
                 x.Producto.ProductoDescuentos = productoDescuentos.GetAll().ToList();
 
                 x.Producto.ProductoDescuentos.ToList().ForEach(y =>
@@ -127,7 +120,7 @@ namespace Application.Implements.Factura.CompraServicio
 
         public ServiceResponse Crear(ServicesComprobanteCompraRequest request)
         {
-            var comprobanteDePago = new ComprobanteDePago(request.EstadoDePago,request.Total,request.SubTotal, request.MedioPago,request.Monto,request.FechaDePago,request.TotalDescuentoAplicados,request.Compra_Id);
+            var comprobanteDePago = new ComprobanteDePago(request.EstadoDePago, request.Total, request.SubTotal, request.MedioPago, request.Monto, request.FechaDePago, request.TotalDescuentoAplicados, request.Compra_Id);
             _repositoryCompra.Add(comprobanteDePago);
             if (_unitOfWork.Commit() == 1)
             {
@@ -145,9 +138,9 @@ namespace Application.Implements.Factura.CompraServicio
 
     public class ServicesRequest
     {
-            public int Compra_Id { set; get; } 
-            public int Cliente_Id { set; get; }
-            public DateTime FechaCompra { set; get; }   
+        public int Compra_Id { set; get; }
+        public int Cliente_Id { set; get; }
+        public DateTime FechaCompra { set; get; }
     }
 
     public class ServicesComprobanteCompraRequest
@@ -161,6 +154,6 @@ namespace Application.Implements.Factura.CompraServicio
         public DateTime FechaDePago { set; get; }
         public double TotalDescuentoAplicados { set; get; }
     }
-    
+
 
 }

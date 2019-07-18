@@ -1,10 +1,5 @@
 ﻿using Domain.Enum;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities.Producto
 {
@@ -30,7 +25,7 @@ namespace Domain.Entities.Producto
         [ForeignKey("Descuento_Id")] public Descuento Descuento { set; get; }
         public EstadoDescuento EstadoDescuento { set; get; }
 
-      
-     
+
+
     }
 }

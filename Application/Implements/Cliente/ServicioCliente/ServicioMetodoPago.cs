@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Base;
+﻿using Application.Base;
 using Domain.Abstracts;
 using Domain.Entities.Cliente;
 using Domain.Factories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Application.Implements.Cliente.ServicioCliente
 {
@@ -25,7 +23,7 @@ namespace Application.Implements.Cliente.ServicioCliente
         {
             var metodoPago = Get(request);
 
-            if(metodoPago != null)
+            if (metodoPago != null)
             {
                 return new ServiceResponse
                 {
@@ -58,8 +56,8 @@ namespace Application.Implements.Cliente.ServicioCliente
 
         public ServiceResponse Edit(ServicioMetodoPagoRequest request)
         {
-            var metodoPago = Get(new ServicioMetodoPagoRequest { Id = request.Id, Cliente_Id = request.Cliente_Id  });
-         
+            var metodoPago = Get(new ServicioMetodoPagoRequest { Id = request.Id, Cliente_Id = request.Cliente_Id });
+
             metodoPago.Cliente = request.Cliente;
 
 

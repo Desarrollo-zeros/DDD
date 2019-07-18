@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.ValueObjects
 {
@@ -23,7 +17,7 @@ namespace Domain.ValueObjects
             }
         }
 
-        public Imagen(){}
+        public Imagen() { }
 
         [Column("Imagen")]
         public string Img { set; get; }

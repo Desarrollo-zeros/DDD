@@ -1,7 +1,4 @@
-﻿using Domain.Entities.Factura;
-using Domain.Entities.Producto;
-using Newtonsoft.Json;
-using System;
+﻿using Domain.Entities.Producto;
 using System.Collections.Generic;
 using System.Linq;
 using UI.WebApi.Models.FacturaModel;
@@ -11,20 +8,13 @@ namespace UI.WebApi.Models.ProductoModel
     public class ProductoModel : Model<Producto>
     {
         public Producto Producto { set; get; }
-        
-        [JsonIgnore]
-        private static ProductoModel productoModel;
+
+
         public static ProductoModel Instance
         {
             get
             {
-
-                if (productoModel == null)
-                {
-                    productoModel = new ProductoModel();
-                }
-                return productoModel;
-
+                return new ProductoModel();
             }
         }
 

@@ -1,13 +1,8 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities.Cliente;
+﻿using Domain.Entities.Cliente;
 using Domain.Enum;
 using Domain.ValueObjects;
-using Domain.Factories;
+using NUnit.Framework;
+using System;
 
 namespace Domain.Test.Entities
 {
@@ -15,15 +10,15 @@ namespace Domain.Test.Entities
     class ClienteMetodoDePagoTest
     {
         //private CreditCard creditCard;
-         ClienteMetodoDePago ClienteMetodoDePago ;
+        ClienteMetodoDePago ClienteMetodoDePago;
 
         [SetUp]
         public void Initialize()
         {
-            ClienteMetodoDePago = new ClienteMetodoDePago(1,20000,true);
-            ClienteMetodoDePago.Cliente = new Cliente("1063969856", new Nombre("carlos","andres","","castilla"), "carlos@ca.com", 1);
-            ClienteMetodoDePago.Cliente.Usuario = new Usuario("","",true, Rol.ADMINISTRADOR);
-           
+            ClienteMetodoDePago = new ClienteMetodoDePago(1, 20000, true);
+            ClienteMetodoDePago.Cliente = new Cliente("1063969856", new Nombre("carlos", "andres", "", "castilla"), "carlos@ca.com", 1);
+            ClienteMetodoDePago.Cliente.Usuario = new Usuario("", "", true, Rol.ADMINISTRADOR);
+
             //creditCard = new CreditCard(CreditCardType.Amex, "3718 892513 11442","000","carlos",new DateTime());
 
         }
@@ -32,7 +27,7 @@ namespace Domain.Test.Entities
         [Test]
         public void ValidarCreditCardNumberTestFails()
         {
-            var ex = Assert.Throws<Exception>(() => new CreditCard(CreditCardType.Amex, "123456789123456", "000", "carlos", new DateTime(2019,07,29)));
+            var ex = Assert.Throws<Exception>(() => new CreditCard(CreditCardType.Amex, "123456789123456", "000", "carlos", new DateTime(2019, 07, 29)));
             Assert.That(ex.Message, Is.EqualTo("Numero Tarjeta invalido"));
         }
 

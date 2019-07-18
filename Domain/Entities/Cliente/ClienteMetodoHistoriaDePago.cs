@@ -19,7 +19,7 @@ namespace Domain.Entities.Cliente
         public int Cliente_Id { set; get; }
         [ForeignKey("Cliente_Id")] public Cliente Cliente { set; get; }
         public int ClienteMetodoDePago_Id { set; get; }
-        [ForeignKey("ClienteMetodoDePago_Id")]public ClienteMetodoDePago ClienteMetodoDePago { set; get; }
+        [ForeignKey("ClienteMetodoDePago_Id")] public ClienteMetodoDePago ClienteMetodoDePago { set; get; }
         public double SaldoAnterio { set; get; }
         public double SaldoNuevo { set; get; }
         public string IP { set; get; }

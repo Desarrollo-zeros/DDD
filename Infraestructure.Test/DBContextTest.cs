@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Infraestructure.Data;
+using System;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Infraestructure.Data;
 using System.Data.Entity;
-using Domain.Entities;
 
 namespace Infraestructure.Test
 {

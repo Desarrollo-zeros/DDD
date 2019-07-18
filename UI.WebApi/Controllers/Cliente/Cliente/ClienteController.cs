@@ -1,5 +1,4 @@
-﻿using Application.Base;
-using Application.Implements.Cliente.ServicioCliente;
+﻿using Application.Implements.Cliente.ServicioCliente;
 using Application.Implements.Cliente.ServicioUsuario;
 using Domain.Enum;
 using Domain.Factories;
@@ -7,7 +6,6 @@ using System;
 using System.Linq;
 using System.Web.Http;
 using UI.WebApi.Generico;
-using UI.WebApi.Models;
 using UI.WebApi.Models.ClienteModel.ClienteM;
 using UI.WebApi.Models.ClienteModel.UsuarioM;
 
@@ -31,7 +29,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
         [Route("create")]
         public IHttpActionResult Create(ClienteModel clienteModel)
         {
-            
+
             if (clienteModel.Cliente == null)
             {
                 return Json(Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.CLIENT_FAIL));
@@ -39,7 +37,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
             }
             int id = 0;
 
-            if(clienteModel.Cliente.Usuario != null)
+            if (clienteModel.Cliente.Usuario != null)
             {
                 var factoryUser = BuilderFactories.Usuario(clienteModel.Cliente.Usuario.Username, clienteModel.Cliente.Usuario.Password, true, Rol.INVITADO);
                 var responseUsuario = usuario.ServicioUsuario.Create(new ServicioUsuarioRequest { Username = factoryUser.Username, Password = factoryUser.Password, Rol = Rol.CLIENTE, Activo = true });
@@ -128,7 +126,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
                 Usuario_Id = usuario.id,
             });
 
-            if(clienteModel.Cliente.Telefónos != null)
+            if (clienteModel.Cliente.Telefónos != null)
             {
                 clienteModel.Cliente.Telefónos.ToList().ForEach(x =>
                 {
@@ -142,7 +140,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
                 });
             }
 
-            
+
             if (clienteModel.Cliente.Direcciónes != null)
             {
                 clienteModel.Cliente.Direcciónes.ToList().ForEach(x =>
@@ -157,8 +155,8 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
                         Id = x.Id
                     });
                 });
-            } 
-            
+            }
+
 
             return Json(Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.NO_ERROR, responseCliente.Mensaje, Constants.CLIENT_SUCCESS));
         }
@@ -201,7 +199,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
             {
                 return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
             }
-            
+
 
             int cont = 0, id = metodoPago.ServicioCliente.Get(new ServicioClienteRequest { Usuario_Id = usuario.id }).Id;
             bool activo = false;

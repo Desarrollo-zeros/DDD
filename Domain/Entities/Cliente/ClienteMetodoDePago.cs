@@ -1,10 +1,5 @@
-﻿using Domain.Enum;
-using Domain.ValueObjects;
-using System.Collections.Generic;
+﻿using Domain.ValueObjects;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities.Cliente
 {
@@ -56,7 +51,7 @@ namespace Domain.Entities.Cliente
             {
                 return false;
             }
-            
+
         }
 
         public bool AumentarSaldo(double saldo)

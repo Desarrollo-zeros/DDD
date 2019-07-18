@@ -1,10 +1,5 @@
 ﻿using Domain.Enum;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 
@@ -25,7 +20,7 @@ namespace Domain.Entities.Factura
 
         public int Compra_Id { set; get; }
         [ForeignKey("Compra_Id")] public Compra Compra { set; get; }
-      
+
         public int Producto_Id { set; get; }
         [ForeignKey("Producto_Id")] public Producto.Producto Producto { set; get; }
         public int Cantidad { set; get; }

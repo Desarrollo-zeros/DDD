@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -24,8 +20,8 @@ namespace Infraestructure.Data.Base
     public class DbContextBase : DbContext, IDbContext
     {
         public DbContextBase(string nameOrConnectionString)
-            : base(nameOrConnectionString){}
-        public DbContextBase(DbConnection connection): base(connection, true)
+            : base(nameOrConnectionString) { }
+        public DbContextBase(DbConnection connection) : base(connection, true)
         { Configuration.LazyLoadingEnabled = false; }
 
         public Action<string> Log

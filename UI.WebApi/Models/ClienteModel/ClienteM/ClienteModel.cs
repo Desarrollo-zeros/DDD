@@ -1,16 +1,7 @@
 ﻿
 using Application.Implements.Cliente.ServicioCliente;
-using Domain.Abstracts;
-using Domain.Entities.Cliente;
-using UI.WebApi.Singleton;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ComponentModel.DataAnnotations.Schema;
-using Newtonsoft.Json;
 using Application.Implements.Cliente.ServicioUsuario;
-using UI.WebApi.Models.ClienteModel.UsuarioM;
+using Domain.Entities.Cliente;
 
 namespace UI.WebApi.Models.ClienteModel.ClienteM
 {
@@ -19,19 +10,15 @@ namespace UI.WebApi.Models.ClienteModel.ClienteM
 
         public Cliente Cliente { set; get; }
 
-        public static ClienteModel Instance 
+        public static ClienteModel Instance
         {
             get
             {
-                if (clienteModel == null)
-                {
-                    clienteModel = new ClienteModel();
-                }
-                return clienteModel;
+                return new ClienteModel();
             }
         }
 
-        private static ClienteModel clienteModel;
+
 
         public static ClienteModel GetAll(int id)
         {
@@ -45,10 +32,10 @@ namespace UI.WebApi.Models.ClienteModel.ClienteM
             return Instance;
         }
 
-    
+
         public ClienteModel()
         {
-            
+
         }
     }
 }

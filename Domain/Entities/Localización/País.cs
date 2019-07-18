@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Domain.Enum;
 using System.Collections.Generic;
-using Domain.Enum;
 
 namespace Domain.Entities.Localizacíon
 {

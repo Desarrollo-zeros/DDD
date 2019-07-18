@@ -1,12 +1,10 @@
-﻿using NUnit.Framework;
+﻿using Domain.Entities.Cliente;
+using Domain.Entities.Factura;
+using Domain.Entities.Producto;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities.Factura;
-using Domain.Entities.Producto;
-using Domain.Entities.Cliente;
 
 namespace Domain.Test.Entities
 {
@@ -15,19 +13,19 @@ namespace Domain.Test.Entities
     {
         private Compra compra;
         private CompraEnvio compraEnvio;
-     
+
 
         [SetUp]
         public void Initialize()
         {
             compra = new Compra();
 
-            
+
 
             //var documento = new Domain.ValueObjects.Documento("1063969856");
             var nombre = new Domain.ValueObjects.Nombre("Carlos", "Andres", "Castilla", "Garcia");/*
             var email = new Domain.ValueObjects.EmailValueObject("carloscastilla31@gmail.com");*/
-            compra.Cliente = Factories.BuilderFactories.Cliente("1063969856", nombre, "carloscastilla31@gmail.com",1); ;
+            compra.Cliente = Factories.BuilderFactories.Cliente("1063969856", nombre, "carloscastilla31@gmail.com", 1); ;
 
             compra.Cliente.Usuario = new Usuario("0", "", true, Enum.Rol.ADMINISTRADOR)
             {
@@ -49,7 +47,7 @@ namespace Domain.Test.Entities
             };
             compra.CompraClientes = y;
 
-            compra.CompraClientes.ToList().FirstOrDefault().Producto = new Producto("algo","algo algo",null,1000,1200,10,1);
+            compra.CompraClientes.ToList().FirstOrDefault().Producto = new Producto("algo", "algo algo", null, 1000, 1200, 10, 1);
 
             var z = new List<ProductoDescuento>
             {
@@ -61,20 +59,21 @@ namespace Domain.Test.Entities
             compra.CompraClientes.ToList().FirstOrDefault().Producto.ProductoDescuentos = z;
 
 
-            double descuentoAplicado =0;
+            double descuentoAplicado = 0;
 
-            foreach(var l in compra.CompraClientes.ToList().FirstOrDefault().Producto.ProductoDescuentos){
-                l.Descuento = new Descuento(Enum.TipoDescuento.FIJO, true, new DateTime(2019, 06, 29, 1, 0, 0), new DateTime(2019, 06, 30, 23, 0, 0),0.05);
+            foreach (var l in compra.CompraClientes.ToList().FirstOrDefault().Producto.ProductoDescuentos)
+            {
+                l.Descuento = new Descuento(Enum.TipoDescuento.FIJO, true, new DateTime(2019, 06, 29, 1, 0, 0), new DateTime(2019, 06, 30, 23, 0, 0), 0.05);
 
                 descuentoAplicado += l.Descuento.Descu;
             }
 
-           
-             compra.ComprobanteDePagos = new List<ComprobanteDePago>() { new ComprobanteDePago(Enum.EstadoDePago.EN_ESPERA, 1200, 1200, Enum.MedioPago.EFECTIVO, 12000, DateTime.Now, descuentoAplicado, 1) };
+
+            compra.ComprobanteDePagos = new List<ComprobanteDePago>() { new ComprobanteDePago(Enum.EstadoDePago.EN_ESPERA, 1200, 1200, Enum.MedioPago.EFECTIVO, 12000, DateTime.Now, descuentoAplicado, 1) };
 
             List<CompraEnvio> compraEnvios = new List<CompraEnvio>();
             compraEnvios.Add(new CompraEnvio(1, 1, DateTime.Now, DateTime.Now, Enum.EstadoDeEnvio.ESPERANDO_PETICION));
-           
+
             compraEnvio = new CompraEnvio
             {
                 Compra = compra
@@ -97,7 +96,7 @@ namespace Domain.Test.Entities
         [Test]
         public void ComprarYDescontarSaldoSucessTest()
         {
-            Assert.AreEqual(compra.DescontarTotalProductoEnSaldo(5000),true);
+            Assert.AreEqual(compra.DescontarTotalProductoEnSaldo(5000), true);
             Assert.AreEqual(compra.Cliente.ClienteMetodoDePagos.First().Saldo, 5000);
 
         }
@@ -114,9 +113,9 @@ namespace Domain.Test.Entities
         public void ComprarCambioEstadoDePagoSuccessTest()
         {
             compra.Cliente_Id = 1;
-            double x = compra.ObtenerDescuentoPorProductoCompra( 1, 5); 
-            Assert.AreEqual(900,(int) x);
-            Assert.AreEqual(compra.DescontarTotalProductoEnSaldo(1200-x), true);
+            double x = compra.ObtenerDescuentoPorProductoCompra(1, 5);
+            Assert.AreEqual(900, (int)x);
+            Assert.AreEqual(compra.DescontarTotalProductoEnSaldo(1200 - x), true);
             Assert.AreEqual(compra.Cliente.ClienteMetodoDePagos.First().Saldo, 9700);
             Assert.AreEqual(compra.ComprobanteDePagos.FirstOrDefault().EstadoDePago, Enum.EstadoDePago.PAGADO);
         }
@@ -141,7 +140,7 @@ namespace Domain.Test.Entities
             Assert.AreEqual(compra.Cliente.ClienteMetodoDePagos.First().Saldo, 10000);
         }
 
-        
+
         [Test]
         public void ObtenerDescuentoCompraSuccessTest()
         {
@@ -170,10 +169,10 @@ namespace Domain.Test.Entities
         [Test]
         public void ObtenerDescuentoCompraExcepcionesTest()
         {
-            var ex1 = Assert.Throws<Exception>(() => compra.ObtenerDescuentoPorProductoCompra( 2, 10));
+            var ex1 = Assert.Throws<Exception>(() => compra.ObtenerDescuentoPorProductoCompra(2, 10));
             Assert.That(ex1.Message, Is.EqualTo("El producto Y/o el cliente no existen"));
 
-            var ex2 = Assert.Throws<Exception>(() => compra.ObtenerDescuentoPorProductoCompra( 1, 10));
+            var ex2 = Assert.Throws<Exception>(() => compra.ObtenerDescuentoPorProductoCompra(1, 10));
             Assert.That(ex2.Message, Is.EqualTo("El producto Y/o el cliente no existen"));
 
             var ex3 = Assert.Throws<Exception>(() => compra.ObtenerDescuentoPorProductoCompra(2, 10));
@@ -184,9 +183,9 @@ namespace Domain.Test.Entities
         [Test]
         public void ComprarArticulosSuccessTest()
         {
-            
+
             compra.CompraClientes.FirstOrDefault().Cantidad = 5;
-            Assert.AreEqual(compra.CompletarCompras(),true);
+            Assert.AreEqual(compra.CompletarCompras(), true);
             Assert.AreEqual(compra.CompraClientes.FirstOrDefault().EstadoClienteArticulo, Enum.EstadoClienteArticulo.PAGADO);
             Assert.AreEqual(compra.Cliente.ClienteMetodoDePagos.FirstOrDefault().Saldo, 4900);
         }

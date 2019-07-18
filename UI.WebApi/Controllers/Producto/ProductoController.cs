@@ -2,13 +2,12 @@
 using Domain.Enum;
 using Domain.Factories;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using UI.WebApi.Generico;
 using UI.WebApi.Models.ClienteModel.UsuarioM;
-using UI.WebApi.Models.FacturaModel;
 using UI.WebApi.Models.ProductoModel;
-using UI.WebApi.Singleton;
 
 namespace UI.WebApi.Controllers.Producto
 {
@@ -100,66 +99,78 @@ namespace UI.WebApi.Controllers.Producto
         [Route("categoria_get/{id}")]
         public IHttpActionResult GetCategoria(int id)
         {
-            
-            CategoriaModel.Instance.Categoria = CategoriaModel.Instance.Find(id);
-            if (CategoriaModel.Instance.Categoria != null)
+            List<Categoria> c = new CategoriaModel()._repository.FindBy(x => x.Id == 1).ToList();
+            c.ForEach(x =>
             {
-                CategoriaModel.Instance.Categoria.Productos = ProductoModel.Instance._repository.FindBy(x => x.Categoria_Id == CategoriaModel.Instance.Categoria.Id).ToList();
+                x.Productos = new ProductoModel()._repository.FindBy(y => y.Categoria_Id == x.Id).ToList();
+            });
+            return Json(c);
 
-                if(CategoriaModel.Instance.Categoria.Productos != null)
+            /*
+            var categoria = new CategoriaModel
+            {
+                Categoria = new CategoriaModel()._repository.FindBy(x=>x.Id == 1)
+            };
+            if (categoria.Categoria != null)
+            {
+                categoria.Categoria.Productos = new ProductoModel()._repository.FindBy(x => x.Categoria_Id == id).ToList();
+
+                if (categoria.Categoria.Productos != null)
                 {
-                    CategoriaModel.Instance.Categoria.Productos.ToList().ForEach(x =>
+                    categoria.Categoria.Productos.ToList().ForEach(x =>
                     {
-                        x.ProductoDescuentos = ProductoDescuentoModel.Instance._repository.FindBy(y => y.Producto_Id == x.Id).ToList();
-                        if(x.ProductoDescuentos != null)
+                        x.ProductoDescuentos = new ProductoDescuentoModel()._repository.FindBy(y => y.Producto_Id == x.Id).ToList();
+                        if (x.ProductoDescuentos != null)
                         {
                             x.ProductoDescuentos.ToList().ForEach(y =>
                             {
                                 y.Descuento = DescuentoModel.Instance._repository.FindBy(t => t.Id == y.Descuento_Id).FirstOrDefault();
-                                if(y.Descuento != null)
+                                if (y.Descuento != null)
                                 {
                                     x.Descuento += y.Descuento.Descu;
                                 }
                             });
-                        } 
+                        }
                     });
                 }
                 
             }
-            return Json(CategoriaModel.Instance);
+            return Json(categoria);
+            */
+
         }
 
         [HttpGet]
         [Route("categoria_get_all")]
         public IHttpActionResult GetAllCategoria()
         {
-
-            var categorias = CategoriaModel.Instance.GetAll().ToList();
+            var categorias = new CategoriaModel().GetAll().ToList();
             if (categorias != null)
             {
                 categorias.ForEach(x =>
                 {
                     x.Productos = ProductoModel.Instance._repository.FindBy(y => y.Categoria_Id == x.Id).ToList();
-                    if(x.Productos != null)
+                    if (x.Productos != null)
                     {
-                        x.Productos.ToList().ForEach(y => {
+                        x.Productos.ToList().ForEach(y =>
+                        {
                             y.ProductoDescuentos = ProductoDescuentoModel.Instance._repository.FindBy(z => z.Producto_Id == y.Id).ToList();
 
-                            if(y.ProductoDescuentos != null)
+                            if (y.ProductoDescuentos != null)
                             {
                                 y.ProductoDescuentos.ToList().ForEach(r =>
                                 {
                                     r.Descuento = DescuentoModel.Instance._repository.FindBy(t => t.Id == r.Descuento_Id).FirstOrDefault();
-                                    if(r.Descuento != null)
+                                    if (r.Descuento != null)
                                     {
                                         y.Descuento += r.Descuento.Descu;
                                     }
                                 });
                             }
-                            
+
                         });
                     }
-                   
+
                 });
             }
             return Json(categorias);
@@ -173,14 +184,15 @@ namespace UI.WebApi.Controllers.Producto
             var categorias = CategoriaModel.Instance.GetAll().ToList();
             if (categorias != null)
             {
-               
+
                 categorias.ForEach(x =>
                 {
                     x.Productos = ProductoModel.Instance._repository.FindBy(y => y.Categoria_Id == x.Id).OrderByDescending(z => z.FechaCreacion).ThenByDescending(z => z.FechaCreacion).Take(10);
 
                     if (x.Productos != null)
                     {
-                        x.Productos.ToList().ForEach(y => {
+                        x.Productos.ToList().ForEach(y =>
+                        {
                             y.ProductoDescuentos = ProductoDescuentoModel.Instance._repository.FindBy(z => z.Producto_Id == y.Id).ToList();
 
                             if (y.ProductoDescuentos != null)
@@ -202,7 +214,7 @@ namespace UI.WebApi.Controllers.Producto
         }
 
 
-       
+
 
 
         [HttpPost]
@@ -300,7 +312,7 @@ namespace UI.WebApi.Controllers.Producto
             if (ProductoModel.Instance.Producto != null)
             {
                 ProductoModel.Instance.Producto.ProductoDescuentos = ProductoDescuentoModel.Instance._repository.FindBy(x => x.Producto_Id == id);
-                if(ProductoModel.Instance.Producto.ProductoDescuentos != null)
+                if (ProductoModel.Instance.Producto.ProductoDescuentos != null)
                 {
                     ProductoModel.Instance.Producto.ProductoDescuentos.ToList().ForEach(x =>
                     {
@@ -311,7 +323,7 @@ namespace UI.WebApi.Controllers.Producto
                         }
                     });
                 }
-                
+
             }
             return Json(ProductoModel.Instance);
         }
@@ -327,23 +339,23 @@ namespace UI.WebApi.Controllers.Producto
                 productos.ForEach(x =>
                 {
                     x.Categoria = CategoriaModel.Instance.Find(x.Categoria_Id);
-                    if(x.Categoria != null)
+                    if (x.Categoria != null)
                     {
                         x.ProductoDescuentos = ProductoDescuentoModel.Instance._repository.FindBy(y => x.Id == y.Producto_Id);
-                        if(x.ProductoDescuentos != null)
+                        if (x.ProductoDescuentos != null)
                         {
                             x.ProductoDescuentos.ToList().ForEach(y =>
                             {
                                 y.Descuento = DescuentoModel.Instance._repository.FindBy(z => z.Id == y.Descuento_Id).FirstOrDefault();
-                                if(y.Descuento != null)
+                                if (y.Descuento != null)
                                 {
                                     x.Descuento += y.Descuento.Descu;
                                 }
                             });
                         }
-                           
+
                     }
-                    
+
                 });
             }
             return Json(productos);
@@ -499,7 +511,7 @@ namespace UI.WebApi.Controllers.Producto
         {
             var descuentos = DescuentoModel.Instance.GetAll().ToList();
 
-            if(descuentos != null)
+            if (descuentos != null)
             {
                 descuentos.ForEach(x =>
                 {
@@ -622,7 +634,7 @@ namespace UI.WebApi.Controllers.Producto
             if (ProductoDescuentoModel.Instance.ProductoDescuento != null)
             {
                 ProductoDescuentoModel.Instance.ProductoDescuento.Descuento = DescuentoModel.Instance._repository.FindBy(x => x.Id == ProductoDescuentoModel.Instance.ProductoDescuento.Descuento_Id).FirstOrDefault();
-                ProductoDescuentoModel.Instance.ProductoDescuento.Producto = ProductoModel.Instance._repository.FindBy(x=>x.Id == ProductoDescuentoModel.Instance.ProductoDescuento.Producto_Id).FirstOrDefault();
+                ProductoDescuentoModel.Instance.ProductoDescuento.Producto = ProductoModel.Instance._repository.FindBy(x => x.Id == ProductoDescuentoModel.Instance.ProductoDescuento.Producto_Id).FirstOrDefault();
             }
             return Json(ProductoDescuentoModel.Instance);
         }
@@ -633,7 +645,7 @@ namespace UI.WebApi.Controllers.Producto
         {
             var productoDescuentos = ProductoDescuentoModel.Instance.GetAll().ToList();
 
-            if(productoDescuentos != null)
+            if (productoDescuentos != null)
             {
                 productoDescuentos.ForEach(x =>
                 {

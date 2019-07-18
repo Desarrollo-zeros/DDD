@@ -16,7 +16,7 @@ namespace UI.WebApi.Controllers.Cliente.Usuario
     [RoutePrefix("api/Usuario")]
     public class UsuarioController : ApiController
     {
-       
+
         [HttpGet]
         [Route("echoping")]
         public IHttpActionResult EchoPing()
@@ -37,7 +37,7 @@ namespace UI.WebApi.Controllers.Cliente.Usuario
         [Route("Authenticate")]
         public IHttpActionResult Autenticar(UsuarioModel usuario)
         {
-            
+
             if (usuario.Usuario == null)
             {
                 return Json(Mensaje<Domain.Entities.Cliente.Usuario>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.USER_FAIL));
@@ -62,7 +62,7 @@ namespace UI.WebApi.Controllers.Cliente.Usuario
                 }
 
                 var token = TokenGenerator.GenerateTokenJwt(usuario.Usuario.Username);
-                return Ok((Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.NO_ERROR, token, Constants.USER_SUCCESS, ClienteModel.Instance._repository.FindBy(x=>x.Usuario_Id == usuario.Usuario.Id).FirstOrDefault())));
+                return Ok((Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.NO_ERROR, token, Constants.USER_SUCCESS, ClienteModel.Instance._repository.FindBy(x => x.Usuario_Id == usuario.Usuario.Id).FirstOrDefault())));
             }
             catch (Exception e)
             {
@@ -104,7 +104,7 @@ namespace UI.WebApi.Controllers.Cliente.Usuario
         {
             if (UsuarioModel.Instance.Auth().IsAuthenticated)
             {
-                return Json(Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.IS_ERROR, Constants.NO_AUTH, Constants.USER_FAIL, ClienteModel.Instance._repository.FindBy(x=>x.Usuario_Id == UsuarioModel.Instance.id).FirstOrDefault()));
+                return Json(Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.IS_ERROR, Constants.NO_AUTH, Constants.USER_FAIL, ClienteModel.Instance._repository.FindBy(x => x.Usuario_Id == UsuarioModel.Instance.id).FirstOrDefault()));
             }
             else
             {

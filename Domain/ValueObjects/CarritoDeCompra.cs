@@ -1,10 +1,6 @@
-﻿using Domain.Entities.Cliente;
-using Domain.Entities.Producto;
+﻿using Domain.Entities.Producto;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.ValueObjects
 {

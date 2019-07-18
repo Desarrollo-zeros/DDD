@@ -1,13 +1,7 @@
 ﻿using Domain.Entities.Factura;
-using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.RegularExpressions;
-using Newtonsoft.Json;
 
 namespace Domain.Entities.Producto
 {
@@ -17,7 +11,7 @@ namespace Domain.Entities.Producto
         public Producto(string nombre, string descripción, string imagen, double precioCompra, double precioVenta, int cantidadProducto, int categoria_Id)
         {
 
-            if(precioVenta > precioCompra)
+            if (precioVenta > precioCompra)
             {
                 throw new Exception("El precio de venta debe ser menor al precio de venta");
             }
@@ -32,8 +26,7 @@ namespace Domain.Entities.Producto
             {
                 Imagen = defaultImgBase64;
             }
-            
-           
+
             this.PrecioCompra = precioCompra;
             this.PrecioVenta = precioVenta;
             CantidadProducto = cantidadProducto;
@@ -43,13 +36,13 @@ namespace Domain.Entities.Producto
 
         public string Nombre { set; get; }
         public string Descripción { set; get; }
-        public  string Imagen { set; get; }
+        public string Imagen { set; get; }
         public double PrecioCompra { set; get; }
         public double PrecioVenta { set; get; }
         public int CantidadProducto { set; get; }
 
         public int Categoria_Id { set; get; }
-        
+
         public DateTime FechaCreacion { set; get; }
 
         [ForeignKey("Categoria_Id")] public Categoria Categoria { set; get; }
@@ -61,7 +54,7 @@ namespace Domain.Entities.Producto
         //public virtual IEnumerable<CompraEnvioProducto> CompraEnvioProductos { set; get; }
 
         [NotMapped]
-        
+       
         public double Descuento { set; get; }
 
         [NotMapped]

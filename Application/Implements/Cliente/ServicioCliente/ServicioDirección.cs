@@ -2,11 +2,8 @@
 using Domain.Abstracts;
 using Domain.Entities.Cliente;
 using Domain.Factories;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Implements.Cliente.ServicioCliente
 {
@@ -23,7 +20,7 @@ namespace Application.Implements.Cliente.ServicioCliente
 
         public ServiceResponse Create(ServicioDireccíonRequest request)
         {
-            var dirección = _repository.FindBy(x => x.Cliente_Id == request.Cliente_Id && x.Barrio == request.Barrio  && x.Direccion == request.Direccion ).FirstOrDefault();
+            var dirección = _repository.FindBy(x => x.Cliente_Id == request.Cliente_Id && x.Barrio == request.Barrio && x.Direccion == request.Direccion).FirstOrDefault();
             if (dirección != null)
             {
                 return new ServiceResponse() { Mensaje = "Dirección ya registrado", Status = false };
@@ -90,7 +87,7 @@ namespace Application.Implements.Cliente.ServicioCliente
             {
                 return _repository.FindBy(x =>
                     x.Id == request.Id &&
-                    x.Barrio == request.Barrio && 
+                    x.Barrio == request.Barrio &&
                     x.CodigoPostal == request.CodigoPostal &&
                     x.Direccion == request.Direccion &&
                     x.Cliente_Id == request.Cliente_Id

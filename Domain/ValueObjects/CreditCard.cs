@@ -1,14 +1,8 @@
 ﻿using Domain.Enum;
-using FluentValidation;
-using FluentValidation.Results;
-using FluentValidation.Validators;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Domain.ValueObjects
 {
@@ -25,7 +19,7 @@ namespace Domain.ValueObjects
 
         [Column("SecurityNumber")] public string SecurityNumber { get; set; }
 
-      
+
         public CreditCard(CreditCardType cardType, string cardNumber, string securityNumber, string ownerName, DateTime expiration)
         {
 
@@ -56,7 +50,7 @@ namespace Domain.ValueObjects
         }
 
 
-        
+
         public static bool VerificarTarjeta(string creditCardNumber)
         {
             StringBuilder digitsOnly = new StringBuilder();

@@ -1,12 +1,9 @@
-﻿using Domain.Entities.Localizacíon;
+﻿using Domain.Entities.Cliente;
+using Domain.Enum;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Enum;
-using Domain.Entities.Cliente;
 
 namespace Domain.Entities.Factura
 {
@@ -20,11 +17,12 @@ namespace Domain.Entities.Factura
             FechaEnvio = fechaEnvio;
             FechaLLegada = fechaLLegada;
             EstadoDeEnvio = estadoDeEnvio;
-            
+
         }
 
-        public CompraEnvio() {
-            
+        public CompraEnvio()
+        {
+
         }
 
         public int Compra_Id { set; get; }
@@ -38,14 +36,14 @@ namespace Domain.Entities.Factura
         public EstadoDeEnvio EstadoDeEnvio { set; get; }
 
         public virtual IEnumerable<CompraEnvioProducto> CompraEnvioProductos { set; get; }
-       
+
 
         public bool EnviarProducto(int producto_id)
         {
-            if(EstadoDeEnvio == EstadoDeEnvio.EN_VERIFICACIÓN)
+            if (EstadoDeEnvio == EstadoDeEnvio.EN_VERIFICACIÓN)
             {
                 CompraEnvioProducto compraEnvioProducto = CompraEnvioProductos.ToList().Find(x => x.Producto_Id == producto_id);
-                if(compraEnvioProducto == null)
+                if (compraEnvioProducto == null)
                 {
                     throw new Exception("No existe el producto a enviar");
                 }
@@ -64,7 +62,7 @@ namespace Domain.Entities.Factura
         {
             if (EstadoDeEnvio == EstadoDeEnvio.EN_VERIFICACIÓN)
             {
-                if(CompraEnvioProductos.Count() == 0)
+                if (CompraEnvioProductos.Count() == 0)
                 {
                     throw new Exception("no hay productos que enviar");
                 }

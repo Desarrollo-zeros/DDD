@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+﻿using Domain.Enum;
 using System.ComponentModel.DataAnnotations.Schema;
-using Domain.Enum;
-using Domain.ValueObjects;
 
 namespace Domain.Entities.Cliente
 {
@@ -27,8 +20,8 @@ namespace Domain.Entities.Cliente
         public int Cliente_Id { set; get; }
         [ForeignKey("Cliente_Id")] public Cliente Cliente { set; get; }
 
-       
+
     }
 
-    
+
 }

@@ -1,10 +1,5 @@
 ﻿using Domain.Enum;
-using Domain.ValueObjects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.Factura
@@ -32,7 +27,7 @@ namespace Domain.Entities.Factura
         [ForeignKey("Compra_Id")]
         public Compra Compra { set; get; }
 
-        [Column("Estado_de_pago")]  public EstadoDePago EstadoDePago { set; get; }
+        [Column("Estado_de_pago")] public EstadoDePago EstadoDePago { set; get; }
         public double Total { set; get; }
         public double SubTotal { set; get; }
 

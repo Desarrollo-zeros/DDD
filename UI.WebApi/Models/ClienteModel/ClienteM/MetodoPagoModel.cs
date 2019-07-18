@@ -1,12 +1,6 @@
-﻿using Application.Implements.Cliente.ServicioCliente;
-using Domain.Abstracts;
-using Domain.Entities.Cliente;
-using Newtonsoft.Json;
-using System;
+﻿using Domain.Entities.Cliente;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using UI.WebApi.Singleton;
 
 namespace UI.WebApi.Models.ClienteModel.ClienteM
 {
@@ -14,25 +8,20 @@ namespace UI.WebApi.Models.ClienteModel.ClienteM
     {
         public IEnumerable<ClienteMetodoDePago> ClienteMetodoDePagos { set; get; }
 
-        public MetodoPagoModel() 
+        public MetodoPagoModel()
         {
-           
+
         }
 
         public static MetodoPagoModel Instance
         {
             get
             {
-                if (metodoPagoModel == null)
-                {
-                    metodoPagoModel = new MetodoPagoModel();
-                }
-                return metodoPagoModel;
+                return new MetodoPagoModel();
             }
         }
 
-        [JsonIgnore]
-        private static MetodoPagoModel metodoPagoModel;
+
 
         public static MetodoPagoModel GetAll(int idUsuario)
         {
@@ -42,7 +31,7 @@ namespace UI.WebApi.Models.ClienteModel.ClienteM
 
         public static MetodoPagoModel Get(int idUsuario, int idMetodoPago)
         {
-            Instance.ClienteMetodoDePagos = ClienteModel.GetAll(idUsuario).Cliente.ClienteMetodoDePagos.Where(x=>x.Id == idMetodoPago);
+            Instance.ClienteMetodoDePagos = ClienteModel.GetAll(idUsuario).Cliente.ClienteMetodoDePagos.Where(x => x.Id == idMetodoPago);
             return Instance;
         }
     }

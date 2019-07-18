@@ -1,12 +1,4 @@
-﻿
-using Domain.Base;
-using Domain.Enum;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Enum;
 
 
 namespace Domain.Entities.Cliente
@@ -25,11 +17,11 @@ namespace Domain.Entities.Cliente
             Rol = rol;
         }
 
-       
-        public string Username { get;  set; }
 
-        public string Password { get;  set; }
-        public bool Activo { get;  set; }
+        public string Username { get; set; }
+
+        public string Password { get; set; }
+        public bool Activo { get; set; }
 
         public Rol Rol { set; get; }
 
@@ -56,6 +48,6 @@ namespace Domain.Entities.Cliente
             return sbString.ToString();
         }
 
-        
+
     }
 }

@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities.Cliente;
-using Domain.Entities.Producto;
-using Domain.Factories;
 
 namespace Domain.Entities.Factura
 {
@@ -21,19 +16,19 @@ namespace Domain.Entities.Factura
         public Compra() { }
 
         public int Cliente_Id { set; get; }
-        [ForeignKey("Cliente_Id")]  public Cliente.Cliente Cliente { set; get; }
+        [ForeignKey("Cliente_Id")] public Cliente.Cliente Cliente { set; get; }
         public DateTime FechaCompra { set; get; }
         public virtual IEnumerable<CompraCliente> CompraClientes { set; get; }
 
         public virtual IEnumerable<CompraEnvio> CompraEnvios { set; get; }
-      
-         public virtual IEnumerable<ComprobanteDePago>  ComprobanteDePagos { set; get; }
+
+        public virtual IEnumerable<ComprobanteDePago> ComprobanteDePagos { set; get; }
 
         [NotMapped]
-         public int Cantidad { set; get; }
+        public int Cantidad { set; get; }
 
 
-      
+
 
 
         public bool CompletarCompras()
@@ -41,7 +36,7 @@ namespace Domain.Entities.Factura
             double descuentoTotal = 0;
             double precioVenta = 0;
 
-            
+
 
             if (CompraClientes.Count() == 0)
             {
@@ -49,10 +44,11 @@ namespace Domain.Entities.Factura
             }
 
 
-            CompraClientes.ToList().ForEach(x => {
+            CompraClientes.ToList().ForEach(x =>
+            {
                 descuentoTotal += ObtenerDescuentoPorProductoCompra(x.Producto_Id, x.Cantidad);
                 precioVenta += x.Producto.PrecioVenta * x.Cantidad;
-                x.EstadoClienteArticulo = Enum.EstadoClienteArticulo.PAGADO;                
+                x.EstadoClienteArticulo = Enum.EstadoClienteArticulo.PAGADO;
             });
 
             if (!DescontarTotalProductoEnSaldo((precioVenta - descuentoTotal)))
@@ -65,13 +61,13 @@ namespace Domain.Entities.Factura
         public bool DescontarTotalProductoEnSaldo(double saldo)
         {
 
-            if(saldo < 1)
+            if (saldo < 1)
             {
                 return false;
             }
-            if(Cliente.ClienteMetodoDePagos != null)
+            if (Cliente.ClienteMetodoDePagos != null)
             {
-                if(Cliente.ClienteMetodoDePagos.ToList().Find(x => x.Activo && x.Saldo > saldo).DescontarSaldo(saldo))
+                if (Cliente.ClienteMetodoDePagos.ToList().Find(x => x.Activo && x.Saldo > saldo).DescontarSaldo(saldo))
                 {
                     ComprobanteDePagos.ToList().Find(x => x.Compra_Id == Id).EstadoDePago = Enum.EstadoDePago.PAGADO;
                     return true;
@@ -85,16 +81,16 @@ namespace Domain.Entities.Factura
         {
             var sumaDescuento = 0.0;
             var valorProducto = 0.0;
-            if(CompraClientes != null)
+            if (CompraClientes != null)
             {
                 var producto = CompraClientes.ToList().Find(x => x.Producto_Id == producto_Id).Producto;
                 if (producto != null)
                 {
-                    if(producto.ProductoDescuentos != null)
+                    if (producto.ProductoDescuentos != null)
                     {
                         producto.ProductoDescuentos.ToList().ForEach(x =>
                         {
-                            if(x.Descuento != null)
+                            if (x.Descuento != null)
                             {
                                 if (x.Descuento.DescuentoEsAplicable(x.Descuento.FechaYHoraInicio, x.Descuento.FechaYHoraTerminación))
                                 {
@@ -125,10 +121,10 @@ namespace Domain.Entities.Factura
         {
             return CantidadProducto > cantidad;
         }
-       
+
         public bool EnviarCompra(int producto_id)
         {
-            if(ComprobanteDePagos != null)
+            if (ComprobanteDePagos != null)
             {
                 if (ComprobanteDePagos.ToList().Find(x => x.Compra_Id == Id).EstadoDePago == Enum.EstadoDePago.PAGADO)
                 {
@@ -141,7 +137,7 @@ namespace Domain.Entities.Factura
         public bool EnviarCompra()
         {
             var comprobanteDe = ComprobanteDePagos.ToList().Find(x => x.Compra_Id == Id);
-            if(comprobanteDe == null)
+            if (comprobanteDe == null)
             {
                 throw new Exception("No existe Un Estado De pago");
             }
@@ -158,7 +154,8 @@ namespace Domain.Entities.Factura
             double precioVenta = 0;
             if (CompraClientes != null)
             {
-                CompraClientes.ToList().ForEach(x => {
+                CompraClientes.ToList().ForEach(x =>
+                {
                     if (x.Compra_Id == Id)
                     {
                         descuentoTotal += ObtenerDescuentoPorProductoCompra(x.Producto_Id, x.Cantidad);
@@ -166,7 +163,7 @@ namespace Domain.Entities.Factura
                     }
                 });
             }
-            return precioVenta-descuentoTotal;
+            return precioVenta - descuentoTotal;
         }
 
         public double ObtenerSubTotal()
@@ -174,10 +171,11 @@ namespace Domain.Entities.Factura
             double precioVenta = 0;
             if (CompraClientes != null)
             {
-                CompraClientes.ToList().ForEach(x => {
-                    if(x.Compra_Id == Id)
+                CompraClientes.ToList().ForEach(x =>
+                {
+                    if (x.Compra_Id == Id)
                     {
-                       precioVenta += x.Producto.PrecioVenta * x.Cantidad;
+                        precioVenta += x.Producto.PrecioVenta * x.Cantidad;
                     }
                 });
             }
@@ -187,15 +185,16 @@ namespace Domain.Entities.Factura
         public double ObtenerDescuento()
         {
             double descuento = 0;
-            CompraClientes.ToList().ForEach(x => {
-                if(x.Compra_Id == Id)
+            CompraClientes.ToList().ForEach(x =>
+            {
+                if (x.Compra_Id == Id)
                 {
                     descuento += ObtenerDescuentoPorProductoCompra(x.Producto_Id, x.Cantidad);
                 }
-               
+
             });
             return descuento;
         }
-       
+
     }
 }

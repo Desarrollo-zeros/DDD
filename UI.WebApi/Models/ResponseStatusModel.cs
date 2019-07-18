@@ -1,5 +1,4 @@
 ﻿using Domain;
-using Domain.Entities.Cliente;
 
 namespace UI.WebApi.Models
 {

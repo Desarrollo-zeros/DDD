@@ -1,14 +1,10 @@
-﻿using Application.Base;
-using Application.Implements.Cliente.ServicioCliente;
-using Application.Implements.Factura;
+﻿using Application.Implements.Factura;
 using Domain.Entities.Factura;
 using Domain.Enum;
 using Domain.Factories;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using UI.WebApi.Models.ClienteModel.ClienteM;
 using UI.WebApi.Models.ProductoModel;
 
@@ -19,23 +15,18 @@ namespace UI.WebApi.Models.FacturaModel
         public Compra Compra { set; get; }
 
 
-        [JsonIgnore]
-        private static CompraModel compraModel;
+
         public static CompraModel Instance
         {
             get
             {
-                if (compraModel == null)
-                {
-                    compraModel = new CompraModel();
-                }
-                return compraModel;
+                return new CompraModel();
             }
         }
 
         public CompraModel Comprar(Compra compra)
         {
-            if(compra == null || compra.CompraClientes == null)
+            if (compra == null || compra.CompraClientes == null)
             {
                 return null;
             }
@@ -43,7 +34,7 @@ namespace UI.WebApi.Models.FacturaModel
             var response = Instance.ServicioCompra.Create(new ServicioCompraRequest
             {
                 Cliente_Id = compra.Cliente_Id,
-                FechaCompra = compra.FechaCompra.Year < DateTime.Now.Year ? DateTime.Now : compra.FechaCompra,   
+                FechaCompra = compra.FechaCompra.Year < DateTime.Now.Year ? DateTime.Now : compra.FechaCompra,
             });
 
             if (response.Status)
@@ -60,7 +51,8 @@ namespace UI.WebApi.Models.FacturaModel
                     });
                     x.Producto = ProductoModel.ProductoModel.Instance.Find(x.Producto_Id);
                     x.Producto.ProductoDescuentos = ProductoDescuentoModel.Instance._repository.FindBy(y => y.Producto_Id == x.Producto_Id);
-                    x.Producto.ProductoDescuentos.ToList().ForEach(z => {
+                    x.Producto.ProductoDescuentos.ToList().ForEach(z =>
+                    {
                         z.Descuento = DescuentoModel.Instance.Find(z.Descuento_Id);
                     });
                     x.Compra_Id = response.Id;
@@ -83,19 +75,21 @@ namespace UI.WebApi.Models.FacturaModel
         {
             Instance.Compra = Instance.Find(compra_id);
 
-            if(Instance.Compra != null)
+            if (Instance.Compra != null)
             {
                 Instance.Compra.Cliente = ClienteModel.ClienteM.ClienteModel.Instance.Find(Instance.Compra.Cliente_Id);
                 Instance.Compra.CompraClientes = CompraClienteModel.Instance._repository.FindBy(x => x.Compra_Id == compra_id);
                 Instance.Compra.ComprobanteDePagos = ComprobanteDePagoModel.Instance._repository.FindBy(x => x.Compra_Id == compra_id);
                 if (Instance.Compra.CompraClientes != null)
                 {
-                    Instance.Compra.CompraClientes.ToList().ForEach(x => {
+                    Instance.Compra.CompraClientes.ToList().ForEach(x =>
+                    {
                         x.Producto = ProductoModel.ProductoModel.Instance.Find(x.Producto_Id);
                         x.Producto.ProductoDescuentos = ProductoDescuentoModel.Instance._repository.FindBy(y => y.Producto_Id == x.Producto_Id);
-                        if(x.Producto.ProductoDescuentos != null)
+                        if (x.Producto.ProductoDescuentos != null)
                         {
-                            x.Producto.ProductoDescuentos.ToList().ForEach(y => {
+                            x.Producto.ProductoDescuentos.ToList().ForEach(y =>
+                            {
                                 y.Descuento = DescuentoModel.Instance.Find(y.Descuento_Id);
                             });
                         }
@@ -107,9 +101,10 @@ namespace UI.WebApi.Models.FacturaModel
 
                 if (Instance.Compra.CompletarCompras())
                 {
-                    
+
                     ComprobanteDePagoModel.Instance.Update(Instance.Compra.ComprobanteDePagos.FirstOrDefault());
-                    Instance.Compra.CompraClientes.ToList().ForEach(x => {
+                    Instance.Compra.CompraClientes.ToList().ForEach(x =>
+                    {
                         CompraClienteModel.Instance.Update(x);
                     });
                     Instance.Compra.Cliente.ClienteMetodoDePagos.ToList().ForEach(x =>

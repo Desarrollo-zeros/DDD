@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities.Producto
 {
@@ -27,7 +24,7 @@ namespace Domain.Entities.Producto
         public TipoDescuento TipoDescuento { set; get; }
 
         public bool Acomulable { set; get; }
-        
+
         public DateTime FechaYHoraInicio { set; get; }
         public DateTime FechaYHoraTerminación { set; get; }
 
@@ -45,13 +42,13 @@ namespace Domain.Entities.Producto
         public bool DescuentoEsAplicable(DateTime fechaYHoraInicio, DateTime fechaYHoraTerminación)
         {
             bool r = false;
-            if(DiasFinDeSemanas(fechaYHoraInicio) && DiasFinDeSemanas(fechaYHoraTerminación))
+            if (DiasFinDeSemanas(fechaYHoraInicio) && DiasFinDeSemanas(fechaYHoraTerminación))
             {
                 if (fechaYHoraInicio.Year == fechaYHoraTerminación.Year && fechaYHoraInicio.Month == fechaYHoraTerminación.Month)
                 {
                     if ((fechaYHoraInicio.Day + 1) == fechaYHoraTerminación.Day)
                     {
-                        if (fechaYHoraInicio.Hour <=23 && fechaYHoraTerminación.Hour <=23)
+                        if (fechaYHoraInicio.Hour <= 23 && fechaYHoraTerminación.Hour <= 23)
                         {
                             r = true;
                         }

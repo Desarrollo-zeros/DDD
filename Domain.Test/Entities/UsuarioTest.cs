@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Entities.Cliente;
 using NUnit.Framework;
-using Domain.Entities.Cliente;
-using Domain.Factories;
-using Domain.Base;
 
 namespace Domain.Test.Entities
 {
@@ -18,7 +11,7 @@ namespace Domain.Test.Entities
         [SetUp]
         public void Initialize()
         {
-            usuario = Factories.BuilderFactories.Usuario("zeros","toor",true, Enum.Rol.INVITADO);
+            usuario = Factories.BuilderFactories.Usuario("zeros", "toor", true, Enum.Rol.INVITADO);
         }
 
         //usuario y contraseña validos

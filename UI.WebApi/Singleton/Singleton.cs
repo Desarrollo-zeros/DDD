@@ -1,9 +1,5 @@
 ﻿using Domain;
 using Domain.Abstracts;
-using Domain.Entities.Cliente;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace UI.WebApi.Singleton
 {

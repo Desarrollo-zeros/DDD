@@ -1,19 +1,12 @@
-﻿using Application.Implements.Cliente.ServicioUsuario;
+﻿using Application.Base;
 using Application.Implements.Cliente.ServicioCliente;
-using Domain;
-using Domain.Abstracts;
-using Domain.Entities.Cliente;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using UI.WebApi.Singleton;
-using Application.Base;
-using Newtonsoft.Json;
+using Application.Implements.Cliente.ServicioUsuario;
 using Application.Implements.Factura;
+using Domain;
+using Domain.Entities.Cliente;
 using Domain.Entities.Factura;
-using Application.Implements.Producto.ProductoServicio;
-using Domain.Entities.Producto;
+using Newtonsoft.Json;
+using UI.WebApi.Singleton;
 
 namespace UI.WebApi.Models
 {
@@ -33,8 +26,8 @@ namespace UI.WebApi.Models
         public ServicioCompra ServicioCompra { set; get; }
         [JsonIgnore]
         public ServicioCompraCliente ServicioCompraCliente { set; get; }
-       
-     
+
+
 
 
         public Model() : base(FactoriesSingleton<T>.UnitOfWork, FactoriesSingleton<T>.GenericRepository)
@@ -46,7 +39,7 @@ namespace UI.WebApi.Models
             ServicioMetodoPago = new ServicioMetodoPago(FactoriesSingleton<ClienteMetodoDePago>.UnitOfWork, FactoriesSingleton<ClienteMetodoDePago>.GenericRepository);
             ServicioCompra = new ServicioCompra(FactoriesSingleton<Compra>.UnitOfWork, FactoriesSingleton<Compra>.GenericRepository);
             ServicioCompraCliente = new ServicioCompraCliente(FactoriesSingleton<CompraCliente>.UnitOfWork, FactoriesSingleton<CompraCliente>.GenericRepository);
-            
+
         }
 
     }

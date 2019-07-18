@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.Producto
@@ -14,6 +11,16 @@ namespace Domain.Entities.Producto
             Nombre = nombre;
             Descripción = descripción;
             FechaCreacion = fechaCreacion;
+        }
+
+        
+        public Categoria(string nombre, string descripción, DateTime fechaCreacion, IEnumerable<Producto> productos)
+        {
+            Nombre = nombre;
+            Descripción = descripción;
+            FechaCreacion = fechaCreacion;
+            Productos = new List<Producto>();
+            Productos = productos;
         }
 
         public Categoria() { }

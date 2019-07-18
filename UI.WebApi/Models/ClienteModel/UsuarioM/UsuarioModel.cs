@@ -1,18 +1,9 @@
 ﻿using Application.Implements.Cliente.ServicioUsuario;
-using Domain.Abstracts;
 using Domain.Entities.Cliente;
+using Domain.Enum;
 using Newtonsoft.Json;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Security.Principal;
 using System.Threading;
-using System.Web.Http;
-using UI.WebApi.Singleton;
-using UI.WebApi.Models.ClienteModel.ClienteM;
-using Application.Implements.Cliente.ServicioCliente;
-using Domain.Enum;
-using UI.WebApi.Generico;
 
 namespace UI.WebApi.Models.ClienteModel.UsuarioM
 {
@@ -20,7 +11,7 @@ namespace UI.WebApi.Models.ClienteModel.UsuarioM
     {
 
         public Usuario Usuario { set; get; }
-       
+
         [JsonIgnore]
         public readonly int id = 0;
         public readonly Rol rol;
@@ -32,16 +23,11 @@ namespace UI.WebApi.Models.ClienteModel.UsuarioM
         {
             get
             {
-                if (usuarioModel == null)
-                {
-                    usuarioModel = new UsuarioModel();
-                }
-                return usuarioModel;
+                return new UsuarioModel();
             }
         }
 
-        [JsonIgnore]
-        private static UsuarioModel usuarioModel;
+
 
         public UsuarioModel()
         {
@@ -52,7 +38,7 @@ namespace UI.WebApi.Models.ClienteModel.UsuarioM
                 rol = usuario.Rol;
             }
 
-            
+
         }
         public IIdentity Auth()
         {

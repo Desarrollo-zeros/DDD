@@ -11,7 +11,7 @@ namespace UI.WebApi.Singleton
             new Lazy<IGenericRepository<T>>(() => new Repository<T>(SingletonDBContext.Instance_db));
         public static IGenericRepository<T> GenericRepository => repository.Value;
 
-       
+
     }
 
 }
