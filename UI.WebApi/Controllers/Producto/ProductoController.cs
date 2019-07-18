@@ -21,12 +21,12 @@ namespace UI.WebApi.Controllers.Producto
 
             if (UsuarioModel.Instance.rol != Rol.ADMINISTRADOR && UsuarioModel.Instance.rol != Rol.DEV)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
+                return Json(Mensaje<Domain.Entities.Producto.Categoria>.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
             }
 
             if (categoriaModel.Categoria == null)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.CATEGORIA_FAIL));
+                return Json(Mensaje<Domain.Entities.Producto.Categoria>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.CATEGORIA_FAIL));
             }
 
             var categoria = categoriaModel._repository.FindBy(x => x.Nombre == categoriaModel.Categoria.Nombre).FirstOrDefault();
@@ -35,16 +35,16 @@ namespace UI.WebApi.Controllers.Producto
                 var c = categoriaModel.Create(BuilderFactories.Categoria(categoriaModel.Categoria.Nombre, categoriaModel.Categoria.Descripción, (categoriaModel.Categoria.FechaCreacion.Year < DateTime.Now.Year) ? DateTime.Now : categoriaModel.Categoria.FechaCreacion));
                 if (c != null)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "Categoria creada con exito", Constants.CATEGORIA_SUCCES));
+                    return Json(Mensaje<Domain.Entities.Producto.Categoria>.MensajeJson(Constants.NO_ERROR, "Categoria creada con exito", Constants.CATEGORIA_SUCCES));
                 }
                 else
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Error al crear la categoria", Constants.CATEGORIA_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.Categoria>.MensajeJson(Constants.IS_ERROR, "Error al crear la categoria", Constants.CATEGORIA_FAIL));
                 }
             }
             else
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Categoria ya existe", Constants.CATEGORIA_FAIL));
+                return Json(Mensaje<Domain.Entities.Producto.Categoria>.MensajeJson(Constants.IS_ERROR, "Categoria ya existe", Constants.CATEGORIA_FAIL));
             }
         }
 
@@ -55,20 +55,20 @@ namespace UI.WebApi.Controllers.Producto
         {
             if (UsuarioModel.Instance.rol != Rol.ADMINISTRADOR && UsuarioModel.Instance.rol != Rol.DEV)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
+                return Json(Mensaje<Domain.Entities.Producto.Categoria>.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
             }
 
 
             if (categoriaModel.Categoria == null)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.CATEGORIA_FAIL));
+                return Json(Mensaje<Domain.Entities.Producto.Categoria>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.CATEGORIA_FAIL));
             }
 
             var categoria = categoriaModel._repository.FindBy(x => x.Nombre == categoriaModel.Categoria.Nombre && x.Id != categoriaModel.Categoria.Id).FirstOrDefault();
 
             if (categoria != null)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Nombre Categoria ya existe", Constants.CATEGORIA_FAIL));
+                return Json(Mensaje<Domain.Entities.Producto.Categoria>.MensajeJson(Constants.IS_ERROR, "Nombre Categoria ya existe", Constants.CATEGORIA_FAIL));
             }
 
             categoria = categoriaModel._repository.FindBy(x => x.Id == categoriaModel.Categoria.Id).FirstOrDefault();
@@ -79,16 +79,16 @@ namespace UI.WebApi.Controllers.Producto
                 categoria.Descripción = factoryCategoria.Descripción;
                 if (categoriaModel.Update(categoria))
                 {
-                    return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "Categoria Modificada con exito", Constants.CATEGORIA_SUCCES));
+                    return Json(Mensaje<Domain.Entities.Producto.Categoria>.MensajeJson(Constants.NO_ERROR, "Categoria Modificada con exito", Constants.CATEGORIA_SUCCES));
                 }
                 else
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Error al modificar la categoria", Constants.CATEGORIA_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.Categoria>.MensajeJson(Constants.IS_ERROR, "Error al modificar la categoria", Constants.CATEGORIA_FAIL));
                 }
             }
             else
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Categoria no existe", Constants.CATEGORIA_FAIL));
+                return Json(Mensaje<Domain.Entities.Producto.Categoria>.MensajeJson(Constants.IS_ERROR, "Categoria no existe", Constants.CATEGORIA_FAIL));
             }
         }
 
@@ -97,11 +97,10 @@ namespace UI.WebApi.Controllers.Producto
         [Route("categoria_get/{id}")]
         public IHttpActionResult GetCategoria(int id)
         {
-
             CategoriaModel.Instance.Categoria = CategoriaModel.Instance.Find(id);
             if (CategoriaModel.Instance.Categoria != null)
             {
-                CategoriaModel.Instance.Categoria.Productos = ProductoModel.Instance._repository.FindBy(x => x.Categoria_Id == CategoriaModel.Instance.Categoria.Id).ToList();
+                CategoriaModel.Instance.Categoria.Productos = ProductoModel.Instance._repository.FindBy(x => x.Categoria_Id == id).ToList();
 
                 if(CategoriaModel.Instance.Categoria.Productos != null)
                 {
@@ -162,9 +161,52 @@ namespace UI.WebApi.Controllers.Producto
             return Json(categorias);
         }
 
+        [HttpGet]
+        [Route("get_top_product")]
+        public IHttpActionResult GetToProduct()
+        {
+            return Json(ProductoModel.Instance.ProductosTop(10));
+        }
 
 
         /*******************************/
+
+        [HttpGet]
+        [Route("categoria_new_product")]
+        public IHttpActionResult GetNewAllCategoriaProducto()
+        {
+            var categorias = CategoriaModel.Instance.GetAll().ToList();
+            if (categorias != null)
+            {
+
+                categorias.ForEach(x =>
+                {
+                    x.Productos = ProductoModel.Instance._repository.FindBy(y => y.Categoria_Id == x.Id).OrderByDescending(z => z.FechaCreacion).ThenByDescending(z => z.FechaCreacion).Take(10);
+
+                    if (x.Productos != null)
+                    {
+                        x.Productos.ToList().ForEach(y =>
+                        {
+                            y.ProductoDescuentos = ProductoDescuentoModel.Instance._repository.FindBy(z => z.Producto_Id == y.Id).ToList();
+
+                            if (y.ProductoDescuentos != null)
+                            {
+                                y.ProductoDescuentos.ToList().ForEach(r =>
+                                {
+                                    r.Descuento = DescuentoModel.Instance._repository.FindBy(t => t.Id == r.Descuento_Id).FirstOrDefault();
+                                    if (r.Descuento != null)
+                                    {
+                                        y.Descuento += r.Descuento.Descu;
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            return Json(categorias);
+        }
+
 
 
         [HttpPost]
@@ -175,29 +217,29 @@ namespace UI.WebApi.Controllers.Producto
             {
                 if (UsuarioModel.Instance.rol != Rol.ADMINISTRADOR && UsuarioModel.Instance.rol != Rol.DEV)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
+                    return Json(Mensaje<Domain.Entities.Producto.Producto>.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
                 }
 
                 if (productoModel.Producto == null)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PRODUCTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.Producto>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PRODUCTO_FAIL));
                 }
 
                 if (productoModel._repository.FindBy(x => x.PrecioVenta == productoModel.Producto.PrecioVenta && x.Nombre == productoModel.Producto.Nombre).Count() > 0)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Producto ya existe", Constants.PRODUCTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.Producto>.MensajeJson(Constants.IS_ERROR, "Producto ya existe", Constants.PRODUCTO_FAIL));
                 }
 
                 var producto = productoModel.Create(BuilderFactories.Producto(productoModel.Producto.Nombre, productoModel.Producto.Descripción, productoModel.Producto.Imagen, productoModel.Producto.PrecioCompra, productoModel.Producto.PrecioVenta, productoModel.Producto.CantidadProducto, productoModel.Producto.Categoria_Id));
                 if (producto == null)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Producto no pudo crearse", Constants.PRODUCTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.Producto>.MensajeJson(Constants.IS_ERROR, "Producto no pudo crearse", Constants.PRODUCTO_FAIL));
                 }
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "Producto Creado con exito", Constants.PRODUCTO_SUCCES));
+                return Json(Mensaje<Domain.Entities.Producto.Producto>.MensajeJson(Constants.NO_ERROR, "Producto Creado con exito", Constants.PRODUCTO_SUCCES));
             }
             catch (Exception e)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, e.Message, Constants.PRODUCTO_FAIL));
+                return Json(Mensaje<Domain.Entities.Producto.Producto>.MensajeJson(Constants.IS_ERROR, e.Message, Constants.PRODUCTO_FAIL));
             }
         }
 
@@ -210,24 +252,24 @@ namespace UI.WebApi.Controllers.Producto
             {
                 if (UsuarioModel.Instance.rol != Rol.ADMINISTRADOR && UsuarioModel.Instance.rol != Rol.DEV)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
+                    return Json(Mensaje<Domain.Entities.Producto.Producto>.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
                 }
 
                 if (productoModel.Producto == null)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PRODUCTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.Producto>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PRODUCTO_FAIL));
                 }
 
                 if (productoModel.Producto.PrecioCompra > productoModel.Producto.PrecioVenta)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Precio de compra no puede mayor al precio de venta", Constants.PRODUCTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.Producto>.MensajeJson(Constants.IS_ERROR, "Precio de compra no puede mayor al precio de venta", Constants.PRODUCTO_FAIL));
                 }
 
                 var producto = productoModel._repository.FindBy(x => x.Id == productoModel.Producto.Id).FirstOrDefault();
 
                 if (producto == null)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Producto no existe", Constants.PRODUCTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.Producto>.MensajeJson(Constants.IS_ERROR, "Producto no existe", Constants.PRODUCTO_FAIL));
                 }
 
 
@@ -243,13 +285,13 @@ namespace UI.WebApi.Controllers.Producto
 
                 if (!productoModel.Update(producto))
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Producto no pudo Modificarse", Constants.PRODUCTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.Producto>.MensajeJson(Constants.IS_ERROR, "Producto no pudo Modificarse", Constants.PRODUCTO_FAIL));
                 }
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "Producto Modificado con exito", Constants.PRODUCTO_SUCCES));
+                return Json(Mensaje<Domain.Entities.Producto.Producto>.MensajeJson(Constants.NO_ERROR, "Producto Modificado con exito", Constants.PRODUCTO_SUCCES));
             }
             catch (Exception e)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, e.Message, Constants.PRODUCTO_FAIL));
+                return Json(Mensaje<Domain.Entities.Producto.Producto>.MensajeJson(Constants.IS_ERROR, e.Message, Constants.PRODUCTO_FAIL));
             }
         }
 
@@ -319,24 +361,24 @@ namespace UI.WebApi.Controllers.Producto
             {
                 if (UsuarioModel.Instance.rol != Rol.ADMINISTRADOR && UsuarioModel.Instance.rol != Rol.DEV)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
+                    return Json(Mensaje<Domain.Entities.Producto.Descuento>.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
                 }
 
                 if (descuentoModel.Descuento == null)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.DESCUENTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.Descuento>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.DESCUENTO_FAIL));
                 }
 
                 var descuento = descuentoModel.Create(BuilderFactories.Descuento(descuentoModel.Descuento.TipoDescuento, descuentoModel.Descuento.Acomulable, descuentoModel.Descuento.FechaYHoraInicio, descuentoModel.Descuento.FechaYHoraTerminación, descuentoModel.Descuento.Descu));
                 if (descuento == null)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Descuento no pudo crearse", Constants.DESCUENTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.Descuento>.MensajeJson(Constants.IS_ERROR, "Descuento no pudo crearse", Constants.DESCUENTO_FAIL));
                 }
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "Descuento Creado con exito", Constants.DESCUENTO_SUCCES));
+                return Json(Mensaje<Domain.Entities.Producto.Descuento>.MensajeJson(Constants.NO_ERROR, "Descuento Creado con exito", Constants.DESCUENTO_SUCCES));
             }
             catch (Exception e)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, e.Message, Constants.DESCUENTO_FAIL));
+                return Json(Mensaje<Domain.Entities.Producto.Descuento>.MensajeJson(Constants.IS_ERROR, e.Message, Constants.DESCUENTO_FAIL));
             }
         }
 
@@ -349,12 +391,12 @@ namespace UI.WebApi.Controllers.Producto
             {
                 if (UsuarioModel.Instance.rol != Rol.ADMINISTRADOR && UsuarioModel.Instance.rol != Rol.DEV)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
+                    return Json(Mensaje<Domain.Entities.Producto.Descuento>.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
                 }
 
                 if (descuentoModel.Descuento == null)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.DESCUENTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.Descuento>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.DESCUENTO_FAIL));
                 }
 
                 var descuento = descuentoModel.Find(descuentoModel.Descuento.Id);
@@ -362,7 +404,7 @@ namespace UI.WebApi.Controllers.Producto
 
                 if (descuento == null)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "No existe Descuento", Constants.DESCUENTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.Descuento>.MensajeJson(Constants.IS_ERROR, "No existe Descuento", Constants.DESCUENTO_FAIL));
                 }
 
                 //si esta mal arroja una excepcion
@@ -377,13 +419,13 @@ namespace UI.WebApi.Controllers.Producto
 
                 if (!descuentoModel.Update(descuento))
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Descuento no pudo Modificarse", Constants.DESCUENTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.Descuento>.MensajeJson(Constants.IS_ERROR, "Descuento no pudo Modificarse", Constants.DESCUENTO_FAIL));
                 }
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "Descuento Modificado con exito", Constants.DESCUENTO_SUCCES));
+                return Json(Mensaje<Domain.Entities.Producto.Descuento>.MensajeJson(Constants.NO_ERROR, "Descuento Modificado con exito", Constants.DESCUENTO_SUCCES));
             }
             catch (Exception e)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, e.Message, Constants.DESCUENTO_FAIL));
+                return Json(Mensaje<Domain.Entities.Producto.Descuento>.MensajeJson(Constants.IS_ERROR, e.Message, Constants.DESCUENTO_FAIL));
             }
         }
 
@@ -393,15 +435,15 @@ namespace UI.WebApi.Controllers.Producto
         {
             if (UsuarioModel.Instance.rol != Rol.ADMINISTRADOR && UsuarioModel.Instance.rol != Rol.DEV)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
+                return Json(Mensaje<Domain.Entities.Producto.Descuento>.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
             }
 
             if (DescuentoModel.Instance.Delete(id))
             {
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "Descuento eliminado", Constants.DESCUENTO_SUCCES));
+                return Json(Mensaje<Domain.Entities.Producto.Descuento>.MensajeJson(Constants.NO_ERROR, "Descuento eliminado", Constants.DESCUENTO_SUCCES));
             }
 
-            return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Descuento no pudo ser eliminado", Constants.DESCUENTO_FAIL));
+            return Json(Mensaje<Domain.Entities.Producto.Descuento>.MensajeJson(Constants.IS_ERROR, "Descuento no pudo ser eliminado", Constants.DESCUENTO_FAIL));
         }
 
         [HttpGet]
@@ -446,31 +488,31 @@ namespace UI.WebApi.Controllers.Producto
             {
                 if (UsuarioModel.Instance.rol != Rol.ADMINISTRADOR && UsuarioModel.Instance.rol != Rol.DEV)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
+                    return Json(Mensaje<Domain.Entities.Producto.ProductoDescuento>.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
                 }
 
                 if (productoDescuentoModel.ProductoDescuento == null)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PRODUCTO_DESCUENTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.ProductoDescuento>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PRODUCTO_DESCUENTO_FAIL));
                 }
 
                 var ProductoDescuento = productoDescuentoModel._repository.FindBy(x => x.Producto_Id == productoDescuentoModel.ProductoDescuento.Producto_Id && x.Descuento_Id == productoDescuentoModel.ProductoDescuento.Descuento_Id);
                 if (ProductoDescuento != null)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Producto Descuento ya existe", Constants.PRODUCTO_DESCUENTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.ProductoDescuento>.MensajeJson(Constants.IS_ERROR, "Producto Descuento ya existe", Constants.PRODUCTO_DESCUENTO_FAIL));
                 }
 
                 var pd = productoDescuentoModel.Create(BuilderFactories.ProductoDescuento(productoDescuentoModel.ProductoDescuento.Producto_Id, productoDescuentoModel.ProductoDescuento.Descuento_Id, productoDescuentoModel.ProductoDescuento.EstadoDescuento));
                 if (pd == null)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Producto Descuento no pudo crearse", Constants.PRODUCTO_DESCUENTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.ProductoDescuento>.MensajeJson(Constants.IS_ERROR, "Producto Descuento no pudo crearse", Constants.PRODUCTO_DESCUENTO_FAIL));
                 }
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "Producto Descuento creado con exito", Constants.PRODUCTO_DESCUENTO_SUCCES));
+                return Json(Mensaje<Domain.Entities.Producto.ProductoDescuento>.MensajeJson(Constants.NO_ERROR, "Producto Descuento creado con exito", Constants.PRODUCTO_DESCUENTO_SUCCES));
 
             }
             catch (Exception e)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, e.Message, Constants.PRODUCTO_DESCUENTO_FAIL));
+                return Json(Mensaje<Domain.Entities.Producto.ProductoDescuento>.MensajeJson(Constants.IS_ERROR, e.Message, Constants.PRODUCTO_DESCUENTO_FAIL));
             }
 
         }
@@ -485,18 +527,18 @@ namespace UI.WebApi.Controllers.Producto
             {
                 if (UsuarioModel.Instance.rol != Rol.ADMINISTRADOR && UsuarioModel.Instance.rol != Rol.DEV)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
+                    return Json(Mensaje<Domain.Entities.Producto.ProductoDescuento>.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
                 }
 
                 if (productoDescuentoModel.ProductoDescuento == null)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PRODUCTO_DESCUENTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.ProductoDescuento>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PRODUCTO_DESCUENTO_FAIL));
                 }
 
                 var ProductoDescuento = productoDescuentoModel._repository.FindBy(x => x.Producto_Id == productoDescuentoModel.ProductoDescuento.Producto_Id && x.Descuento_Id == productoDescuentoModel.ProductoDescuento.Descuento_Id).FirstOrDefault();
                 if (ProductoDescuento == null)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Producto Descuento no existe", Constants.PRODUCTO_DESCUENTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.ProductoDescuento>.MensajeJson(Constants.IS_ERROR, "Producto Descuento no existe", Constants.PRODUCTO_DESCUENTO_FAIL));
                 }
 
                 var pd = BuilderFactories.ProductoDescuento(productoDescuentoModel.ProductoDescuento.Producto_Id, productoDescuentoModel.ProductoDescuento.Descuento_Id, productoDescuentoModel.ProductoDescuento.EstadoDescuento);
@@ -508,14 +550,14 @@ namespace UI.WebApi.Controllers.Producto
                 productoDescuentoModel.Update(ProductoDescuento);
                 if (pd == null)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Producto Descuento no pudo crearse", Constants.PRODUCTO_DESCUENTO_FAIL));
+                    return Json(Mensaje<Domain.Entities.Producto.ProductoDescuento>.MensajeJson(Constants.IS_ERROR, "Producto Descuento no pudo crearse", Constants.PRODUCTO_DESCUENTO_FAIL));
                 }
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "Producto Descuento creado con exito", Constants.PRODUCTO_DESCUENTO_SUCCES));
+                return Json(Mensaje<Domain.Entities.Producto.ProductoDescuento>.MensajeJson(Constants.NO_ERROR, "Producto Descuento creado con exito", Constants.PRODUCTO_DESCUENTO_SUCCES));
 
             }
             catch (Exception e)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, e.Message, Constants.PRODUCTO_DESCUENTO_FAIL));
+                return Json(Mensaje<Domain.Entities.Producto.ProductoDescuento>.MensajeJson(Constants.IS_ERROR, e.Message, Constants.PRODUCTO_DESCUENTO_FAIL));
             }
 
         }
@@ -526,15 +568,15 @@ namespace UI.WebApi.Controllers.Producto
         {
             if (UsuarioModel.Instance.rol != Rol.ADMINISTRADOR && UsuarioModel.Instance.rol != Rol.DEV)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
+                return Json(Mensaje<Domain.Entities.Producto.ProductoDescuento>.MensajeJson(Constants.IS_ERROR, "No esta autorizado para realizar esta operacion", Constants.NO_AUTH));
             }
 
             if (ProductoDescuentoModel.Instance.Delete(id))
             {
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "Producto Descuento eliminado", Constants.PRODUCTO_DESCUENTO_SUCCES));
+                return Json(Mensaje<Domain.Entities.Producto.ProductoDescuento>.MensajeJson(Constants.NO_ERROR, "Producto Descuento eliminado", Constants.PRODUCTO_DESCUENTO_SUCCES));
             }
 
-            return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Producto Descuento no pudo ser eliminado", Constants.PRODUCTO_DESCUENTO_FAIL));
+            return Json(Mensaje<Domain.Entities.Producto.ProductoDescuento>.MensajeJson(Constants.IS_ERROR, "Producto Descuento no pudo ser eliminado", Constants.PRODUCTO_DESCUENTO_FAIL));
         }
 
 

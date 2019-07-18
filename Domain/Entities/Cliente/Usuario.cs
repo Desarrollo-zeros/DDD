@@ -28,6 +28,7 @@ namespace Domain.Entities.Cliente
        
         public string Username { get;  set; }
 
+        [JsonIgnore]
         public string Password { get;  set; }
         public bool Activo { get;  set; }
 

@@ -35,7 +35,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
         {
             if (clienteModel.Cliente == null)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.CLIENT_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.CLIENT_FAIL));
             }
 
             var FactoryCliente = BuilderFactories.Cliente(clienteModel.Cliente.Documento, clienteModel.Cliente.Nombre, clienteModel.Cliente.Email, usuario.id);
@@ -49,7 +49,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
 
             if (!responseCliente.Status)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, responseCliente.Mensaje, Constants.CLIENT_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.IS_ERROR, responseCliente.Mensaje, Constants.CLIENT_FAIL));
             }
 
             if(clienteModel.Cliente.Telefónos != null)
@@ -84,7 +84,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
 
            
 
-            return Json(Mensaje.MensajeJson(Constants.NO_ERROR, responseCliente.Mensaje, Constants.CLIENT_SUCCESS));
+            return Json(Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.NO_ERROR, responseCliente.Mensaje, Constants.CLIENT_SUCCESS, clienteModel.Cliente));
         }
 
 
@@ -94,7 +94,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
         {
             if (clienteModel.Cliente == null)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.CLIENT_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.CLIENT_FAIL));
             }
 
             var FactoryCliente = BuilderFactories.Cliente(clienteModel.Cliente.Documento, clienteModel.Cliente.Nombre, clienteModel.Cliente.Email, usuario.id);
@@ -138,7 +138,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
             } 
             
 
-            return Json(Mensaje.MensajeJson(Constants.NO_ERROR, responseCliente.Mensaje, Constants.CLIENT_SUCCESS));
+            return Json(Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.NO_ERROR, responseCliente.Mensaje, Constants.CLIENT_SUCCESS));
         }
 
         [HttpGet]
@@ -163,7 +163,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
 
             if (metodoPago.ClienteMetodoDePagos == null)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
             }
             
 
@@ -190,14 +190,14 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
             }
             catch (Exception e)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, e.Message, Constants.PAY_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.IS_ERROR, e.Message, Constants.PAY_FAIL));
             }
 
             if (cont == 0)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Error, no se pudo crear ningun metodo de pago", Constants.PAY_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.IS_ERROR, "Error, no se pudo crear ningun metodo de pago", Constants.PAY_FAIL));
             }
-            return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "Se registraron " + cont + " Metodos de pago", Constants.PAY_SUCCESS));
+            return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.NO_ERROR, "Se registraron " + cont + " Metodos de pago", Constants.PAY_SUCCESS));
         }
 
 
@@ -209,7 +209,7 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
 
             if (metodoPago.ClienteMetodoDePagos == null)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
             }
 
             try
@@ -233,13 +233,13 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
                 });
                 if (cont == 0)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Error, No se pudo modificar, ", Constants.PAY_FAIL));
+                    return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.IS_ERROR, "Error, No se pudo modificar, ", Constants.PAY_FAIL));
                 }
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "Se Modificaron " + cont + " Metodos de pago", Constants.PAY_SUCCESS));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.NO_ERROR, "Se Modificaron " + cont + " Metodos de pago", Constants.PAY_SUCCESS));
             }
             catch (Exception e)
             {
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, e.Message, Constants.PAY_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.NO_ERROR, e.Message, Constants.PAY_FAIL));
             }
         }
 
@@ -250,16 +250,16 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
 
             if (id == 0)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
             }
 
             if (MetodoPagoModel.Instance.Delete(id))
             {
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "borrado con exito", Constants.PAY_SUCCESS));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.NO_ERROR, "borrado con exito", Constants.PAY_SUCCESS));
             }
             else
             {
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "borrado fail", Constants.PAY_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.NO_ERROR, "borrado fail", Constants.PAY_FAIL));
             }
         }
 

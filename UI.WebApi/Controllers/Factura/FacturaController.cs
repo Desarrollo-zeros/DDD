@@ -31,7 +31,7 @@ namespace UI.WebApi.Controllers.Factura
       
             if (compraModel == null || compraModel.Compra == null)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.COMPRA_FAIL));
+                return Json(Mensaje<Domain.Entities.Factura.Compra>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.COMPRA_FAIL));
             }
             return Json(compraModel.Comprar(compraModel.Compra));
         }

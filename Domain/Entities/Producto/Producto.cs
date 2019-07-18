@@ -49,6 +49,8 @@ namespace Domain.Entities.Producto
 
         public int Categoria_Id { set; get; }
 
+        public DateTime FechaCreacion { set; get; }
+
         [ForeignKey("Categoria_Id")] public Categoria Categoria { set; get; }
 
         public virtual IEnumerable<ProductoDescuento> ProductoDescuentos { set; get; }
@@ -58,11 +60,11 @@ namespace Domain.Entities.Producto
         //public virtual IEnumerable<CompraEnvioProducto> CompraEnvioProductos { set; get; }
 
         [NotMapped]
-        
         public double Descuento { set; get; }
 
 
-
+        [NotMapped]
+        public int CantidadComprada { set; get; }
 
 
         public static bool IsBase64String(string s)
