@@ -21,6 +21,7 @@ namespace Infraestructure.Data.Repositories
 
         public T Add(T t, bool saveChange)
         {
+            
             Add(t);
             if (saveChange) { Context.SaveChanges(); }
             return t;
@@ -38,7 +39,11 @@ namespace Infraestructure.Data.Repositories
             Delete(t);
             if (saveChange) { Context.SaveChanges(); }
             return t;
-        }       
+        }     
+
+       
+
+
     }
 }
 

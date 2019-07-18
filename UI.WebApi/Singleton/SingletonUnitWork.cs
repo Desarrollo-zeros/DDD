@@ -8,7 +8,7 @@ namespace UI.WebApi.Singleton
     public static class SingletonUnitWork<T> where T : BaseEntity
     {
         private static readonly Lazy<IUnitOfWork> unitOfWork =
-            new Lazy<IUnitOfWork>(() => new UnitOfWork(SingletonDBContext<T>.Instance_db));
+            new Lazy<IUnitOfWork>(() => new UnitOfWork(SingletonDBContext.Instance_db));
         public static IUnitOfWork UnitOfWork => unitOfWork.Value;
     }
 

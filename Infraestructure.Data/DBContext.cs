@@ -38,7 +38,7 @@ namespace Infraestructure.Data
         public DbSet<Compra> Compras { get; set; }
         public DbSet<CompraEnvio> CompraEnvios { get; set; }
         public DbSet<ComprobanteDePago> ComprobanteDePagos { get; set; }
-        public DbSet<CompraCliente> ProductoClientes { get; set; }
+        public DbSet<CompraCliente> CompraClientes { get; set; }
 
         public DbSet<Descuento> Descuentos { get; set; }
         public DbSet<Producto> Productos { get; set; }

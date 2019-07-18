@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Abstracts
 {
-    public interface IGenericRepository<T> where  T : BaseEntity
+    public interface IGenericRepository<T> where T : BaseEntity
     {
 
         T Find(object id);
@@ -29,5 +29,10 @@ namespace Domain.Abstracts
             IOrderedQueryable<T>> orderBy = null,
             string includeProperties = ""
          );
+
+         
+
+        
+
     }
 }

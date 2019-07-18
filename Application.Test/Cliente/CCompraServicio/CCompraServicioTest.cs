@@ -34,7 +34,7 @@ namespace Application.Test.Cliente.CCompraServicio
 
 
 
-        Application.Implements.Producto.ProductoServicio.ProductoServicio ProductoServicio;
+        Application.Implements.Producto.ProductoServicio.ServicioProducto ProductoServicio;
         Application.Implements.Producto.ProductoServicio.DescuentoServicio DescuentoServicio;
         Application.Implements.Producto.ProductoServicio.ProductoDescuentoServicio ProductoDescuento;
         ComprobanteDePagoServicio ComprobanteDePago;
@@ -60,7 +60,7 @@ namespace Application.Test.Cliente.CCompraServicio
             repositoryMetodoPago = new Repository<ClienteMetodoDePago>(_db);
 
 
-            ProductoServicio = new ProductoServicio(_unitOfWork, repositoryProducto);
+            ProductoServicio = new ServicioProducto(_unitOfWork, repositoryProducto);
             DescuentoServicio = new DescuentoServicio(_unitOfWork, repositoryDescuento);
             ProductoDescuento = new ProductoDescuentoServicio(_unitOfWork, repositoryProductoDescuento);
             CompraServicio = new Application.Implements.Factura.CompraServicio.CrearServicio(_unitOfWork,repositoryCompra);

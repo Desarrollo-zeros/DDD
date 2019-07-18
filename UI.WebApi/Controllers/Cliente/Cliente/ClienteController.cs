@@ -1,5 +1,7 @@
 ﻿using Application.Base;
 using Application.Implements.Cliente.ServicioCliente;
+using Application.Implements.Cliente.ServicioUsuario;
+using Domain.Enum;
 using Domain.Factories;
 using System;
 using System.Linq;
@@ -22,10 +24,6 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
         public ClienteController()
         {
             usuario = new UsuarioModel();
-            if (usuario.id == 0)
-            {
-                throw new ArgumentException(Constants.NO_AUTH);
-            }
         }
 
 
@@ -33,58 +31,76 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
         [Route("create")]
         public IHttpActionResult Create(ClienteModel clienteModel)
         {
+            
             if (clienteModel.Cliente == null)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.CLIENT_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.CLIENT_FAIL));
+
             }
+            int id = 0;
 
-            var FactoryCliente = BuilderFactories.Cliente(clienteModel.Cliente.Documento, clienteModel.Cliente.Nombre, clienteModel.Cliente.Email, usuario.id);
-            var responseCliente = clienteModel.ServicioCliente.Create(new ServicioClienteRequest()
+            if(clienteModel.Cliente.Usuario != null)
             {
-                Documento = FactoryCliente.Documento,
-                Email = FactoryCliente.Email,
-                Nombre = FactoryCliente.Nombre,
-                Usuario_Id = usuario.id
-            });
-
-            if (!responseCliente.Status)
-            {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, responseCliente.Mensaje, Constants.CLIENT_FAIL));
-            }
-
-            if(clienteModel.Cliente.Telefónos != null)
-            {
-                clienteModel.Cliente.Telefónos.ToList().ForEach(x =>
+                var factoryUser = BuilderFactories.Usuario(clienteModel.Cliente.Usuario.Username, clienteModel.Cliente.Usuario.Password, true, Rol.INVITADO);
+                var responseUsuario = usuario.ServicioUsuario.Create(new ServicioUsuarioRequest { Username = factoryUser.Username, Password = factoryUser.Password, Rol = Rol.CLIENTE, Activo = true });
+                if (!responseUsuario.Status)
                 {
-                    clienteModel.ServicioTelefóno.Create(new ServicioTelefónoRequest
-                    {
-                        Cliente_Id = responseCliente.Id,
-                        Número = x.Número,
-                        TipoTelefono = x.TipoTelefono
-                    });
+                    return Json(Mensaje<Domain.Entities.Cliente.Usuario>.MensajeJson(Constants.IS_ERROR, responseUsuario.Mensaje, Constants.CLIENT_FAIL));
+                }
+
+                id = responseUsuario.Id;
+            }
+
+            if (usuario.id != 0 || id != 0)
+            {
+
+                var FactoryCliente = BuilderFactories.Cliente(clienteModel.Cliente.Documento, clienteModel.Cliente.Nombre, clienteModel.Cliente.Email, usuario.id);
+                var responseCliente = clienteModel.ServicioCliente.Create(new ServicioClienteRequest()
+                {
+                    Documento = FactoryCliente.Documento,
+                    Email = FactoryCliente.Email,
+                    Nombre = FactoryCliente.Nombre,
+                    Usuario_Id = id != 0 ? id : usuario.id
                 });
 
-            }
-
-
-            if (clienteModel.Cliente.Direcciónes != null)
-            {
-                clienteModel.Cliente.Direcciónes.ToList().ForEach(x =>
+                if (!responseCliente.Status)
                 {
-                    clienteModel.ServicioDirección.Create(new ServicioDireccíonRequest
+                    return Json(Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.IS_ERROR, responseCliente.Mensaje, Constants.CLIENT_FAIL));
+                }
+
+                if (clienteModel.Cliente.Telefónos != null)
+                {
+                    clienteModel.Cliente.Telefónos.ToList().ForEach(x =>
                     {
-                        Cliente_Id = responseCliente.Id,
-                        Barrio = x.Barrio,
-                        Direccion = x.Direccion,
-                        Municipio_Id = x.Municipio_Id,
-                        CodigoPostal = x.CodigoPostal
+                        clienteModel.ServicioTelefóno.Create(new ServicioTelefónoRequest
+                        {
+                            Cliente_Id = responseCliente.Id,
+                            Número = x.Número,
+                            TipoTelefono = x.TipoTelefono
+                        });
                     });
-                });
+
+                }
+                if (clienteModel.Cliente.Direcciónes != null)
+                {
+                    clienteModel.Cliente.Direcciónes.ToList().ForEach(x =>
+                    {
+                        clienteModel.ServicioDirección.Create(new ServicioDireccíonRequest
+                        {
+                            Cliente_Id = responseCliente.Id,
+                            Barrio = x.Barrio,
+                            Direccion = x.Direccion,
+                            Municipio_Id = x.Municipio_Id,
+                            CodigoPostal = x.CodigoPostal
+                        });
+                    });
+                }
+
+                clienteModel.Cliente.Id = responseCliente.Id;
+                clienteModel.Cliente.Usuario.Id = id;
+                return Json(Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.NO_ERROR, responseCliente.Mensaje, Constants.CLIENT_SUCCESS, clienteModel.Cliente));
             }
-
-           
-
-            return Json(Mensaje.MensajeJson(Constants.NO_ERROR, responseCliente.Mensaje, Constants.CLIENT_SUCCESS));
+            throw new ArgumentException(Constants.NO_AUTH);
         }
 
 
@@ -92,9 +108,15 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
         [Route("edit")]
         public IHttpActionResult Edit(ClienteModel clienteModel)
         {
+
+            if (usuario.id == 0)
+            {
+                throw new ArgumentException(Constants.NO_AUTH);
+            }
+
             if (clienteModel.Cliente == null)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.CLIENT_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.CLIENT_FAIL));
             }
 
             var FactoryCliente = BuilderFactories.Cliente(clienteModel.Cliente.Documento, clienteModel.Cliente.Nombre, clienteModel.Cliente.Email, usuario.id);
@@ -138,13 +160,18 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
             } 
             
 
-            return Json(Mensaje.MensajeJson(Constants.NO_ERROR, responseCliente.Mensaje, Constants.CLIENT_SUCCESS));
+            return Json(Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.NO_ERROR, responseCliente.Mensaje, Constants.CLIENT_SUCCESS));
         }
 
         [HttpGet]
         [Route("get")]
         public IHttpActionResult Get()
         {
+            if (usuario.id == 0)
+            {
+                throw new ArgumentException(Constants.NO_AUTH);
+            }
+
             return Json(ClienteModel.Instance.ServicioCliente.Get(new ServicioClienteRequest { Usuario_Id = usuario.id }));
         }
 
@@ -152,6 +179,11 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
         [Route("get_all")]
         public IHttpActionResult GetAll()
         {
+            if (usuario.id == 0)
+            {
+                throw new ArgumentException(Constants.NO_AUTH);
+            }
+
             return Json(ClienteModel.GetAll(usuario.id));
         }
 
@@ -160,10 +192,14 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
         [Route("pay_create")]
         public IHttpActionResult PayCreate(MetodoPagoModel metodoPago)
         {
+            if (usuario.id == 0)
+            {
+                throw new ArgumentException(Constants.NO_AUTH);
+            }
 
             if (metodoPago.ClienteMetodoDePagos == null)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
             }
             
 
@@ -190,14 +226,14 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
             }
             catch (Exception e)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, e.Message, Constants.PAY_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.IS_ERROR, e.Message, Constants.PAY_FAIL));
             }
 
             if (cont == 0)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Error, no se pudo crear ningun metodo de pago", Constants.PAY_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.IS_ERROR, "Error, no se pudo crear ningun metodo de pago", Constants.PAY_FAIL));
             }
-            return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "Se registraron " + cont + " Metodos de pago", Constants.PAY_SUCCESS));
+            return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.NO_ERROR, "Se registraron " + cont + " Metodos de pago", Constants.PAY_SUCCESS));
         }
 
 
@@ -205,11 +241,14 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
         [Route("pay_edit")]
         public IHttpActionResult PayEdit(MetodoPagoModel metodoPago)
         {
-
+            if (usuario.id == 0)
+            {
+                throw new ArgumentException(Constants.NO_AUTH);
+            }
 
             if (metodoPago.ClienteMetodoDePagos == null)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
             }
 
             try
@@ -233,13 +272,13 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
                 });
                 if (cont == 0)
                 {
-                    return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Error, No se pudo modificar, ", Constants.PAY_FAIL));
+                    return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.IS_ERROR, "Error, No se pudo modificar, ", Constants.PAY_FAIL));
                 }
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "Se Modificaron " + cont + " Metodos de pago", Constants.PAY_SUCCESS));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.NO_ERROR, "Se Modificaron " + cont + " Metodos de pago", Constants.PAY_SUCCESS));
             }
             catch (Exception e)
             {
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, e.Message, Constants.PAY_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.NO_ERROR, e.Message, Constants.PAY_FAIL));
             }
         }
 
@@ -247,19 +286,23 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
         [Route("pay_delete/{id}")]
         public IHttpActionResult PayDelete(int id)
         {
+            if (usuario.id == 0)
+            {
+                throw new ArgumentException(Constants.NO_AUTH);
+            }
 
             if (id == 0)
             {
-                return Json(Mensaje.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.IS_ERROR, "Objecto no puede estar vacio", Constants.PAY_FAIL));
             }
 
             if (MetodoPagoModel.Instance.Delete(id))
             {
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "borrado con exito", Constants.PAY_SUCCESS));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.NO_ERROR, "borrado con exito", Constants.PAY_SUCCESS));
             }
             else
             {
-                return Json(Mensaje.MensajeJson(Constants.NO_ERROR, "borrado fail", Constants.PAY_FAIL));
+                return Json(Mensaje<Domain.Entities.Cliente.ClienteMetodoDePago>.MensajeJson(Constants.NO_ERROR, "borrado fail", Constants.PAY_FAIL));
             }
         }
 

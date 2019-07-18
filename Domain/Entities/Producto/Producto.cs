@@ -38,6 +38,7 @@ namespace Domain.Entities.Producto
             this.PrecioVenta = precioVenta;
             CantidadProducto = cantidadProducto;
             Categoria_Id = categoria_Id;
+            FechaCreacion = DateTime.Now;
         }
 
         public string Nombre { set; get; }
@@ -48,12 +49,14 @@ namespace Domain.Entities.Producto
         public int CantidadProducto { set; get; }
 
         public int Categoria_Id { set; get; }
+        
+        public DateTime FechaCreacion { set; get; }
 
         [ForeignKey("Categoria_Id")] public Categoria Categoria { set; get; }
 
         public virtual IEnumerable<ProductoDescuento> ProductoDescuentos { set; get; }
 
-        //public virtual IEnumerable<CompraCliente> CompraClientes { set; get; }
+        public virtual IEnumerable<CompraCliente> CompraClientes { set; get; }
 
         //public virtual IEnumerable<CompraEnvioProducto> CompraEnvioProductos { set; get; }
 
@@ -61,9 +64,8 @@ namespace Domain.Entities.Producto
         
         public double Descuento { set; get; }
 
-
-
-
+        [NotMapped]
+        public int CantidadComprada { set; get; }
 
         public static bool IsBase64String(string s)
         {
