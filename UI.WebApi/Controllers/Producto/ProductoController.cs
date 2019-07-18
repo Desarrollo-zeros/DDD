@@ -97,6 +97,7 @@ namespace UI.WebApi.Controllers.Producto
         [Route("categoria_get/{id}")]
         public IHttpActionResult GetCategoria(int id)
         {
+
             CategoriaModel.Instance.Categoria = CategoriaModel.Instance.Find(id);
             if (CategoriaModel.Instance.Categoria != null)
             {
