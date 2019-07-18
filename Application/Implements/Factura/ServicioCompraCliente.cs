@@ -2,11 +2,6 @@
 using Domain.Abstracts;
 using Domain.Entities.Factura;
 using Domain.Factories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Implements.Factura
 {
@@ -21,7 +16,7 @@ namespace Application.Implements.Factura
 
         public ServiceResponse Create(ServicioCompraClienteRequest request)
         {
-            if(request == null)
+            if (request == null)
             {
                 return new ServiceResponse
                 {
@@ -30,9 +25,9 @@ namespace Application.Implements.Factura
                 };
             }
 
-            var CompraCliente = base.Create(BuilderFactories.CompraCliente(request.Producto_Id, request.Compra_Id, request.Cantidad,request.EstadoClienteArticulo));
+            var CompraCliente = base.Create(BuilderFactories.CompraCliente(request.Producto_Id, request.Compra_Id, request.Cantidad, request.EstadoClienteArticulo));
 
-            if(CompraCliente == null)
+            if (CompraCliente == null)
             {
                 return new ServiceResponse
                 {
@@ -62,7 +57,7 @@ namespace Application.Implements.Factura
             }
 
             var compraCliente = Find(request.Id);
-            if(compraCliente == null)
+            if (compraCliente == null)
             {
                 return new ServiceResponse
                 {
@@ -93,7 +88,7 @@ namespace Application.Implements.Factura
         }
     }
 
-    public class ServicioCompraClienteRequest: CompraCliente
+    public class ServicioCompraClienteRequest : CompraCliente
     {
 
     }

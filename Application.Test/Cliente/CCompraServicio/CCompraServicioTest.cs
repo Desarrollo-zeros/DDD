@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Implements.Factura.CompraServicio;
+﻿using Application.Implements.Factura.CompraServicio;
 using Application.Implements.Producto.ProductoServicio;
 using Domain.Abstracts;
-using Infraestructure.Data.Base;
-using Infraestructure.Data;
-using NUnit.Framework;
-using Application.Base;
-using Application.Implements;
-using Domain.Factories;
 using Domain.Entities.Cliente;
-using Infraestructure.Data.Repositories;
 using Domain.Entities.Factura;
+using Infraestructure.Data;
+using Infraestructure.Data.Base;
+using Infraestructure.Data.Repositories;
+using NUnit.Framework;
+using System;
+using System.Linq;
 
 namespace Application.Test.Cliente.CCompraServicio
 {
@@ -34,7 +28,7 @@ namespace Application.Test.Cliente.CCompraServicio
 
 
 
-        Application.Implements.Producto.ProductoServicio.ProductoServicio ProductoServicio;
+        Application.Implements.Producto.ProductoServicio.ServicioProducto ProductoServicio;
         Application.Implements.Producto.ProductoServicio.DescuentoServicio DescuentoServicio;
         Application.Implements.Producto.ProductoServicio.ProductoDescuentoServicio ProductoDescuento;
         ComprobanteDePagoServicio ComprobanteDePago;
@@ -60,10 +54,8 @@ namespace Application.Test.Cliente.CCompraServicio
             repositoryMetodoPago = new Repository<ClienteMetodoDePago>(_db);
 
 
-            ProductoServicio = new ProductoServicio(_unitOfWork, repositoryProducto);
-            DescuentoServicio = new DescuentoServicio(_unitOfWork, repositoryDescuento);
-            ProductoDescuento = new ProductoDescuentoServicio(_unitOfWork, repositoryProductoDescuento);
-            CompraServicio = new Application.Implements.Factura.CompraServicio.CrearServicio(_unitOfWork,repositoryCompra);
+           
+            CompraServicio = new Application.Implements.Factura.CompraServicio.CrearServicio(_unitOfWork, repositoryCompra);
             ComprobanteDePago = new ComprobanteDePagoServicio(_unitOfWork, repositoryComprobanteDePago);
             ProductoClienteServicio = new ProductoClienteServicio(_unitOfWork, repositoryProductoCliente);
         }
@@ -73,7 +65,7 @@ namespace Application.Test.Cliente.CCompraServicio
         public void Test()
         {
             CrearServicio productoCliente = new CrearServicio(_unitOfWork, repositoryCompra);
-            var x = productoCliente.BuscarCompraPorProducto(new ServicesRequest() { Cliente_Id = 1, Compra_Id = 1 },1,repositoryProductoCliente, repositoryProducto, repositoryCliente, repositoryComprobanteDePago, repositoryProductoDescuento, repositoryDescuento, repositoryMetodoPago);
+            var x = productoCliente.BuscarCompraPorProducto(new ServicesRequest() { Cliente_Id = 1, Compra_Id = 1 }, 1, repositoryProductoCliente, repositoryProducto, repositoryCliente, repositoryComprobanteDePago, repositoryProductoDescuento, repositoryDescuento, repositoryMetodoPago);
             Console.WriteLine(x.CompraClientes.FirstOrDefault().Producto.Nombre);
         }
 
@@ -81,35 +73,35 @@ namespace Application.Test.Cliente.CCompraServicio
         [Test]
         public void CrearProducto()
         {
-           var x = ProductoServicio.Crear(new ProductoRequest() { CantidadProducto = 10, Descripción = "ejemplo", Imagen = "", Nombre = "algo", PrecioCompra = 1000, PrecioVenta = 1200 });
-           Assert.AreEqual(x.Mensaje, "Operacion exitosa");
+            var x = ProductoServicio.Create(new ProductoRequest() { CantidadProducto = 10, Descripción = "ejemplo", Imagen = "", Nombre = "algo", PrecioCompra = 1000, PrecioVenta = 1200 });
+            Assert.AreEqual(x.Id, "Operacion exitosa");
         }
 
-  
+
         [Test]
         public void CrearCompra()
         {
-            
-             var x = CompraServicio.Crear(new ServicesRequest() {Cliente_Id = 1,FechaCompra = DateTime.Now });
-             Assert.AreEqual(x.Mensaje, "Operacion exitosa");
-            
+
+            var x = CompraServicio.Crear(new ServicesRequest() { Cliente_Id = 1, FechaCompra = DateTime.Now });
+            Assert.AreEqual(x.Mensaje, "Operacion exitosa");
+
 
             int id = repositoryCompra.GetAll().ToList().Last().Id;
 
             var y = ComprobanteDePago.Crear(new ServicesComprobanteCompraRequest() { Compra_Id = id, EstadoDePago = Domain.Enum.EstadoDePago.PAGADO, FechaDePago = DateTime.Now, MedioPago = Domain.Enum.MedioPago.EFECTIVO, Monto = 1200, SubTotal = 1200, Total = 1200, TotalDescuentoAplicados = 0.05 });
-             Assert.AreEqual(y.Mensaje, "Operacion exitosa");
-            
+            Assert.AreEqual(y.Mensaje, "Operacion exitosa");
 
-            var l = ProductoClienteServicio.Crear(new ServicesClienteProductoRequest() { Cantidad=5, Cliente_Id=1 ,Compra_Id = id, EstadoProductoCliente = Domain.Enum.EstadoClienteArticulo.NO_PAGADO,Producto_Id=1});
-             Assert.AreEqual(l.Mensaje, "Operacion exitosa");
-          
 
-            var r = CompraServicio.CompletarCompra(new ServicesRequest() { Cliente_Id = 1,FechaCompra = DateTime.Now, Compra_Id = id },
-                repositoryProductoCliente, 
+            var l = ProductoClienteServicio.Crear(new ServicesClienteProductoRequest() { Cantidad = 5, Cliente_Id = 1, Compra_Id = id, EstadoProductoCliente = Domain.Enum.EstadoClienteArticulo.NO_PAGADO, Producto_Id = 1 });
+            Assert.AreEqual(l.Mensaje, "Operacion exitosa");
+
+
+            var r = CompraServicio.CompletarCompra(new ServicesRequest() { Cliente_Id = 1, FechaCompra = DateTime.Now, Compra_Id = id },
+                repositoryProductoCliente,
                 repositoryProducto,
                 repositoryProductoDescuento,
                 repositoryDescuento,
-                repositoryCliente, 
+                repositoryCliente,
                 repositoryMetodoPago,
                 repositoryComprobanteDePago
                 );

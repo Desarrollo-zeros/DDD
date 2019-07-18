@@ -3,9 +3,6 @@ using Domain.Abstracts;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Base
 {
@@ -31,7 +28,7 @@ namespace Application.Base
             return _repository.Find(id);
         }
 
-        
+
 
         public virtual T Create(T entity)
         {
@@ -40,7 +37,7 @@ namespace Application.Base
                 throw new ArgumentNullException("entity");
             }
             var t = _repository.Add(entity);
-            if(_unitOfWork.Commit() == 1)
+            if (_unitOfWork.Commit() == 1)
             {
                 return t;
             }

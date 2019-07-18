@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Infraestructure.Data;
-using Domain.Factories;
-using Domain.Entities.Factura;
+﻿using Application.Base;
 using Domain.Abstracts;
-using Infraestructure.Data.Repositories;
-using Application.Base;
+using Domain.Entities.Factura;
 using Domain.Enum;
+using Infraestructure.Data.Repositories;
+using System.Collections.Generic;
 
 namespace Application.Implements.Factura.CompraServicio
 {
@@ -24,7 +18,7 @@ namespace Application.Implements.Factura.CompraServicio
             _repository = repository;
         }
 
-        
+
         public List<CompraCliente> BuscarProductoCLientes(int cliente_id, int producto_id)
         {
             //return _repository.FindBy(x => x. == cliente_id && x.Producto_Id == producto_id).ToList();
@@ -34,7 +28,7 @@ namespace Application.Implements.Factura.CompraServicio
 
         public ServiceResponse Crear(ServicesClienteProductoRequest request)
         {
-            var clineteProducto = new CompraCliente(request.Producto_Id,request.Compra_Id,request.Cantidad,request.EstadoProductoCliente);
+            var clineteProducto = new CompraCliente(request.Producto_Id, request.Compra_Id, request.Cantidad, request.EstadoProductoCliente);
             _repository.Add(clineteProducto);
             if (_unitOfWork.Commit() == 1)
             {

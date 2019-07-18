@@ -1,23 +1,15 @@
 ﻿using Application.Base;
 using Domain.Abstracts;
-using Domain.Entities.Cliente;
-using Domain.Entities.Factura;
 using Domain.Factories;
-using Domain.ValueObjects;
-using Infraestructure.Data.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Implements.Cliente.ServicioCliente
 {
-    public class ServicioCliente 
+    public class ServicioCliente
     {
         readonly IUnitOfWork _unitOfWork;
         public readonly IGenericRepository<Domain.Entities.Cliente.Cliente> _repository;
-      
+
         public ServicioCliente(IUnitOfWork unitOfWork, IGenericRepository<Domain.Entities.Cliente.Cliente> repository)
         {
             _unitOfWork = unitOfWork;
@@ -28,9 +20,9 @@ namespace Application.Implements.Cliente.ServicioCliente
         {
             var cliente = Get(request);
 
-            if(cliente == null)
+            if (cliente == null)
             {
-                if (_repository.FindBy(x=>x.Usuario_Id == request.Usuario_Id).FirstOrDefault() != null)
+                if (_repository.FindBy(x => x.Usuario_Id == request.Usuario_Id).FirstOrDefault() != null)
                 {
                     return new ServiceResponse() { Mensaje = "Cliente ya existe", Status = false };
                 }
@@ -64,7 +56,7 @@ namespace Application.Implements.Cliente.ServicioCliente
 
         public Domain.Entities.Cliente.Cliente Get(ServicioClienteRequest request)
         {
-            if(request.Id != 0 && request.Documento != null &&  request.Nombre != null &&  request.Email != null && request.Usuario_Id != 0)
+            if (request.Id != 0 && request.Documento != null && request.Nombre != null && request.Email != null && request.Usuario_Id != 0)
             {
                 return _repository.FindBy(x =>
                         x.Id == request.Id &&
@@ -79,17 +71,19 @@ namespace Application.Implements.Cliente.ServicioCliente
             }
             else
             {
-                if(request.Id != 0)
+                if (request.Id != 0)
                 {
                     return _repository.FindBy(x => x.Id == request.Id).FirstOrDefault();
                 }
                 else if (request.Documento != null)
                 {
                     return _repository.FindBy(x => x.Documento == request.Documento).FirstOrDefault();
-                }else if(request.Email != null)
+                }
+                else if (request.Email != null)
                 {
                     return _repository.FindBy(x => x.Email == request.Email).FirstOrDefault();
-                }else if(request.Usuario_Id != 0)
+                }
+                else if (request.Usuario_Id != 0)
                 {
                     return _repository.FindBy(x => x.Usuario_Id == request.Usuario_Id).FirstOrDefault();
                 }
@@ -98,20 +92,20 @@ namespace Application.Implements.Cliente.ServicioCliente
                     return null;
                 }
             }
-           
+
         }
 
         public ServiceResponse Edit(ServicioClienteRequest request)
         {
-           
+
             var cliente = Get(new ServicioClienteRequest { Usuario_Id = request.Usuario_Id });
-          
-            if(cliente == null)
+
+            if (cliente == null)
             {
                 return new ServiceResponse() { Mensaje = "Cliente no existe", Status = false };
             }
-            
-            if(cliente.Documento != request.Documento)
+
+            if (cliente.Documento != request.Documento)
             {
                 if (_repository.FindBy(x => x.Documento == request.Documento && x.Usuario_Id != cliente.Usuario_Id).FirstOrDefault() != null)
                 {
@@ -141,7 +135,7 @@ namespace Application.Implements.Cliente.ServicioCliente
 
             if (_unitOfWork.Commit() == 1)
             {
-                return new ServiceResponse() { Mensaje = "Cliente Modificado con exito", Status = true , Id = cliente.Id };
+                return new ServiceResponse() { Mensaje = "Cliente Modificado con exito", Status = true, Id = cliente.Id };
             }
             else
             {
@@ -154,7 +148,7 @@ namespace Application.Implements.Cliente.ServicioCliente
 
     public class ServicioClienteRequest : Domain.Entities.Cliente.Cliente
     {
-       
+
     }
 
 }
