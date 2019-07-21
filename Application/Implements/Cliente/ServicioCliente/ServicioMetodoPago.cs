@@ -10,15 +10,14 @@ using Domain.Factories;
 
 namespace Application.Implements.Cliente.ServicioCliente
 {
-    public class ServicioMetodoPago
+    public class ServicioMetodoPago : EntityService<ClienteMetodoDePago>
     {
         readonly IUnitOfWork _unitOfWork;
-        public readonly IGenericRepository<ClienteMetodoDePago> _repository;
-
-        public ServicioMetodoPago(IUnitOfWork unitOfWork, IGenericRepository<ClienteMetodoDePago> repository)
+        
+        public ServicioMetodoPago(IUnitOfWork unitOfWork, IGenericRepository<ClienteMetodoDePago> repository) : base(unitOfWork, repository)
         {
             _unitOfWork = unitOfWork;
-            _repository = repository;
+           
         }
 
         public ServiceResponse Create(ServicioMetodoPagoRequest request)
@@ -60,9 +59,6 @@ namespace Application.Implements.Cliente.ServicioCliente
         {
             var metodoPago = Get(new ServicioMetodoPagoRequest { Id = request.Id, Cliente_Id = request.Cliente_Id  });
          
-            metodoPago.Cliente = request.Cliente;
-
-
             if (metodoPago == null)
             {
                 return new ServiceResponse
@@ -71,6 +67,8 @@ namespace Application.Implements.Cliente.ServicioCliente
                     Status = false
                 };
             }
+
+            metodoPago.Cliente = request.Cliente;
 
             if (metodoPago.Cliente == null)
             {
@@ -86,7 +84,11 @@ namespace Application.Implements.Cliente.ServicioCliente
 
                 if (!metodoPago.DescontarSaldo(request.Saldo))
                 {
-                    throw new Exception("No tiene permiso para modificar su saldo, los datos no fueron modificados");
+                    return new ServiceResponse
+                    {
+                        Mensaje = "No tiene permiso para modificar su saldo, los datos no fueron modificados",
+                        Status = false
+                    };
                 }
             }
 
@@ -94,7 +96,11 @@ namespace Application.Implements.Cliente.ServicioCliente
             {
                 if (!metodoPago.AumentarSaldo(request.Saldo))
                 {
-                    throw new Exception("No tiene permiso para modificar su saldo, los datos no fueron modificados");
+                    return new ServiceResponse
+                    {
+                        Mensaje = "No tiene permiso para modificar su saldo, los datos no fueron modificados",
+                        Status = false
+                    };
                 }
             }
 

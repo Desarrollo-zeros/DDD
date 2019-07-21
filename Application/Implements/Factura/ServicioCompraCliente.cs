@@ -56,7 +56,7 @@ namespace Application.Implements.Factura
             {
                 return new ServiceResponse
                 {
-                    Mensaje = "CompraCliente No puede estar vacio",
+                    Mensaje = "Compra Cliente No puede estar vacio",
                     Status = false
                 };
             }

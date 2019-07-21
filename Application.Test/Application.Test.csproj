@@ -68,10 +68,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cliente\BServicioCliente\BClienteServicioTest.cs" />
-    <Compile Include="Cliente\AServicioUsuario\AUsuarioServicioTest.cs" />
-    <Compile Include="Cliente\CCompraServicio\CCompraServicioTest.cs" />
+    <Compile Include="Implements\ClienteTest\ServicioClienteTest\ServicioClienteTest.cs" />
+    <Compile Include="Implements\ClienteTest\ServicioClienteTest\ServicioDirecciónTest.cs" />
+    <Compile Include="Implements\ClienteTest\ServicioClienteTest\ServicioMetodoPagoTest.cs" />
+    <Compile Include="Implements\ClienteTest\ServicioClienteTest\ServicioTelefónoTest.cs" />
+    <Compile Include="Implements\ClienteTest\ServicioFacturaTest\ServicioCompraClienteTest.cs" />
+    <Compile Include="Implements\ClienteTest\ServicioFacturaTest\ServicioCompraTest.cs" />
+    <Compile Include="Implements\ClienteTest\ServicioUsuarioTest\ServicioUsuarioTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Singleton\Singleton.cs" />
+    <Compile Include="Singleton\SingletonDBContext.cs" />
+    <Compile Include="Singleton\SingletonRepository.cs" />
+    <Compile Include="Singleton\SingletonUnitWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj">
@@ -95,6 +103,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

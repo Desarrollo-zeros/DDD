@@ -81,9 +81,6 @@ namespace UI.WebApi.Controllers.Cliente.Cliente
                     });
                 });
             }
-
-           
-
             return Json(Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.NO_ERROR, responseCliente.Mensaje, Constants.CLIENT_SUCCESS, clienteModel.Cliente));
         }
 

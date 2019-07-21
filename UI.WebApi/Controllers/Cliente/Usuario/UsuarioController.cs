@@ -17,22 +17,7 @@ namespace UI.WebApi.Controllers.Cliente.Usuario
     public class UsuarioController : ApiController
     {
        
-        [HttpGet]
-        [Route("echoping")]
-        public IHttpActionResult EchoPing()
-        {
-            return Ok(true);
-        }
-
-        [HttpGet]
-        [Route("echouser")]
-        public IHttpActionResult EchoUser()
-        {
-            var identity = Thread.CurrentPrincipal.Identity;
-            return Ok($" IPrincipal-user: {identity.Name} - IsAuthenticated: {identity.IsAuthenticated}");
-        }
-
-
+      
         [HttpPost]
         [Route("Authenticate")]
         public IHttpActionResult Authenticar(UsuarioModel usuario)
@@ -61,7 +46,7 @@ namespace UI.WebApi.Controllers.Cliente.Usuario
                 }
 
                 var token = TokenGenerator.GenerateTokenJwt(usuario.Usuario.Username);
-                return Ok((Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.NO_ERROR, token, Constants.USER_SUCCESS, ClienteModel.Instance._repository.FindBy(x=>x.Usuario_Id == usuario.Usuario.Id).FirstOrDefault())));
+                return Ok((Mensaje<Domain.Entities.Cliente.Cliente>.MensajeJson(Constants.NO_ERROR, token, Constants.USER_SUCCESS, ClienteModel.Instance._repository.FindBy(x=>x.Usuario_Id == user.Id).FirstOrDefault())));
             }
             catch (Exception e)
             {

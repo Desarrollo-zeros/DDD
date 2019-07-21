@@ -8,16 +8,16 @@ using System.Linq;
 
 namespace Application.Implements.Cliente.ServicioUsuario
 {
-    public class ServicioUsuario
+    public class ServicioUsuario : EntityService<Usuario>
     {
         readonly IUnitOfWork _unitOfWork;
-        public readonly IGenericRepository<Usuario> _repository;
+        
         
 
-        public ServicioUsuario(IUnitOfWork unitOfWork, IGenericRepository<Usuario> repository)
+        public ServicioUsuario(IUnitOfWork unitOfWork, IGenericRepository<Usuario> repository) : base(unitOfWork, repository)
         {
             _unitOfWork = unitOfWork;
-            _repository = repository;
+           
         }
 
         
@@ -27,7 +27,7 @@ namespace Application.Implements.Cliente.ServicioUsuario
             if(usuario == null)
             {
                 var buildUser = BuilderFactories.Usuario(request.Username, request.Password, request.Activo, request.Rol);
-                 usuario = _repository.Add(buildUser);
+                usuario = _repository.Add(buildUser);
                 if(_unitOfWork.Commit() == 1)
                 {
                     return new ServiceResponse()
@@ -51,6 +51,8 @@ namespace Application.Implements.Cliente.ServicioUsuario
 
         public Usuario Autenticar(ServicioUsuarioRequest request)
         {
+            if (request.Username == "" || request.Password == "") return null;
+            
             return _repository.FindBy(x => x.Username == request.Username && x.Password == request.Password).FirstOrDefault();
         }
 

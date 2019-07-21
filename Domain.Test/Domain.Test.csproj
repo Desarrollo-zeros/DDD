@@ -48,10 +48,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\ClienteMetodoDePagoTest.cs" />
-    <Compile Include="Entities\CompraEnvioTest.cs" />
-    <Compile Include="Entities\CompraTest.cs" />
-    <Compile Include="Entities\UsuarioTest.cs" />
+    <Compile Include="Entities\Cliente\ClienteTest.cs" />
+    <Compile Include="Entities\Cliente\UsuarioTest.cs" />
+    <Compile Include="Entities\Factura\CompraClienteTest.cs" />
+    <Compile Include="Entities\Factura\CompraEnvioProductoTest.cs" />
+    <Compile Include="Entities\Factura\CompraEnvioTest.cs" />
+    <Compile Include="Entities\Factura\CompraTest.cs" />
+    <Compile Include="Entities\Factura\ComprobanteDePagoTest.cs" />
+    <Compile Include="Entities\Producto\CategoriaTest.cs" />
+    <Compile Include="Entities\Producto\DescuentoTest.cs" />
+    <Compile Include="Entities\Producto\ProductoDescuentoTest.cs" />
+    <Compile Include="Entities\Producto\ProductoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -12,7 +12,7 @@ namespace Application.Implements.Factura
 {
     public class ServicioCompra : Base.EntityService<Compra>
     {
-        readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         
         public ServicioCompra(IUnitOfWork unitOfWork, IGenericRepository<Compra> repository) : base(unitOfWork, repository)
         {
@@ -50,35 +50,7 @@ namespace Application.Implements.Factura
         }
 
 
-        public Compra CompletarCompra(ServicioCompraRequest request)
-        {
-            if (request == null)
-            {
-                throw new Exception("Compra no debe estar vacia");
-            }
-
-            if(request.CompraClientes == null)
-            {
-                throw new Exception("Compra Clientes no debe estar vacia");
-            }
-
-            if (request.Cliente == null)
-            {
-                throw new Exception("Clientes no debe estar vacia");
-            }
-
-            if (request.Cliente.ClienteMetodoDePagos == null)
-            {
-                throw new Exception("ClienteMetodoDePagos no debe estar vacia");
-            }
-
-            if (request.Cliente.Usuario == null)
-            {
-                throw new Exception("ClienteMetodoDePagos no debe estar vacia");
-            }
-            request.CompletarCompras();
-            return request;
-        }
+        
     }
 
     public class ServicioCompraRequest : Compra

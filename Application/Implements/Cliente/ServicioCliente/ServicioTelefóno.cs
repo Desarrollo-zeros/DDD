@@ -11,15 +11,14 @@ using System.Threading.Tasks;
 
 namespace Application.Implements.Cliente.ServicioCliente
 {
-    public class ServicioTelefóno
+    public class ServicioTelefóno : EntityService<Telefóno>
     {
         readonly IUnitOfWork _unitOfWork;
-        public readonly IGenericRepository<Telefóno> _repository;
-
-        public ServicioTelefóno(IUnitOfWork unitOfWork, IGenericRepository<Telefóno> repository)
+       
+        public ServicioTelefóno(IUnitOfWork unitOfWork, IGenericRepository<Telefóno> repository) :base(unitOfWork, repository)
         {
             _unitOfWork = unitOfWork;
-            _repository = repository;
+
         }
 
         public ServiceResponse Create(ServicioTelefónoRequest request)

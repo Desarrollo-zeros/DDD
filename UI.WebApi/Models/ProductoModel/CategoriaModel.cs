@@ -24,6 +24,24 @@ namespace UI.WebApi.Models.ProductoModel
                 return categoriaModel;
             }
         }
+
+
+        public Categoria GetByName(string nombre)
+        {
+            var categoria = _repository.FindBy(x => x.Nombre == nombre).FirstOrDefault();
+            return categoria;
+        }
+
+        public Categoria GetById(int id)
+        {
+            if (id < 1) return null;
+            return Find(id);
+        }
+
+         
+
+
+
     }
 
 }

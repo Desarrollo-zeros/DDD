@@ -17,11 +17,7 @@ namespace Domain.Entities.Producto
         public Producto(string nombre, string descripción, string imagen, double precioCompra, double precioVenta, int cantidadProducto, int categoria_Id)
         {
 
-            if(precioVenta > precioCompra)
-            {
-                throw new Exception("El precio de venta debe ser menor al precio de venta");
-            }
-
+            
             Nombre = nombre;
             Descripción = descripción;
             if (IsBase64String(imagen) || imagen != string.Empty)
@@ -38,6 +34,7 @@ namespace Domain.Entities.Producto
             this.PrecioVenta = precioVenta;
             CantidadProducto = cantidadProducto;
             Categoria_Id = categoria_Id;
+            FechaCreacion = DateTime.Now;
         }
 
         public string Nombre { set; get; }

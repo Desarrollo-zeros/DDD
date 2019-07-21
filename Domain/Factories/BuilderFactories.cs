@@ -97,12 +97,13 @@ namespace Domain.Factories
                 throw new Exception("Factories Producto no puede ser creado");
             }
 
+            
             return new Producto(nombre,descripción,imagen,precioCompra,precioVenta,cantidadProducto,categoria_Id);
         }
 
         public static Descuento Descuento(TipoDescuento tipoDescuento, bool acomulable, DateTime fechaYHoraInicio, DateTime fechaYHoraTerminación, double descuento)
         {
-            if(tipoDescuento == TipoDescuento.DESCONOCIDO || fechaYHoraInicio == null || fechaYHoraTerminación == null || descuento < 1)
+            if (tipoDescuento == TipoDescuento.DESCONOCIDO || fechaYHoraInicio == null || fechaYHoraTerminación == null || descuento == 0)
             {
                 throw new Exception("Factories Descuento no puede ser creado");
             }
@@ -132,7 +133,7 @@ namespace Domain.Factories
         {
             if(producto_Id < 1 || compra_Id < 1 || cantidad < 1)
             {
-                throw new Exception("CompraCliente Compra no puede ser creado");
+                throw new Exception("Factories CompraCliente Compra no puede ser creado");
             }
             return new CompraCliente(producto_Id, compra_Id, cantidad, estadoProductoCliente);
         }
@@ -141,7 +142,7 @@ namespace Domain.Factories
         {
             if(total < 1 || subTotal < 1 || compra_id < 1)
             {
-                throw new Exception("ComprobanteDePago Compra no puede ser creado");
+                throw new Exception("Factories ComprobanteDePago Compra no puede ser creado");
             }
             return new ComprobanteDePago(estadoDePago, total,subTotal,medioPago,monto,fechaDePago,totalDescuentoAplicados,compra_id);
         }

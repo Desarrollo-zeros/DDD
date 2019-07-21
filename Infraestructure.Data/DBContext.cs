@@ -17,7 +17,10 @@ namespace Infraestructure.Data
 {
     public class DBContext : DbContextBase
     {
-        public DBContext() : base("name=DBContext") {}
+        public DBContext() : base("name=DBContext") {
+            this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.ProxyCreationEnabled = false;
+       }
        
         protected DBContext(DbConnection connection) : base(connection) { }
 

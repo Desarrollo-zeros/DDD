@@ -10,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace Application.Implements.Cliente.ServicioCliente
 {
-    public class ServicioDirección
+    public class ServicioDirección : EntityService<Dirección>
     {
         readonly IUnitOfWork _unitOfWork;
-        public readonly IGenericRepository<Dirección> _repository;
 
-        public ServicioDirección(IUnitOfWork unitOfWork, IGenericRepository<Dirección> repository)
+
+        public ServicioDirección(IUnitOfWork unitOfWork, IGenericRepository<Dirección> repository) : base(unitOfWork, repository)
         {
             _unitOfWork = unitOfWork;
-            _repository = repository;
+           
         }
 
         public ServiceResponse Create(ServicioDireccíonRequest request)
@@ -26,7 +26,7 @@ namespace Application.Implements.Cliente.ServicioCliente
             var dirección = _repository.FindBy(x => x.Cliente_Id == request.Cliente_Id && x.Barrio == request.Barrio  && x.Direccion == request.Direccion ).FirstOrDefault();
             if (dirección != null)
             {
-                return new ServiceResponse() { Mensaje = "Dirección ya registrado", Status = false };
+                return new ServiceResponse() { Mensaje = "Dirección ya registrada", Status = false };
             }
 
             if (request.Direcciónes != null)

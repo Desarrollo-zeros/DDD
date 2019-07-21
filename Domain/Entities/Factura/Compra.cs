@@ -33,9 +33,6 @@ namespace Domain.Entities.Factura
          public int Cantidad { set; get; }
 
 
-      
-
-
         public bool CompletarCompras()
         {
             double descuentoTotal = 0;
@@ -61,7 +58,6 @@ namespace Domain.Entities.Factura
             }
             return true;
         }
-
         public bool DescontarTotalProductoEnSaldo(double saldo)
         {
 
@@ -71,16 +67,25 @@ namespace Domain.Entities.Factura
             }
             if(Cliente.ClienteMetodoDePagos != null)
             {
-                if(Cliente.ClienteMetodoDePagos.ToList().Find(x => x.Activo && x.Saldo > saldo).DescontarSaldo(saldo))
+                var clienteMetodoDePago = Cliente.ClienteMetodoDePagos.ToList().Find(x => x.Activo && x.Saldo > saldo);
+                if (clienteMetodoDePago != null)
                 {
-                    ComprobanteDePagos.ToList().Find(x => x.Compra_Id == Id).EstadoDePago = Enum.EstadoDePago.PAGADO;
+                    clienteMetodoDePago.DescontarSaldo(saldo);
+                    var comprobanteDePagos = ComprobanteDePagos.ToList().Find(x => x.Compra_Id == Id);
+                    if(comprobanteDePagos != null)
+                    {
+                        comprobanteDePagos.EstadoDePago = Enum.EstadoDePago.PAGADO;
+
+                    }
                     return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
             return false;
         }
-
-
         public double ObtenerDescuentoPorProductoCompra(int producto_Id, int cantidad)
         {
             var sumaDescuento = 0.0;
@@ -103,10 +108,7 @@ namespace Domain.Entities.Factura
                             }
                         });
                     }
-                    else
-                    {
-                        throw new Exception("Producto Descuento esta vacio");
-                    }
+                    
                     valorProducto = producto.PrecioVenta;
                 }
                 else
@@ -120,24 +122,29 @@ namespace Domain.Entities.Factura
                 throw new Exception("Compra cliente esta vacio");
             }
         }
-
-        public bool SePuedeComprarProducto(int CantidadProducto, int cantidad)
-        {
-            return CantidadProducto > cantidad;
-        }
-       
         public bool EnviarCompra(int producto_id)
         {
             if(ComprobanteDePagos != null)
             {
                 if (ComprobanteDePagos.ToList().Find(x => x.Compra_Id == Id).EstadoDePago == Enum.EstadoDePago.PAGADO)
                 {
-                    return CompraEnvios.ToList().Find(x => x.Compra_Id == Id).EnviarProducto(producto_id);
+                    var compraEnvios = CompraEnvios.ToList().Find(x => x.Compra_Id == Id);
+                    if(compraEnvios != null)
+                    {
+                       return compraEnvios.EnviarProducto(producto_id);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    throw new Exception("No existe Un Estado De pago");
                 }
             }
             return false;
         }
-
         public bool EnviarCompra()
         {
             var comprobanteDe = ComprobanteDePagos.ToList().Find(x => x.Compra_Id == Id);
@@ -151,7 +158,6 @@ namespace Domain.Entities.Factura
             }
             return false;
         }
-
         public double ObtenerTotal()
         {
             double descuentoTotal = 0;
@@ -168,7 +174,6 @@ namespace Domain.Entities.Factura
             }
             return precioVenta-descuentoTotal;
         }
-
         public double ObtenerSubTotal()
         {
             double precioVenta = 0;
@@ -183,7 +188,6 @@ namespace Domain.Entities.Factura
             }
             return precioVenta;
         }
-
         public double ObtenerDescuento()
         {
             double descuento = 0;

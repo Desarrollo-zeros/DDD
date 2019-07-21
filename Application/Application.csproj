@@ -104,11 +104,9 @@
     <Compile Include="Implements\Cliente\ServicioCliente\ServicioMetodoPago.cs" />
     <Compile Include="Implements\Cliente\ServicioCliente\ServicioTelefóno.cs" />
     <Compile Include="Implements\Cliente\ServicioUsuario\ServicioUsuario.cs" />
-    <Compile Include="Implements\Factura\CompraServicio\ProductoClienteServicio.cs" />
-    <Compile Include="Implements\Factura\CompraServicio\CrearServicio.cs" />
     <Compile Include="Implements\Factura\ServicioCompra.cs" />
     <Compile Include="Implements\Factura\ServicioCompraCliente.cs" />
-    <Compile Include="Implements\Producto\ProductoServicio\ProductoServicio.cs" />
+    <Compile Include="Implements\Producto\ServicioProducto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

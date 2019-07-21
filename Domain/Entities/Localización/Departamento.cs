@@ -31,6 +31,7 @@ namespace Domain.Entities.Localizacíon
 
         public virtual IEnumerable<Municipio> Municipios { set; get; }
 
+       
     }
 
 
